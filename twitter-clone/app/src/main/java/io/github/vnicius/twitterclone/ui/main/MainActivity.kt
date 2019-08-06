@@ -1,12 +1,15 @@
 package io.github.vnicius.twitterclone.ui.main
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import android.widget.Toast
 import io.github.vnicius.twitterclone.R
+import io.github.vnicius.twitterclone.adapters.TweetsAdapter
 import io.github.vnicius.twitterclone.data.model.Tweet
+import io.github.vnicius.twitterclone.ui.profile.ProfileActivity
+import io.github.vnicius.twitterclone.utils.TweetClick
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.tweets_list.*
 
@@ -22,11 +25,13 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
         rv_tweets.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        rv_tweets.adapter = TweetsAdapter(arrayOf(1,2,3), object: SearchTweetClick{
-            override fun onClick(view: View, tweet: Int) {
-                Toast.makeText(view.context, tweet.toString(), Toast.LENGTH_SHORT).show()
-            }
-        })
+        rv_tweets.adapter =
+            TweetsAdapter(arrayOf(1, 2, 3), object : TweetClick {
+                override fun onClick(view: View, tweet: Int) {
+                    val intent = Intent(view.context, ProfileActivity::class.java)
+                    startActivity(intent)
+                }
+            })
     }
 
     override fun showSearchMessage() {

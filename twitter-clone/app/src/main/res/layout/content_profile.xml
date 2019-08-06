@@ -7,12 +7,139 @@
         tools:showIn="@layout/activity_profile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.profile.ProfileActivity">
+        tools:context=".ui.profile.ProfileActivity"
+        android:background="@color/white"
+>
 
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:text="@string/large_text"/>
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:elevation="1dp"
+        >
+            <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:focusableInTouchMode="true"
+            >
+                <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/iv_user_profile_avatar"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:src="@mipmap/ic_launcher"
+                        android:layout_alignParentStart="true"
+                />
+
+                <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:text="@string/edit_profile"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/rounded_btn"
+                        android:textColor="@color/darkGray"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:textAllCaps="false"
+                />
+            </RelativeLayout>
+            <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:background="@color/white"
+            >
+
+                <TextView
+                        android:id="@+id/iv_user_profile_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User Name"
+                        android:textSize="20sp"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                />
+
+                <TextView
+                        android:id="@+id/iv_user_profile_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="UserName"
+                        android:textSize="14sp"
+                        android:textColor="@color/lightGray"
+                        android:layout_marginTop="4dp"
+                />
+
+                <TextView
+                        android:id="@+id/iv_user_profile_bio"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="User Bio"
+                        android:textSize="18sp"
+                        android:textColor="@color/black"
+                        android:layout_marginTop="4dp"
+                />
+
+                <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                >
+                    <TextView
+                            android:id="@+id/iv_user_profile_following"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="111"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                    />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/following"
+                            android:textSize="16sp"
+                            android:textColor="@color/lightGray"
+                            android:layout_marginStart="4dp"
+                    />
+                    <TextView
+                            android:id="@+id/iv_user_profile_followers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="111"
+                            android:textSize="16sp"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            android:layout_marginStart="16dp"
+                    />
+
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/followers"
+                            android:textSize="16sp"
+                            android:textColor="@color/lightGray"
+                            android:layout_marginStart="4dp"
+                    />
+
+                </LinearLayout>
+        </LinearLayout>
+
+
+        </LinearLayout>
+
+        <include layout="@layout/tweets_list" />
+    </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

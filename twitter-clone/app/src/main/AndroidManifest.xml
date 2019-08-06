@@ -12,9 +12,16 @@
         <activity
                 android:name=".ui.profile.ProfileActivity"
                 android:label="@string/title_activity_profile"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:theme="@style/AppTheme.NoActionBar"
+                android:parentActivityName=".ui.main.MainActivity"
+        >
+
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                       android:value=".ui.main.MainActivity"
+            ></meta-data>
         </activity>
-        <activity android:name=".ui.main.MainActivity">
+        <activity android:name=".ui.main.MainActivity"
+        >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

@@ -1,4 +1,4 @@
-package io.github.vnicius.twitterclone.ui.main
+package io.github.vnicius.twitterclone.adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,16 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import io.github.vnicius.twitterclone.R
+import io.github.vnicius.twitterclone.utils.TweetClick
 
-class TweetsAdapter(private val tweets: Array<Int>, val listener: SearchTweetClick): RecyclerView.Adapter<TweetsAdapter.ViewHolder>() {
+class TweetsAdapter(private val tweets: Array<Int>, val listener: TweetClick): RecyclerView.Adapter<TweetsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.tweet_item, parent, false)
 
-        return ViewHolder(view, object: OnClickTweetListener {
-            override fun onClick(view: View, position: Int) {
-                listener.onClick(view, tweets[position])
-            }
-        })
+        return ViewHolder(
+            view,
+            object : OnClickTweetListener {
+                override fun onClick(view: View, position: Int) {
+                    listener.onClick(view, tweets[position])
+                }
+            })
     }
 
     override fun getItemCount(): Int {
