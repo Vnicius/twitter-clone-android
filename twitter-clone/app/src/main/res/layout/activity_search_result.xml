@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="io.github.vnicius.twitterclone.ui.result.SearchResultActivity"
+        android:orientation="vertical"
+        android:background="@color/white"
+>
+
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/ToolbarColoredBackArrow"
+            android:background="@color/white"
+    >
+        <include layout="@layout/searchfield"/>
+    </android.support.v7.widget.Toolbar>
+
+    <FrameLayout
+            android:id="@+id/frame_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></FrameLayout>
+
+</LinearLayout>

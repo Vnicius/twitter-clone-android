@@ -1,13 +1,9 @@
-package io.github.vnicius.twitterclone.ui.main
+package io.github.vnicius.twitterclone.ui.result
 
-import io.github.vnicius.twitterclone.data.model.Tweet
-import kotlinx.coroutines.CoroutineScope
 import twitter4j.Status
 
-class MainContract {
-
+interface SearchResultContract {
     interface View {
-        fun showSearchMessage()
         fun showLoader()
         fun showResult(tweets: MutableList<Status>)
         fun showNoResult()

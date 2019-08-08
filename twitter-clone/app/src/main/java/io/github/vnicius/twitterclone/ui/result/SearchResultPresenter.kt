@@ -1,10 +1,12 @@
-package io.github.vnicius.twitterclone.ui.main
+package io.github.vnicius.twitterclone.ui.result
 
 import io.github.vnicius.twitterclone.api.APIInterface
 import io.github.vnicius.twitterclone.api.TwitterAPI
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class MainPresenter(val view: MainContract.View): MainContract.Presenter {
+class SearchResultPresenter(val view: SearchResultContract.View): SearchResultContract.Presenter {
 
     private val api: APIInterface = TwitterAPI()
 

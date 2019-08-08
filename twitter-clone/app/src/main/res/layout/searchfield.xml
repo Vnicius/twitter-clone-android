@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="?attr/actionBarSize"
@@ -12,31 +12,25 @@
                 android:focusableInTouchMode="true"
 >
 
-        <EditText android:layout_width="match_parent"
+        <RelativeLayout
+                android:layout_width="match_parent"
                   android:layout_height="match_parent"
-                  android:id="@+id/et_search"
-                  android:layout_centerInParent="true"
-                  android:layout_alignStart="@id/search_icon"
-                  android:hint="@string/search_hint"
-                  android:layout_alignParentStart="true"
-                  android:layout_marginRight="40dp"
-                  android:textColorHint="@color/darkGray"
-                  android:textColor="@color/colorAccent"
-                  android:lines="1"
+                  android:id="@+id/search_item"
                   android:background="@drawable/rounded_bg"
                   android:paddingLeft="16dp"
                   android:paddingRight="16dp"
-        />
+        >
+            <TextView
+                    android:id="@+id/tv_search_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/search_hint"
+                    android:layout_centerVertical="true"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/darkGray"
+                    android:textSize="16sp"
+            />
+        </RelativeLayout>
 
-    <ImageButton
-            android:id="@+id/search_icon"
-            android:layout_width="@dimen/icon_dim"
-            android:layout_height="@dimen/icon_dim"
-            android:layout_centerInParent="true"
-            android:layout_alignParentRight="true"
-            android:src="@drawable/ic_search"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:tint="@color/colorAccent"
-    />
-
-</RelativeLayout>
+</FrameLayout>

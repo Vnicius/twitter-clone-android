@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="io.github.vnicius.twitterclone">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -9,19 +11,33 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+
+        <activity android:name=".ui.result.SearchResultActivity"
+                  android:launchMode="singleTop"
+        >
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data android:name="android.app.searchable"
+                       android:resource="@xml/searchable"/>
+
+        </activity>
+        <activity android:name=".ui.searchable.SearchableActivity"
+                  android:theme="@style/AppTheme">
+            <meta-data android:name="android.app.default_searchable"
+                       android:value=".ui.searchable.SearchableActivity" />
+        </activity>
         <activity
                 android:name=".ui.profile.ProfileActivity"
                 android:label="@string/title_activity_profile"
-                android:theme="@style/AppTheme.NoActionBar"
                 android:parentActivityName=".ui.main.MainActivity"
-        >
-
-            <meta-data android:name="android.support.PARENT_ACTIVITY"
-                       android:value=".ui.main.MainActivity"
-            ></meta-data>
+                android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".ui.main.MainActivity"/>
         </activity>
-        <activity android:name=".ui.main.MainActivity"
-        >
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

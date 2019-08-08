@@ -1,4 +1,4 @@
-package io.github.vnicius.twitterclone.ui.profile
+package io.github.vnicius.twitterclone.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -10,7 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.adapters.TweetsAdapter
+import io.github.vnicius.twitterclone.ui.profile.ProfileActivity
 import io.github.vnicius.twitterclone.utils.TweetClick
+import twitter4j.Status
 
 class TweetsFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,10 +21,13 @@ class TweetsFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.tweets_list, container, false)
+        val bundle = arguments
+        val tweets: MutableList<Status> = bundle?.getSerializable("tweets") as MutableList<Status>
         val rv = view.findViewById<RecyclerView>(R.id.rv_tweets)
+
         rv.layoutManager = LinearLayoutManager(this.context)
-        rv.adapter = TweetsAdapter(arrayOf(1, 2, 3), object : TweetClick {
-            override fun onClick(view: View, tweet: Int) {
+        rv.adapter = TweetsAdapter(tweets, object : TweetClick {
+            override fun onClick(view: View, tweet: Status) {
                 val intent = Intent(view.context, ProfileActivity::class.java)
                 startActivity(intent)
             }

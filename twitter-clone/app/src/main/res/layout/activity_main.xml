@@ -23,15 +23,19 @@
                 android:layout_height="match_parent"
                 app:toolbarId="@+id/toolbar_main"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:contentScrim="?attr/colorPrimary">
+                app:contentScrim="@color/white"
+                android:theme="@style/ToolbarColoredBackArrow"
+        >
 
             <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar_main"
                     android:layout_height="?attr/actionBarSize"
                     android:layout_width="match_parent"
                     app:layout_collapseMode="pin"
+                    android:theme="@style/ToolbarColoredBackArrow"
                     app:popupTheme="@style/AppTheme.PopupOverlay"
                     app:contentInsetStart="0dp"
+                    android:background="@color/white"
             >
                 <include layout="@layout/searchfield"/>
             </android.support.v7.widget.Toolbar>
@@ -39,6 +43,11 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/tweets_list" />
+    <FrameLayout
+            android:id="@+id/frame"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+    />
+
 
 </android.support.design.widget.CoordinatorLayout>

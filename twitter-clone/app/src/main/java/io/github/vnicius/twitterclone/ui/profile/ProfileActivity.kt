@@ -23,12 +23,12 @@ class ProfileActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         rv_tweets.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
-        rv_tweets.adapter = TweetsAdapter(
-            arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
-            object : TweetClick {
-                override fun onClick(view: View, tweet: Int) {
-                }
-            })
+//        rv_tweets.adapter = TweetsAdapter(
+//            arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9),
+//            object : TweetClick {
+//                override fun onClick(view: View, tweet: Int) {
+//                }
+//            })
 
         app_bar.addOnOffsetChangedListener(object: AppBarLayout.OnOffsetChangedListener{
             override fun onOffsetChanged(appbar: AppBarLayout?, verticalOffset: Int) {

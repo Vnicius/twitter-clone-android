@@ -3,15 +3,20 @@
               android:id="@+id/teste"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:background="?android:attr/selectableItemBackground"
+>
+<LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:orientation="horizontal"
 >
     <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/iv_user_avatar"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/deafult_avatar"
             android:layout_marginEnd="16dp"
     />
 
@@ -97,7 +102,7 @@
                             android:layout_height="match_parent"
                             android:textColor="@color/lightGray"
                             android:layout_marginStart="8dp"
-                            android:text="2k"
+                            android:gravity="center_vertical"
                     />
                 </LinearLayout>
 
@@ -119,7 +124,7 @@
                             android:layout_height="match_parent"
                             android:textColor="@color/lightGray"
                             android:layout_marginStart="8dp"
-                            android:text="2k"
+                            android:gravity="center_vertical"
                     />
                 </LinearLayout>
 
@@ -141,7 +146,7 @@
                             android:layout_height="match_parent"
                             android:textColor="@color/lightGray"
                             android:layout_marginStart="8dp"
-                            android:text="2k"
+                            android:gravity="center_vertical"
                     />
                 </LinearLayout>
 
@@ -163,5 +168,8 @@
 
 
     </LinearLayout>
-
+</LinearLayout>
+    <View android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="@color/extraLightGray"/>
 </LinearLayout>
