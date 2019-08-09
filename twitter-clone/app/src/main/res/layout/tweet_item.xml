@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/teste"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="?android:attr/selectableItemBackground"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:background="?android:attr/selectableItemBackground"
 >
 <LinearLayout
         android:layout_width="match_parent"
@@ -67,7 +68,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:paddingTop="8dp"
                 android:layout_marginEnd="32dp"
                 android:text="Default tweet"
                 android:textColor="@color/black"
@@ -78,7 +78,7 @@
                 android:layout_height="@dimen/icon_dim"
 
                 android:layout_marginTop="16dp"
-                android:stretchColumns="0,1,2,3"
+                android:stretchColumns="*"
         >
             <TableRow
                     android:layout_width="match_parent"
@@ -86,7 +86,8 @@
             >
                 <LinearLayout
                         android:id="@+id/btn_reply"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                 >
@@ -108,11 +109,14 @@
 
                 <LinearLayout
                         android:id="@+id/btn_retweet"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                 >
-                    <ImageView android:layout_width="@dimen/icon_dim"
+                    <ImageView
+                            android:id="@+id/icon_retweet"
+                            android:layout_width="@dimen/icon_dim"
                                android:layout_height="@dimen/icon_dim"
                                android:layout_gravity="center_horizontal"
                                android:src="@drawable/ic_retweet"
@@ -130,15 +134,28 @@
 
                 <LinearLayout
                         android:id="@+id/btn_favorite"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                 >
-                    <ImageView android:layout_width="@dimen/icon_dim"
+                    <ImageView
+                            android:id="@+id/icon_fav"
+                            android:layout_width="@dimen/icon_dim"
                                android:layout_height="@dimen/icon_dim"
                                android:layout_gravity="center_horizontal"
                                android:src="@drawable/ic_fav"
                                android:tint="@color/lightGray"
+                    />
+                    <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/icon_fav_animation"
+                            android:layout_width="@dimen/icon_dim"
+                            android:layout_height="@dimen/icon_dim"
+                            android:layout_gravity="center_horizontal"
+                            app:lottie_fileName="fav.json"
+                            app:lottie_loop="false"
+                            android:scaleType="centerCrop"
+                            android:visibility="gone"
                     />
                     <TextView
                             android:id="@+id/tv_tweet_favs_count"
@@ -152,7 +169,8 @@
 
                 <LinearLayout
                         android:id="@+id/share_btn"
-                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:orientation="horizontal"
                 >

@@ -17,6 +17,12 @@ import kotlinx.android.synthetic.main.activity_search.*
 
 class SearchableActivity : AppCompatActivity() {
 
+    private var queryText: String = ""
+
+    companion object {
+        const val QUERY = "QUERY"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -24,6 +30,9 @@ class SearchableActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        queryText = intent.getStringExtra(QUERY) ?: ""
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -39,9 +48,10 @@ class SearchableActivity : AppCompatActivity() {
             requestFocus()
             maxWidth = Int.MAX_VALUE
             isIconified = false
-            queryHint = "Search Twitter"
+            queryHint = resources.getString(R.string.search_hint)
             findViewById<View>(android.support.v7.appcompat.R.id.search_plate).setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
             findViewById<View>(android.support.v7.appcompat.R.id.search_mag_icon).visibility = View.GONE
+            setQuery(queryText, false)
         }
 
         return true

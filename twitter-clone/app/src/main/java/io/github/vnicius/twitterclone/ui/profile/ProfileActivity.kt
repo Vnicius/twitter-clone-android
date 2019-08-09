@@ -4,10 +4,9 @@ import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.MenuItem
 import android.view.View
 import io.github.vnicius.twitterclone.R
-import io.github.vnicius.twitterclone.utils.TweetClick
-import io.github.vnicius.twitterclone.adapters.TweetsAdapter
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.tweets_list.*
 
@@ -48,5 +47,13 @@ class ProfileActivity : AppCompatActivity() {
 //
 //        profile_tabs.setupWithViewPager(viewpager_tweets)
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when(item?.itemId) {
+            android.R.id.home -> onBackPressed()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 }

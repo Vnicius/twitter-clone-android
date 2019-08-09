@@ -2,20 +2,29 @@ package io.github.vnicius.twitterclone.ui.result
 
 import io.github.vnicius.twitterclone.api.APIInterface
 import io.github.vnicius.twitterclone.api.TwitterAPI
+import io.github.vnicius.twitterclone.data.repository.tweet.ITweetRepository
+import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+private const val MAX_COUNT = 50
+
 class SearchResultPresenter(val view: SearchResultContract.View): SearchResultContract.Presenter {
 
-    private val api: APIInterface = TwitterAPI()
+    private val mTweetRepository: ITweetRepository = TweetRepository()
 
     override fun searchTweets(query: String) {
         val scope = CoroutineScope(Dispatchers.Main)
+        view.showLoader()
 
         scope.launch {
-            val result = api.search(query).await()
-            view.showResult(result)
+            val result = mTweetRepository.getTweetsByQuery(query, MAX_COUNT).await()
+            if(result.size == 0) {
+                view.showNoResult()
+            } else {
+                view.showResult(result)
+            }
         }
     }
 }

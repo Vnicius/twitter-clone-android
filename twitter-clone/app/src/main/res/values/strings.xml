@@ -97,4 +97,12 @@
     <string name="followers">Followers</string>
     <string name="tweets">Tweets</string>
     <string name="search_action_name">Search</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="search_settings_label">Search Settings</string>
+    <string name="save_this_search_label">Save this search</string>
+    <string name="share_label">Share</string>
+    <string name="trending">Trending</string>
+    <string name="world_wide_trends">World Wide Trends</string>
 </resources>

@@ -10,10 +10,10 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme"
+    >
 
         <activity android:name=".ui.result.SearchResultActivity"
-                  android:launchMode="singleTop"
         >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -31,11 +31,7 @@
         <activity
                 android:name=".ui.profile.ProfileActivity"
                 android:label="@string/title_activity_profile"
-                android:parentActivityName=".ui.main.MainActivity"
                 android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                    android:name="android.support.PARENT_ACTIVITY"
-                    android:value=".ui.main.MainActivity"/>
         </activity>
         <activity android:name=".ui.main.MainActivity">
             <intent-filter>
@@ -43,6 +39,9 @@
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
+            <meta-data android:name="android.app.default_searchable"
+                       android:value=".ui.searchable.SearchableActivity" />
         </activity>
     </application>
 

@@ -2,18 +2,23 @@ package io.github.vnicius.twitterclone.ui.main
 
 import io.github.vnicius.twitterclone.api.APIInterface
 import io.github.vnicius.twitterclone.api.TwitterAPI
+import io.github.vnicius.twitterclone.data.repository.trends.ITrendRepository
+import io.github.vnicius.twitterclone.data.repository.trends.TrendRepository
 import kotlinx.coroutines.*
 
 class MainPresenter(val view: MainContract.View): MainContract.Presenter {
 
-    private val api: APIInterface = TwitterAPI()
+    private val mTrendRepository: ITrendRepository = TrendRepository()
 
-    override fun searchTweets(query: String) {
+    override fun getTrends() {
         val scope = CoroutineScope(Dispatchers.Main)
+        view.showLoader()
 
+        view.showLoader()
         scope.launch {
-            val result = api.search(query).await()
-            view.showResult(result)
+            val trends = mTrendRepository.getTrends(1).await()
+            view.showTrends(trends)
         }
     }
+
 }

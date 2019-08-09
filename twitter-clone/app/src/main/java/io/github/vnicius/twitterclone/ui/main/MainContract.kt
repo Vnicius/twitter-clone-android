@@ -1,19 +1,16 @@
 package io.github.vnicius.twitterclone.ui.main
 
-import io.github.vnicius.twitterclone.data.model.Tweet
-import kotlinx.coroutines.CoroutineScope
-import twitter4j.Status
+import twitter4j.Trend
 
 class MainContract {
 
     interface View {
-        fun showSearchMessage()
         fun showLoader()
-        fun showResult(tweets: MutableList<Status>)
-        fun showNoResult()
+        fun showTrends(trends: Array<Trend>)
+        fun showError()
     }
 
     interface Presenter {
-        fun searchTweets(query: String)
+        fun getTrends()
     }
 }

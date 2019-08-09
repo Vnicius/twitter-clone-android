@@ -10,4 +10,6 @@
     <color name="extraExtraLightGray">#F5F8FA</color>
     <color name="bg_color">#fff</color>
     <color name="white">#fff</color>
+    <color name="red">#ff0000</color>
+    <color name="green">#17bf63</color>
 </resources>

@@ -10,23 +10,21 @@ import android.view.View
 import android.view.ViewGroup
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.adapters.TweetsAdapter
+import io.github.vnicius.twitterclone.adapters.click.AdapterClickHandler
 import io.github.vnicius.twitterclone.ui.profile.ProfileActivity
-import io.github.vnicius.twitterclone.utils.TweetClick
 import twitter4j.Status
 
+
 class TweetsFragment: Fragment() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.tweets_list, container, false)
         val bundle = arguments
-        val tweets: MutableList<Status> = bundle?.getSerializable("tweets") as MutableList<Status>
+        val tweets: MutableList<Status> = bundle?.getSerializable(ARG_CODE) as MutableList<Status>
         val rv = view.findViewById<RecyclerView>(R.id.rv_tweets)
 
         rv.layoutManager = LinearLayoutManager(this.context)
-        rv.adapter = TweetsAdapter(tweets, object : TweetClick {
+        rv.adapter = TweetsAdapter(tweets, object : AdapterClickHandler<Status> {
             override fun onClick(view: View, tweet: Status) {
                 val intent = Intent(view.context, ProfileActivity::class.java)
                 startActivity(intent)
@@ -34,5 +32,12 @@ class TweetsFragment: Fragment() {
         })
 
         return view
+    }
+
+    companion object {
+        const val ARG_CODE = "TWEETS"
+        @JvmStatic
+        fun newInstance() =
+            TweetsFragment()
     }
 }

@@ -7,9 +7,12 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import io.github.vnicius.twitterclone.R
+import io.github.vnicius.twitterclone.fragments.LoaderFragment
+import io.github.vnicius.twitterclone.fragments.NoResultFragment
 import io.github.vnicius.twitterclone.fragments.TweetsFragment
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,6 +25,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
 
     val mPresenter: SearchResultContract.Presenter = SearchResultPresenter(this)
     private lateinit var mTransaction: FragmentTransaction
+    private lateinit var mQuery: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +37,12 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
 
         handleIntent(intent)
         search_item.setOnClickListener(this)
-        mTransaction = supportFragmentManager.beginTransaction()
     }
 
-    private fun chageFragment(fragment: Fragment){
-        mTransaction.add(frame_search_result.id, fragment)
-        mTransaction.commit()
+    private fun changeFragment(fragment: Fragment){
+        mTransaction = supportFragmentManager.beginTransaction()
+        mTransaction.replace(frame_search_result.id, fragment)
+        mTransaction.commitAllowingStateLoss()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -51,6 +55,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
             intent.getStringExtra(SearchManager.QUERY)?.also { query ->
                 mPresenter.searchTweets(query)
                 tv_search_text.text = query
+                mQuery = query
             }
         }
     }
@@ -58,27 +63,34 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
     override fun onClick(view: View?) {
         when(view?.id) {
             search_item.id -> {
-                val intent = Intent(this, SearchableActivity::class.java)
+                val intent = Intent(this, SearchableActivity::class.java).apply {
+                    putExtra(SearchableActivity.QUERY, mQuery)
+                }
                 startActivity(intent)
             }
         }
     }
 
     override fun showLoader() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        changeFragment(LoaderFragment.newInstance())
     }
 
     override fun showResult(tweets: MutableList<Status>) {
-        val fragment = TweetsFragment()
+        val fragment = TweetsFragment.newInstance()
         val args = Bundle()
-        args.putSerializable("tweets", tweets as Serializable)
+        args.putSerializable(TweetsFragment.ARG_CODE, tweets as Serializable)
         fragment.arguments = args
 
-        chageFragment(fragment)
+        changeFragment(fragment)
     }
 
     override fun showNoResult() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        changeFragment(NoResultFragment.newInstance(mQuery))
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_search_result, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -87,5 +99,9 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun showError() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

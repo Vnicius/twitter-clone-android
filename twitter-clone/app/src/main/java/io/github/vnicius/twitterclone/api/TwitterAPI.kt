@@ -1,8 +1,6 @@
 package io.github.vnicius.twitterclone.api
 
 import io.github.vnicius.twitterclone.BuildConfig
-import io.github.vnicius.twitterclone.data.model.Tweet
-import io.github.vnicius.twitterclone.data.model.User
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
@@ -15,8 +13,7 @@ import twitter4j.conf.ConfigurationBuilder
 
 class TwitterAPI: APIInterface {
 
-
-    private final lateinit var twitterInstance: Twitter
+    private var twitterInstance: Twitter
 
     init {
         val config = createConfiguration()
@@ -36,13 +33,18 @@ class TwitterAPI: APIInterface {
         return configBuilder.build()
     }
 
-    override fun search(query: String) = GlobalScope.async {
-            val querySearch = Query(query).count(10)
+    override fun search(query: String, count: Int) = GlobalScope.async {
+            val querySearch = Query(query).count(count)
             val result = twitterInstance.search(querySearch)
             result.tweets
         }
 
-    override fun getUser(username: String): User {
+    override fun getTrends(woeid: Int) = GlobalScope.async {
+        val trends = twitterInstance.getPlaceTrends(woeid)
+        trends.trends
+    }
+
+    override fun getUser(username: String): Unit {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

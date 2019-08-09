@@ -7,9 +7,7 @@
               android:paddingRight="16dp"
               android:paddingTop="8dp"
               android:paddingBottom="8dp"
-                android:background="@color/bg_color"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
+              android:background="@color/white"
 >
 
         <RelativeLayout

@@ -8,16 +8,20 @@ import android.support.v4.app.FragmentTransaction
 import android.view.Menu
 import android.view.View
 import io.github.vnicius.twitterclone.R
+import io.github.vnicius.twitterclone.fragments.LoaderFragment
+import io.github.vnicius.twitterclone.fragments.TrendsFragment
 import io.github.vnicius.twitterclone.fragments.TweetsFragment
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_search_result.*
 import kotlinx.android.synthetic.main.searchfield.*
 import twitter4j.Status
+import twitter4j.Trend
 import java.io.Serializable
 
 class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListener {
-
     private val mPresenter = MainPresenter(this)
+    private lateinit var mTransaction: FragmentTransaction
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +30,8 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
         setSupportActionBar(toolbar_main)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-//        rv_tweets.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        mPresenter.getTrends()
+
         search_item.setOnClickListener(this)
     }
 
@@ -39,27 +44,29 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
         }
     }
 
-    override fun showSearchMessage() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    private fun changeFragment(fragment: Fragment){
+        mTransaction = supportFragmentManager.beginTransaction()
+        mTransaction.replace(frame_main.id, fragment)
+        mTransaction.commitAllowingStateLoss()
     }
 
     override fun showLoader() {
+        changeFragment(LoaderFragment.newInstance())
+    }
+
+    override fun showTrends(trends: Array<Trend>) {
+        val fragment = TrendsFragment.newInstance()
+        val args = Bundle()
+        args.putSerializable(TrendsFragment.ARG_CODE, trends as Serializable)
+        fragment.arguments = args
+
+        changeFragment(fragment)
+    }
+
+    override fun showError() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun showResult(tweets: MutableList<Status>) {
-//        rv_tweets.adapter =
-//            TweetsAdapter(tweets, object : TweetClick {
-//                override fun onClick(view: View, tweet: Status) {
-//                    val intent = Intent(view.context, ProfileActivity::class.java)
-//                    startActivity(intent)
-//                }
-//            })
-    }
-
-    override fun showNoResult() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
 
