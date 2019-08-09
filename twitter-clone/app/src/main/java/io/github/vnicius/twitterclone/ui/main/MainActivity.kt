@@ -3,10 +3,12 @@ package io.github.vnicius.twitterclone.ui.main
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.view.Menu
 import android.view.View
+import android.widget.Toast
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.fragments.LoaderFragment
 import io.github.vnicius.twitterclone.fragments.TrendsFragment
@@ -63,8 +65,8 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
         changeFragment(fragment)
     }
 
-    override fun showError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showError(message: String) {
+        Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
     }
 
 

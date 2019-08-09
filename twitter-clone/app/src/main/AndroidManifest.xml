@@ -8,12 +8,13 @@
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
+            android:roundIcon="@mipmap/ic_launcher"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
     >
 
         <activity android:name=".ui.result.SearchResultActivity"
+                  android:screenOrientation="portrait"
         >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
@@ -24,16 +25,22 @@
 
         </activity>
         <activity android:name=".ui.searchable.SearchableActivity"
-                  android:theme="@style/AppTheme">
+                  android:theme="@style/AppTheme"
+                android:screenOrientation="portrait"
+        >
             <meta-data android:name="android.app.default_searchable"
                        android:value=".ui.searchable.SearchableActivity" />
         </activity>
         <activity
                 android:name=".ui.profile.ProfileActivity"
                 android:label="@string/title_activity_profile"
-                android:theme="@style/AppTheme.NoActionBar">
+                android:theme="@style/AppTheme.NoActionBar"
+                android:screenOrientation="portrait"
+        >
         </activity>
-        <activity android:name=".ui.main.MainActivity">
+        <activity android:name=".ui.main.MainActivity"
+                android:screenOrientation="portrait"
+        >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

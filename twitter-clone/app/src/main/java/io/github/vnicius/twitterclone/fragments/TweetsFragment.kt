@@ -27,6 +27,7 @@ class TweetsFragment: Fragment() {
         rv.adapter = TweetsAdapter(tweets, object : AdapterClickHandler<Status> {
             override fun onClick(view: View, tweet: Status) {
                 val intent = Intent(view.context, ProfileActivity::class.java)
+                intent.putExtra(ProfileActivity.USER_ID, tweet.user.id)
                 startActivity(intent)
             }
         })

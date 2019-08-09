@@ -34,7 +34,7 @@
                         android:id="@+id/tv_trend_position"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/lightGray"
+                        android:textColor="@color/darkGray"
                         android:textSize="12sp"
                 />
                 <TextView
@@ -50,7 +50,7 @@
                 <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/lightGray"
+                        android:textColor="@color/darkGray"
                         android:text="@string/trending"
                         android:textSize="12sp"
                 />
@@ -68,7 +68,7 @@
                     android:id="@+id/tv_trend_tweets_count"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/lightGray"
+                    android:textColor="@color/darkGray"
                     android:textSize="12sp"
                     android:layout_marginTop="2dp"
             />

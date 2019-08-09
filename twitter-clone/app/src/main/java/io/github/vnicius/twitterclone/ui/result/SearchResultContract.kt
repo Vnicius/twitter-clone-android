@@ -7,7 +7,7 @@ interface SearchResultContract {
         fun showLoader()
         fun showResult(tweets: MutableList<Status>)
         fun showNoResult()
-        fun showError()
+        fun showError(message: String)
     }
 
     interface Presenter {

@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.fragments.LoaderFragment
 import io.github.vnicius.twitterclone.fragments.NoResultFragment
@@ -101,7 +102,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
         return super.onOptionsItemSelected(item)
     }
 
-    override fun showError() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun showError(message: String) {
+        Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
     }
 }

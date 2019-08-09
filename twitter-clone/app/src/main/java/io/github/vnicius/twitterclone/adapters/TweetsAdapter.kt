@@ -53,7 +53,7 @@ class TweetsAdapter(private val tweets: MutableList<Status>, val listener: Adapt
 
         fun bindView(item: Status) {
             itemView.findViewById<TextView>(R.id.tv_user_name).text = HtmlCompat.fromHtml("<b>${item.user.name}</b> @${item.user.screenName}", HtmlCompat.FROM_HTML_MODE_COMPACT)
-            itemView.findViewById<TextView>(R.id.tv_tweet_text).text = item.text
+            itemView.findViewById<TextView>(R.id.tv_tweet_text).text = ParseUtils.parseTweetText(item.text)
             itemView.findViewById<TextView>(R.id.tv_tweet_favs_count).text = ParseUtils.parseCountNumber(item.favoriteCount)
             itemView.findViewById<TextView>(R.id.tv_tweet_retweets_count).text = ParseUtils.parseCountNumber(item.retweetCount)
 
@@ -62,10 +62,7 @@ class TweetsAdapter(private val tweets: MutableList<Status>, val listener: Adapt
                 .error(R.drawable.deafult_avatar)
                 .into(itemView.findViewById<ImageView>(R.id.iv_user_avatar))
 
-            //TODO() export to utils
-            val timeHours = (Date().time - item.createdAt.time)/1000
-
-            itemView.findViewById<TextView>(R.id.tv_tweet_time).text = " • ${timeHours}s"
+            itemView.findViewById<TextView>(R.id.tv_tweet_time).text = "• ${ParseUtils.parseTime(item.createdAt.time)}"
             itemView.findViewById<LinearLayout>(R.id.btn_favorite).setOnClickListener { view -> onFavClick(view, item) }
             itemView.findViewById<LinearLayout>(R.id.btn_retweet).setOnClickListener { view -> onRetweetClick(view, item) }
         }
@@ -90,7 +87,7 @@ class TweetsAdapter(private val tweets: MutableList<Status>, val listener: Adapt
 
                 animation.visibility = View.GONE
 
-                tvCount.setTextColor(ResourcesCompat.getColor(itemView.resources, R.color.lightGray, null))
+                tvCount.setTextColor(ResourcesCompat.getColor(itemView.resources, R.color.darkGray, null))
                 tvCount.text = ParseUtils.parseCountNumber(item.favoriteCount)
             }
         }
@@ -99,7 +96,7 @@ class TweetsAdapter(private val tweets: MutableList<Status>, val listener: Adapt
             val icon = view.findViewById<ImageView>(R.id.icon_retweet)
             val tvCount = view.findViewById<TextView>(R.id.tv_tweet_retweets_count)
             val green = ResourcesCompat.getColor(itemView.resources, R.color.green, null)
-            val gray = ResourcesCompat.getColor(itemView.resources, R.color.lightGray, null)
+            val gray = ResourcesCompat.getColor(itemView.resources, R.color.darkGray, null)
 
             if(tvCount.currentTextColor == gray) {
                 icon.setColorFilter(green)

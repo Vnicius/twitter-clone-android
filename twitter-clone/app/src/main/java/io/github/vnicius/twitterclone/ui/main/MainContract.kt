@@ -7,7 +7,7 @@ class MainContract {
     interface View {
         fun showLoader()
         fun showTrends(trends: Array<Trend>)
-        fun showError()
+        fun showError(message: String)
     }
 
     interface Presenter {

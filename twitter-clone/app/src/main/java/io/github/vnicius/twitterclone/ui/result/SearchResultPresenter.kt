@@ -6,7 +6,9 @@ import io.github.vnicius.twitterclone.data.repository.tweet.ITweetRepository
 import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 private const val MAX_COUNT = 50
 
@@ -19,12 +21,19 @@ class SearchResultPresenter(val view: SearchResultContract.View): SearchResultCo
         view.showLoader()
 
         scope.launch {
-            val result = mTweetRepository.getTweetsByQuery(query, MAX_COUNT).await()
-            if(result.size == 0) {
-                view.showNoResult()
-            } else {
-                view.showResult(result)
+            try{
+                coroutineScope {
+                    val result = mTweetRepository.getTweetsByQuery(query, MAX_COUNT).await()
+                    if(result.size == 0) {
+                        view.showNoResult()
+                    } else {
+                        view.showResult(result)
+                    }
+                }
+            }catch (e: Exception) {
+                view.showError("Connection Error")
             }
+
         }
     }
 }

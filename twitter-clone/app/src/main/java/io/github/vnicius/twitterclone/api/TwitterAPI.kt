@@ -4,10 +4,7 @@ import io.github.vnicius.twitterclone.BuildConfig
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import twitter4j.Query
-import twitter4j.Status
-import twitter4j.Twitter
-import twitter4j.TwitterFactory
+import twitter4j.*
 import twitter4j.conf.Configuration
 import twitter4j.conf.ConfigurationBuilder
 
@@ -44,8 +41,12 @@ class TwitterAPI: APIInterface {
         trends.trends
     }
 
-    override fun getUser(username: String): Unit {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getUser(userId: Long) = GlobalScope.async {
+        twitterInstance.showUser(userId)
+    }
+
+    override fun getUserTweest(userId: Long, count: Int) = GlobalScope.async {
+        twitterInstance.getUserTimeline(userId, Paging(1, count))
     }
 
 }
