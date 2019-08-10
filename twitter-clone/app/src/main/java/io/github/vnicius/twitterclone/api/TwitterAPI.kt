@@ -8,6 +8,9 @@ import twitter4j.*
 import twitter4j.conf.Configuration
 import twitter4j.conf.ConfigurationBuilder
 
+/**
+ * Class to access the Twitter API using Twitter4j
+ */
 class TwitterAPI: APIInterface {
 
     private var twitterInstance: Twitter
@@ -18,6 +21,13 @@ class TwitterAPI: APIInterface {
         twitterInstance = twitterFactory.instance
     }
 
+    companion object {
+        val instance: APIInterface = TwitterAPI()
+    }
+
+    /**
+     * Create the configuration of the Twitter4j
+     */
     private fun createConfiguration(): Configuration {
         val configBuilder = ConfigurationBuilder()
         configBuilder.setDebugEnabled(true)

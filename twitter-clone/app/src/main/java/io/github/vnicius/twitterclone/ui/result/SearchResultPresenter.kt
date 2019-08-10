@@ -1,7 +1,5 @@
 package io.github.vnicius.twitterclone.ui.result
 
-import io.github.vnicius.twitterclone.api.APIInterface
-import io.github.vnicius.twitterclone.api.TwitterAPI
 import io.github.vnicius.twitterclone.data.repository.tweet.ITweetRepository
 import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepository
 import kotlinx.coroutines.CoroutineScope
@@ -12,18 +10,26 @@ import java.lang.Exception
 
 private const val MAX_COUNT = 50
 
+/**
+ * SearchResult Presenter
+ */
 class SearchResultPresenter(val view: SearchResultContract.View): SearchResultContract.Presenter {
 
+    // repository instance
     private val mTweetRepository: ITweetRepository = TweetRepository()
 
     override fun searchTweets(query: String) {
+        // get the main scope
         val scope = CoroutineScope(Dispatchers.Main)
-        view.showLoader()
 
+        view.showLoader()
         scope.launch {
+            // search the tweets
             try{
                 coroutineScope {
                     val result = mTweetRepository.getTweetsByQuery(query, MAX_COUNT).await()
+
+                    // check if has any result
                     if(result.size == 0) {
                         view.showNoResult()
                     } else {
@@ -33,7 +39,6 @@ class SearchResultPresenter(val view: SearchResultContract.View): SearchResultCo
             }catch (e: Exception) {
                 view.showError("Connection Error")
             }
-
         }
     }
 }

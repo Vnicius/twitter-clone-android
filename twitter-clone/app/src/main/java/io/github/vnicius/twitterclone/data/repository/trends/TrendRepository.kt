@@ -5,8 +5,13 @@ import io.github.vnicius.twitterclone.api.TwitterAPI
 import kotlinx.coroutines.Deferred
 import twitter4j.Trend
 
+/**
+ * Implementation of the [ITrendRepository] using the [APIInterface]
+ */
 class TrendRepository: ITrendRepository {
-    private val mApi: APIInterface = TwitterAPI()
+
+    // API instance
+    private val mApi: APIInterface = TwitterAPI.instance
 
     override fun getTrends(woeid: Int): Deferred<Array<Trend>> = mApi.getTrends(woeid)
 }

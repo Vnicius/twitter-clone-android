@@ -1,19 +1,24 @@
 package io.github.vnicius.twitterclone.utils
 
-import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.text.HtmlCompat
 import android.text.Spanned
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import java.util.logging.SimpleFormatter
 
-
+/**
+ * Utils to help in values parser
+ */
 class ParseUtils {
     companion object {
+
+        /**
+         * Parse the [number] to a fancy [String]
+         * @param [number]
+         */
         fun parseNumber(number: Int): String {
 
-            // for million numbers
+            // for millions
             if (number >= 1000000) {
                 val firstPart: Int = number / 1000000
                 val secondPart: Int = (number - firstPart * 1000000)
@@ -25,7 +30,7 @@ class ParseUtils {
                 return "$firstPart.${secondPart / 100000}M"
             }
             else if(number >= 1000) {
-                // for hundred numbers
+                // for thousands
                 val fistPart: Int = number / 1000
                 val secondPart = (number - fistPart * 1000)
 
@@ -39,6 +44,10 @@ class ParseUtils {
                     return "${fistPart}K"
                 }
 
+                // check the hundred part
+                if (secondPart < 10) {
+                    return "$fistPart.00$secondPart"
+                }
                 if(secondPart < 100) {
                     return "$fistPart.0$secondPart"
                 }
@@ -48,22 +57,46 @@ class ParseUtils {
             return number.toString()
         }
 
+        /**
+         * Parse the number to counts items
+         */
         fun parseCountNumber(number: Int) = if (number == 0) "" else parseNumber(number)
 
+        /**
+         * Parse the tweets text
+         */
         fun parseTweetText(text: String): Spanned {
+
+            // regex for citations and hashtags
             val reCitation = Regex("""([@#]\w+)""")
+
+            // regex to links
             val reLinks = Regex("""(http\S+)""")
-            var textParsed = reCitation.replace(text, """<font color="#1DA1F2">$1</font>""")
+
+            // regex to e-mails
+            val reEMails = Regex("""(\w+@\S+)""")
+
+            // parse the text
+            var textParsed = reEMails.replace(text, """<font color="#1DA1F2">$1</font>""")
+            textParsed = reCitation.replace(textParsed, """<font color="#1DA1F2">$1</font>""")
             textParsed = reLinks.replace(textParsed, """<font color="#1DA1F2">$1</font>""")
 
             return HtmlCompat.fromHtml(textParsed, HtmlCompat.FROM_HTML_MODE_COMPACT)
         }
 
+        /**
+         * Parse the time values
+         */
         fun parseTime(value: Long): String {
+
+            // get the difference time
             val diffDate = Date().time - value
+
+            // get the days value
             val days = TimeUnit.MILLISECONDS.toDays(diffDate)
 
             if (days > 30) {
+                // parse the time to a string date
                 val actualDate = Calendar.getInstance()
                 val valueDate = Calendar.getInstance()
                 var formater: SimpleDateFormat
@@ -81,17 +114,20 @@ class ParseUtils {
                 return "${days}d"
             }
 
+            // get the hours
             val hours = TimeUnit.MILLISECONDS.toHours(diffDate)
 
             if(hours > 0) {
                 return "${hours}h"
             }
 
+            // get the minutes
             val minutes = TimeUnit.MILLISECONDS.toMinutes(diffDate)
 
             return if (minutes > 0) {
                 "${minutes}m"
             } else{
+                // get the seconds
                 val seconds = TimeUnit.MILLISECONDS.toSeconds(diffDate)
                 "${seconds}s"
             }

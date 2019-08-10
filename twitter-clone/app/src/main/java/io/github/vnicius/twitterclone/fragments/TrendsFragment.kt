@@ -17,27 +17,23 @@ import io.github.vnicius.twitterclone.ui.result.SearchResultActivity
 import twitter4j.Trend
 
 /**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [TrendsFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [TrendsFragment.newInstance] factory method to
- * create an instance of this fragment.
- *
+ * [Fragment] to show the trends
  */
-
-
 class TrendsFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_trends, container, false)
+
+        // get the list of trends by the arguments
         val bundle = arguments
         val trends: Array<Trend> = bundle?.getSerializable(ARG_CODE) as Array<Trend>
         val rv = view.findViewById<RecyclerView>(R.id.rv_trends)
 
+        // inflate the RecyclerView
         rv.layoutManager = LinearLayoutManager(this.context)
         rv.adapter = TrendsAdapter(trends, object: AdapterClickHandler<Trend> {
             override fun onClick(view: View, item: Trend) {
+                // make the search with the trend name
                 val intent = Intent(view.context, SearchResultActivity::class.java).apply {
                     action = Intent.ACTION_SEARCH
                     putExtra(SearchManager.QUERY, item.name)
@@ -49,16 +45,7 @@ class TrendsFragment : Fragment() {
         return view
     }
 
-
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TrendsFragment.
-         */
         const val ARG_CODE = "TRENDS"
         @JvmStatic
         fun newInstance() =

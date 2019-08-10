@@ -22,9 +22,13 @@ import kotlinx.android.synthetic.main.searchfield.*
 import twitter4j.Status
 import java.io.Serializable
 
+/**
+ * SearchResult Activity View
+ */
 class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, View.OnClickListener {
 
-    val mPresenter: SearchResultContract.Presenter = SearchResultPresenter(this)
+    // presenter interface
+    private val mPresenter: SearchResultContract.Presenter = SearchResultPresenter(this)
     private lateinit var mTransaction: FragmentTransaction
     private lateinit var mQuery: String
 
@@ -36,23 +40,26 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
+        // handle the intent call
         handleIntent(intent)
+
+        // set the item search click
         search_item.setOnClickListener(this)
     }
 
+    /**
+     * Change the fragment in the view
+     * @param fragment
+     */
     private fun changeFragment(fragment: Fragment){
         mTransaction = supportFragmentManager.beginTransaction()
         mTransaction.replace(frame_search_result.id, fragment)
         mTransaction.commitAllowingStateLoss()
     }
 
-    override fun onNewIntent(intent: Intent) {
-        setIntent(intent)
-        handleIntent(intent)
-    }
-
     private fun handleIntent(intent: Intent) {
         if (Intent.ACTION_SEARCH == intent.action) {
+            // get the query value
             intent.getStringExtra(SearchManager.QUERY)?.also { query ->
                 mPresenter.searchTweets(query)
                 tv_search_text.text = query
@@ -79,6 +86,8 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
     override fun showResult(tweets: MutableList<Status>) {
         val fragment = TweetsFragment.newInstance()
         val args = Bundle()
+
+        // pass the list of trends to the Trend Fragment by argument
         args.putSerializable(TweetsFragment.ARG_CODE, tweets as Serializable)
         fragment.arguments = args
 

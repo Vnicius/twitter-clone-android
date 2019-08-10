@@ -15,8 +15,12 @@ import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.result.SearchResultActivity
 import kotlinx.android.synthetic.main.activity_search.*
 
+/**
+ * Searchable Activity
+ */
 class SearchableActivity : AppCompatActivity() {
 
+    // initial query text
     private var queryText: String = ""
 
     companion object {
@@ -31,6 +35,7 @@ class SearchableActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
+        // get the initial query text
         queryText = intent.getStringExtra(QUERY) ?: ""
 
     }
@@ -42,6 +47,7 @@ class SearchableActivity : AppCompatActivity() {
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val componentName = ComponentName(baseContext, SearchResultActivity::class.java)
 
+        // configure the SearchView
         (menu.findItem(R.id.action_search).actionView as SearchView).apply {
             setSearchableInfo(searchManager.getSearchableInfo(componentName))
             setIconifiedByDefault(false)

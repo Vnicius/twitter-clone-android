@@ -10,26 +10,45 @@ import twitter4j.ResponseList
 import twitter4j.Status
 import twitter4j.User
 
-const val TWEETS_COUNT = 5
+const val TWEETS_COUNT = 50
 
+/**
+ * Profile Presenter
+ * @property view instance of the view
+ */
 class ProfilePresenter(val view: ProfileContract.View): ProfileContract.Presenter {
+
+    // instance of the repository
     private val mRepository: IUserRepository = UserRepository()
 
     override fun getUser(userId: Long) {
+        // get the main scope
         val scope = CoroutineScope(Dispatchers.Main)
 
         scope.launch {
-            val user = mRepository.getUser(userId).await()
-            view.showUser(user)
+            // get the user information
+            var user: User
+
+            coroutineScope{
+                try {
+                    user = mRepository.getUser(userId).await()
+                    view.showUser(user)
+                }catch (e: Exception) {
+                    view.showError("Connection Error")
+                }
+            }
         }
     }
 
     override fun getHomeTweets(userId: Long) {
+        // get the main scope
         val scope = CoroutineScope(Dispatchers.Main)
 
         view.showLoader()
         scope.launch {
+            // get the user tweets
             var tweets: ResponseList<Status>
+
             try {
                 coroutineScope {
                     tweets = mRepository.getUserTweets(userId, TWEETS_COUNT).await()
