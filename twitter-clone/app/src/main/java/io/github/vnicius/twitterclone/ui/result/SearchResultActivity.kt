@@ -57,6 +57,11 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
         mTransaction.commitAllowingStateLoss()
     }
 
+    override fun onNewIntent(intent: Intent) {
+        setIntent(intent)
+        handleIntent(intent)
+    }
+
     private fun handleIntent(intent: Intent) {
         if (Intent.ACTION_SEARCH == intent.action) {
             // get the query value

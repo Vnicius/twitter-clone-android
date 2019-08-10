@@ -95,7 +95,8 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
         val userLocation = mUser.location
         val userBGColor = Color.parseColor("#${mUser.profileBackgroundColor}")
-        val userTextColor = Color.parseColor("#${mUser.profileTextColor}")
+        val textColor = if(mUser.profileTextColor == mUser.profileBackgroundColor) "FFFFFF" else mUser.profileTextColor
+        val userTextColor = Color.parseColor("#$textColor")
 
         // show the user location
         if(userLocation == null) {
