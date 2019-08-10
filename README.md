@@ -2,7 +2,7 @@
 
 A clone of Twitter's App for android
 
-<img src="/images/exec.gif " alt="Execution" width="200"/>
+<img src="/images/exec.gif " alt="Execution" width="400"/>
 
 ## Setup ⚠️
 
@@ -25,9 +25,9 @@ A clone of Twitter's App for android
 
 ## Screens 💻
 
-| Screen               | Image                                               |
-| -------------------- | --------------------------------------------------- |
-| MainActivity         | ![Main Activity](/images/main.png)                  |
-| SearchableActivity   | ![Searchable Activity](/images/searchable.png)      |
-| SearchResultActivity | ![Search Result Activity](/images/searchresult.png) |
-| ProfileActivity      | ![Profile Activity](/images/profile.png)            |
+| Screen               | Image                                                                          |
+| -------------------- | ------------------------------------------------------------------------------ |
+| MainActivity         | <img src="/images/main.png" alt="Main Activity" width="400"/>                  |
+| SearchableActivity   | <img src="/images/searchable.png" alt="Searchable Activity" width="400"/>      |
+| SearchResultActivity | <img src="/images/searchresult.png" alt="Search Result Activity" width="400"/> |
+| ProfileActivity      | <img src="/images/profile.png" alt="Profile Activity" width="400"/>            |
