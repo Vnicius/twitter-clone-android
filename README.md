@@ -4,7 +4,7 @@ A clone of Twitter's App for android
 
 ![Execution](/images/exec.gif)
 
-## Configuration ⚠️
+## Setup ⚠️
 
 - Set the keys in `twitter-clone/gradle.properties`
 
