@@ -2,7 +2,7 @@
 
 A clone of Twitter's App for android
 
-![Execution](/images/exec.gif)
+<img src="/images/exec.gif" alt="Execution" style="width:200px;"/>
 
 ## Setup ⚠️
 
