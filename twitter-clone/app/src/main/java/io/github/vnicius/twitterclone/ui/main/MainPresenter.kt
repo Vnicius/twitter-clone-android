@@ -1,7 +1,7 @@
 package io.github.vnicius.twitterclone.ui.main
 
-import io.github.vnicius.twitterclone.data.repository.trends.ITrendRepository
 import io.github.vnicius.twitterclone.data.repository.trends.TrendRepository
+import io.github.vnicius.twitterclone.data.repository.trends.TrendRepositoryRemote
 import kotlinx.coroutines.*
 import twitter4j.Trend
 
@@ -12,7 +12,7 @@ import twitter4j.Trend
 class MainPresenter(val view: MainContract.View): MainContract.Presenter {
 
     // instance of the repository
-    private val mTrendRepository: ITrendRepository = TrendRepository()
+    private val mTrendRepository: TrendRepository = TrendRepositoryRemote()
 
     override fun getTrends() {
         // get the main scope
