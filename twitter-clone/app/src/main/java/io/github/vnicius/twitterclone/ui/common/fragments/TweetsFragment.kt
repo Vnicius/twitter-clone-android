@@ -37,6 +37,7 @@ class TweetsFragment: Fragment() {
                     val intent = Intent(view.context, ProfileActivity::class.java)
                     intent.putExtra(ProfileActivity.USER_ID, tweet.user.id)
                     startActivity(intent)
+                    activity!!.overridePendingTransition(R.anim.slide_left_in, R.anim.fade_out)
                 }
             })
 

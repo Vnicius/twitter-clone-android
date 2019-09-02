@@ -67,6 +67,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
                 mPresenter.searchTweets(query)
                 tv_search_text.text = query
                 mQuery = query
+                overridePendingTransition(R.anim.slide_left_in, R.anim.fade_out)
             }
         }
     }
@@ -116,5 +117,10 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
 
     override fun showError(message: String) {
         Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
+    }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_right_out)
     }
 }

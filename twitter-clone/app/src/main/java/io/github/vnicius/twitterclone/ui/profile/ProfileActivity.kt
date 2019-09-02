@@ -164,4 +164,9 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
     override fun showLoader() {
         changeFragment(LoaderFragment.newInstance())
     }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.fade_in, R.anim.slide_right_out)
+    }
 }

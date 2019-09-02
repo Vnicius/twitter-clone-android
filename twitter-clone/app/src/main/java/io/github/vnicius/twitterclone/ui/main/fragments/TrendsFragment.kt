@@ -39,6 +39,7 @@ class TrendsFragment : Fragment() {
                     putExtra(SearchManager.QUERY, item.name)
                 }
                 startActivity(intent)
+                activity!!.overridePendingTransition(R.anim.slide_left_in, R.anim.fade_out)
             }
         })
 
