@@ -1,18 +1,18 @@
 package io.github.vnicius.twitterclone.data.repository.tweet
 
-import io.github.vnicius.twitterclone.data.remote.api.APIInterface
-import io.github.vnicius.twitterclone.data.remote.api.TwitterAPI
 import kotlinx.coroutines.Deferred
 import twitter4j.Status
 
 /**
- * Implementation of the [ITweetRepository] using the [APIInterface]
+ * Interface to the repository to [Status] (Tweets)
  */
-class TweetRepository: ITweetRepository {
+interface TweetRepository {
 
-    // API instance
-    private val mApi: APIInterface = TwitterAPI.instance
-
-    override fun getTweetsByQuery(query: String, count: Int): Deferred<MutableList<Status>> = mApi.search(query, count)
-
+    /**
+     * Search tweets by a [query] and limit by a [count]
+     * @param [query] the query of the search
+     * @param [count] maximum number of tweets
+     * @return a async [MutableList] of [Status]
+     */
+    fun getTweetsByQuery(query: String, count: Int): Deferred<MutableList<Status>>
 }
