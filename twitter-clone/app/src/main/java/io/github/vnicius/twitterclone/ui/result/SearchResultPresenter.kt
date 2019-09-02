@@ -1,7 +1,7 @@
 package io.github.vnicius.twitterclone.ui.result
 
-import io.github.vnicius.twitterclone.data.repository.tweet.ITweetRepository
 import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepository
+import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepositoryRemote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -16,7 +16,7 @@ private const val MAX_COUNT = 50
 class SearchResultPresenter(val view: SearchResultContract.View): SearchResultContract.Presenter {
 
     // repository instance
-    private val mTweetRepository: ITweetRepository = TweetRepository()
+    private val mTweetRepository: TweetRepository = TweetRepositoryRemote()
 
     override fun searchTweets(query: String) {
         // get the main scope
