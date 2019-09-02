@@ -1,7 +1,7 @@
 package io.github.vnicius.twitterclone.ui.profile
 
-import io.github.vnicius.twitterclone.data.repository.user.IUserRepository
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
+import io.github.vnicius.twitterclone.data.repository.user.UserRepositoryRemote
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -19,7 +19,7 @@ const val TWEETS_COUNT = 50
 class ProfilePresenter(val view: ProfileContract.View): ProfileContract.Presenter {
 
     // instance of the repository
-    private val mRepository: IUserRepository = UserRepository()
+    private val mRepository: UserRepository = UserRepositoryRemote()
 
     override fun getUser(userId: Long) {
         // get the main scope
