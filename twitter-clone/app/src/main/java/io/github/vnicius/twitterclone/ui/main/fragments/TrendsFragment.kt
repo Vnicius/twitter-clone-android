@@ -1,4 +1,4 @@
-package io.github.vnicius.twitterclone.fragments
+package io.github.vnicius.twitterclone.ui.main.fragments
 
 import android.app.SearchManager
 import android.content.Intent
@@ -9,10 +9,9 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import io.github.vnicius.twitterclone.R
-import io.github.vnicius.twitterclone.adapters.TrendsAdapter
-import io.github.vnicius.twitterclone.adapters.click.AdapterClickHandler
+import io.github.vnicius.twitterclone.ui.main.adapters.TrendsAdapter
+import io.github.vnicius.twitterclone.ui.common.adapters.AdapterClickHandler
 import io.github.vnicius.twitterclone.ui.result.SearchResultActivity
 import twitter4j.Trend
 
@@ -31,7 +30,8 @@ class TrendsFragment : Fragment() {
 
         // inflate the RecyclerView
         rv.layoutManager = LinearLayoutManager(this.context)
-        rv.adapter = TrendsAdapter(trends, object: AdapterClickHandler<Trend> {
+        rv.adapter = TrendsAdapter(trends, object :
+            AdapterClickHandler<Trend> {
             override fun onClick(view: View, item: Trend) {
                 // make the search with the trend name
                 val intent = Intent(view.context, SearchResultActivity::class.java).apply {

@@ -1,13 +1,12 @@
-package io.github.vnicius.twitterclone.adapters
+package io.github.vnicius.twitterclone.ui.main.adapters
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
-import android.view.TextureView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import io.github.vnicius.twitterclone.R
-import io.github.vnicius.twitterclone.adapters.click.AdapterClickHandler
+import io.github.vnicius.twitterclone.ui.common.adapters.AdapterClickHandler
 import io.github.vnicius.twitterclone.utils.ParseUtils
 import twitter4j.Trend
 
@@ -22,11 +21,14 @@ class TrendsAdapter(val trends: Array<Trend>, val listener: AdapterClickHandler<
         val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.trend_item, viewGroup, false)
 
         // add the view and the listener to the ViewHolder
-        return ViewHolder(view, object: OnClickTrendListener{
-            override fun onClick(view: View, position: Int) {
-                listener.onClick(view, trends[position])
-            }
-        })
+        return ViewHolder(
+            view,
+            object :
+                OnClickTrendListener {
+                override fun onClick(view: View, position: Int) {
+                    listener.onClick(view, trends[position])
+                }
+            })
     }
 
     override fun getItemCount(): Int {

@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context="io.github.vnicius.twitterclone.fragments.NoResultFragment">
+             tools:context="io.github.vnicius.twitterclone.ui.common.fragments.NoResultFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView

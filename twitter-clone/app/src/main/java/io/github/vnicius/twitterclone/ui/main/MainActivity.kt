@@ -3,21 +3,17 @@ package io.github.vnicius.twitterclone.ui.main
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import io.github.vnicius.twitterclone.R
-import io.github.vnicius.twitterclone.fragments.LoaderFragment
-import io.github.vnicius.twitterclone.fragments.TrendsFragment
-import io.github.vnicius.twitterclone.fragments.TweetsFragment
+import io.github.vnicius.twitterclone.ui.common.fragments.LoaderFragment
+import io.github.vnicius.twitterclone.ui.main.fragments.TrendsFragment
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_search_result.*
 import kotlinx.android.synthetic.main.searchfield.*
-import twitter4j.Status
 import twitter4j.Trend
 import java.io.Serializable
 

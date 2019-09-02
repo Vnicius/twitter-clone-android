@@ -1,4 +1,4 @@
-package io.github.vnicius.twitterclone.fragments
+package io.github.vnicius.twitterclone.ui.common.fragments
 
 import android.os.Bundle
 import android.support.v4.app.Fragment

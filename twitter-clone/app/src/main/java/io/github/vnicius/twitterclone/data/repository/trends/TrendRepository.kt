@@ -1,7 +1,7 @@
 package io.github.vnicius.twitterclone.data.repository.trends
 
-import io.github.vnicius.twitterclone.api.APIInterface
-import io.github.vnicius.twitterclone.api.TwitterAPI
+import io.github.vnicius.twitterclone.data.remote.api.APIInterface
+import io.github.vnicius.twitterclone.data.remote.api.TwitterAPI
 import kotlinx.coroutines.Deferred
 import twitter4j.Trend
 

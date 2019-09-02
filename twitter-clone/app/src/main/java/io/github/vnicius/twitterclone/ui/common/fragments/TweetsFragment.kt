@@ -1,4 +1,4 @@
-package io.github.vnicius.twitterclone.fragments
+package io.github.vnicius.twitterclone.ui.common.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,8 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.github.vnicius.twitterclone.R
-import io.github.vnicius.twitterclone.adapters.TweetsAdapter
-import io.github.vnicius.twitterclone.adapters.click.AdapterClickHandler
+import io.github.vnicius.twitterclone.ui.common.adapters.TweetsAdapter
+import io.github.vnicius.twitterclone.ui.common.adapters.AdapterClickHandler
 import io.github.vnicius.twitterclone.ui.profile.ProfileActivity
 import twitter4j.Status
 
@@ -29,14 +29,16 @@ class TweetsFragment: Fragment() {
 
         // inflate the RecyclerView
         rv.layoutManager = LinearLayoutManager(this.context)
-        rv.adapter = TweetsAdapter(tweets, object : AdapterClickHandler<Status> {
-            override fun onClick(view: View, tweet: Status) {
-                // open a new intent with the user profile
-                val intent = Intent(view.context, ProfileActivity::class.java)
-                intent.putExtra(ProfileActivity.USER_ID, tweet.user.id)
-                startActivity(intent)
-            }
-        })
+        rv.adapter =
+            TweetsAdapter(tweets, object :
+                AdapterClickHandler<Status> {
+                override fun onClick(view: View, tweet: Status) {
+                    // open a new intent with the user profile
+                    val intent = Intent(view.context, ProfileActivity::class.java)
+                    intent.putExtra(ProfileActivity.USER_ID, tweet.user.id)
+                    startActivity(intent)
+                }
+            })
 
         return view
     }

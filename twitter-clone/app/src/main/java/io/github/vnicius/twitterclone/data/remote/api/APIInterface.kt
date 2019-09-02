@@ -1,4 +1,4 @@
-package io.github.vnicius.twitterclone.api
+package io.github.vnicius.twitterclone.data.remote.api
 
 import kotlinx.coroutines.Deferred
 import twitter4j.ResponseList

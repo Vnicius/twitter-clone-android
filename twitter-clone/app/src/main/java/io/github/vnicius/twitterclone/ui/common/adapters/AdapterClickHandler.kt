@@ -1,4 +1,4 @@
-package io.github.vnicius.twitterclone.adapters.click
+package io.github.vnicius.twitterclone.ui.common.adapters
 
 import android.view.View
 

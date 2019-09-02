@@ -1,7 +1,6 @@
-package io.github.vnicius.twitterclone.api
+package io.github.vnicius.twitterclone.data.remote.api
 
 import io.github.vnicius.twitterclone.BuildConfig
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import twitter4j.*

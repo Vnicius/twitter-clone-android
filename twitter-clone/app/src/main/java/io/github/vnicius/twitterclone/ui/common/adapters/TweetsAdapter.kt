@@ -1,4 +1,4 @@
-package io.github.vnicius.twitterclone.adapters
+package io.github.vnicius.twitterclone.ui.common.adapters
 
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.text.HtmlCompat
@@ -12,10 +12,8 @@ import android.widget.TextView
 import com.airbnb.lottie.LottieAnimationView
 import com.squareup.picasso.Picasso
 import io.github.vnicius.twitterclone.R
-import io.github.vnicius.twitterclone.adapters.click.AdapterClickHandler
 import io.github.vnicius.twitterclone.utils.ParseUtils
 import twitter4j.Status
-import java.util.*
 
 /**
  * Adapter to show the trends
@@ -30,7 +28,8 @@ class TweetsAdapter(private val tweets: MutableList<Status>, val listener: Adapt
         // add the view and the listener to the ViewHolder
         return ViewHolder(
             view,
-            object : OnClickTweetListener {
+            object :
+                OnClickTweetListener {
                 override fun onClick(view: View, position: Int) {
                     listener.onClick(view, tweets[position])
                 }
