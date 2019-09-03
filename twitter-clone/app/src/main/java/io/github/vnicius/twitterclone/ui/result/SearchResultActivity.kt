@@ -49,7 +49,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
      * Change the fragment in the view
      * @param fragment
      */
-    private fun changeFragment(fragment: Fragment){
+    private fun changeFragment(fragment: Fragment) {
         mTransaction = supportFragmentManager.beginTransaction()
         mTransaction.replace(frame_search_result.id, fragment)
         mTransaction.commitAllowingStateLoss()
@@ -73,7 +73,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
     }
 
     override fun onClick(view: View?) {
-        when(view?.id) {
+        when (view?.id) {
             search_item.id -> {
                 val intent = Intent(this, SearchableActivity::class.java).apply {
                     putExtra(SearchableActivity.QUERY, mQuery)
@@ -108,7 +108,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
+        when (item?.itemId) {
             android.R.id.home -> onBackPressed()
         }
 
@@ -117,6 +117,11 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
 
     override fun showError(message: String) {
         Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.dispose()
     }
 
     override fun finish() {

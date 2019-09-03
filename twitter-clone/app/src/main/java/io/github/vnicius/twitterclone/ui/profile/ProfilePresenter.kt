@@ -2,10 +2,7 @@ package io.github.vnicius.twitterclone.ui.profile
 
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
 import io.github.vnicius.twitterclone.data.repository.user.UserRepositoryRemote
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import twitter4j.ResponseList
 import twitter4j.Status
 import twitter4j.User
@@ -16,24 +13,23 @@ const val TWEETS_COUNT = 50
  * Profile Presenter
  * @property view instance of the view
  */
-class ProfilePresenter(val view: ProfileContract.View): ProfileContract.Presenter {
+class ProfilePresenter(val view: ProfileContract.View) : ProfileContract.Presenter {
 
     // instance of the repository
     private val mRepository: UserRepository = UserRepositoryRemote()
+    private val presenterJob = SupervisorJob()
+    private val presenterScope = CoroutineScope(Dispatchers.Main + presenterJob)
 
     override fun getUser(userId: Long) {
-        // get the main scope
-        val scope = CoroutineScope(Dispatchers.Main)
-
-        scope.launch {
+        presenterScope.launch {
             // get the user information
             var user: User
 
-            coroutineScope{
+            coroutineScope {
                 try {
                     user = mRepository.getUser(userId).await()
                     view.showUser(user)
-                }catch (e: Exception) {
+                } catch (e: Exception) {
                     view.showError("Connection Error")
                 }
             }
@@ -41,11 +37,9 @@ class ProfilePresenter(val view: ProfileContract.View): ProfileContract.Presente
     }
 
     override fun getHomeTweets(userId: Long) {
-        // get the main scope
-        val scope = CoroutineScope(Dispatchers.Main)
 
         view.showLoader()
-        scope.launch {
+        presenterScope.launch {
             // get the user tweets
             var tweets: ResponseList<Status>
 
@@ -54,9 +48,14 @@ class ProfilePresenter(val view: ProfileContract.View): ProfileContract.Presente
                     tweets = mRepository.getUserTweets(userId, TWEETS_COUNT).await()
                     view.showTweets(tweets.toMutableList())
                 }
-            }catch (e: Exception) {
+            } catch (e: Exception) {
                 view.showError("Connection Error")
             }
         }
     }
+
+    override fun dispose() {
+        presenterScope.coroutineContext.cancelChildren()
+    }
+
 }

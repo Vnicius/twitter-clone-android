@@ -34,7 +34,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
     private val mPresenter: ProfileContract.Presenter = ProfilePresenter(this)
     private lateinit var mTransaction: FragmentTransaction
 
-    companion object{
+    companion object {
         const val USER_ID = "USER_ID"
     }
 
@@ -55,9 +55,9 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         mPresenter.getHomeTweets(mUserId)
 
         // handle the appbar scroll to show some texts
-        app_bar.addOnOffsetChangedListener(object: AppBarLayout.OnOffsetChangedListener{
+        app_bar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
             override fun onOffsetChanged(appbar: AppBarLayout?, verticalOffset: Int) {
-                if(appbar?.totalScrollRange!! + verticalOffset == 0) {
+                if (appbar?.totalScrollRange!! + verticalOffset == 0) {
                     toolbar_profile_infos.visibility = View.VISIBLE
                 } else {
                     toolbar_profile_infos.visibility = View.GONE
@@ -78,7 +78,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
+        when (item?.itemId) {
             android.R.id.home -> onBackPressed()
         }
 
@@ -90,11 +90,12 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
         val userLocation = mUser.location
         val userBGColor = Color.parseColor("#${mUser.profileBackgroundColor}")
-        val textColor = if(mUser.profileTextColor == mUser.profileBackgroundColor) "FFFFFF" else mUser.profileTextColor
+        val textColor =
+            if (mUser.profileTextColor == mUser.profileBackgroundColor) "FFFFFF" else mUser.profileTextColor
         val userTextColor = Color.parseColor("#$textColor")
 
         // show the user location
-        if(userLocation == null) {
+        if (userLocation == null) {
             user_profile_location.visibility = View.GONE
         } else {
             tv_user_profile_location.text = userLocation
@@ -130,9 +131,14 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         toolbar_layout.setContentScrimColor(userBGColor)
 
         // Set back button color
-        supportActionBar?.setHomeAsUpIndicator(ResourcesCompat.getDrawable(resources, R.drawable.ic_arrow_back, null)?.apply {
-            setColorFilter(userTextColor, PorterDuff.Mode.SRC_ATOP)
-        })
+        supportActionBar?.setHomeAsUpIndicator(
+            ResourcesCompat.getDrawable(
+                resources,
+                R.drawable.ic_arrow_back,
+                null
+            )?.apply {
+                setColorFilter(userTextColor, PorterDuff.Mode.SRC_ATOP)
+            })
 
         // Set the header image
         Picasso.get().load(mUser.profileBanner600x200URL)
@@ -163,6 +169,11 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
     override fun showLoader() {
         changeFragment(LoaderFragment.newInstance())
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.dispose()
     }
 
     override fun finish() {

@@ -55,8 +55,11 @@ class SearchableActivity : AppCompatActivity() {
             maxWidth = Int.MAX_VALUE
             isIconified = false
             queryHint = resources.getString(R.string.hint_search)
-            findViewById<View>(android.support.v7.appcompat.R.id.search_plate).setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
-            findViewById<View>(android.support.v7.appcompat.R.id.search_mag_icon).visibility = View.GONE
+            findViewById<View>(android.support.v7.appcompat.R.id.search_plate).setBackgroundColor(
+                ContextCompat.getColor(context, android.R.color.transparent)
+            )
+            findViewById<View>(android.support.v7.appcompat.R.id.search_mag_icon).visibility =
+                View.GONE
             setQuery(queryText, false)
         }
 
@@ -64,7 +67,7 @@ class SearchableActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId) {
+        when (item?.itemId) {
             android.R.id.home -> onBackPressed()
         }
 

@@ -1,5 +1,6 @@
 package io.github.vnicius.twitterclone.ui.profile
 
+import io.github.vnicius.twitterclone.ui.common.BaseContract
 import twitter4j.Status
 import twitter4j.User
 
@@ -8,7 +9,7 @@ import twitter4j.User
  */
 interface ProfileContract {
 
-    interface View {
+    interface View : BaseContract.View {
 
         /**
          * Show the [user] information
@@ -21,20 +22,9 @@ interface ProfileContract {
          * @param [tweets] a list os [Status] (tweets)
          */
         fun showTweets(tweets: MutableList<Status>)
-
-        /**
-         * Show a loader to the user
-         */
-        fun showLoader()
-
-        /**
-         * Show a error message to the user
-         * @param message with the error
-         */
-        fun showError(message: String)
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
 
         /**
          * Get the user information by the [userId]

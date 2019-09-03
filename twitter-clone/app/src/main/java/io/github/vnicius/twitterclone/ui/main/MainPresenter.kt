@@ -1,6 +1,5 @@
 package io.github.vnicius.twitterclone.ui.main
 
-import android.util.Log
 import io.github.vnicius.twitterclone.data.repository.trends.TrendRepository
 import io.github.vnicius.twitterclone.data.repository.trends.TrendRepositoryRemote
 import kotlinx.coroutines.*
@@ -16,14 +15,13 @@ class MainPresenter(val view: MainContract.View) : MainContract.Presenter {
 
     // instance of the repository
     private val mTrendRepository: TrendRepository = TrendRepositoryRemote()
-    private lateinit var job: Job
+    private var presenterJob = SupervisorJob()
+    private val presenterScope = CoroutineScope(Dispatchers.Main + presenterJob)
 
     override fun getTrends() {
-        // get the main scope
-        val scope = CoroutineScope(Dispatchers.Main)
 
         view.showLoader()
-        job = scope.launch {
+        presenterScope.launch {
             // get the trends
             var trends: Array<Trend>
             try {
@@ -42,6 +40,6 @@ class MainPresenter(val view: MainContract.View) : MainContract.Presenter {
     }
 
     override fun dispose() {
-        job.cancel()
+        presenterScope.coroutineContext.cancelChildren()
     }
 }

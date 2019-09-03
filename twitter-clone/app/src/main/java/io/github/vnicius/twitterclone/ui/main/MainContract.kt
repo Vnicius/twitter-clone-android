@@ -1,5 +1,6 @@
 package io.github.vnicius.twitterclone.ui.main
 
+import io.github.vnicius.twitterclone.ui.common.BaseContract
 import twitter4j.Trend
 
 /**
@@ -7,12 +8,7 @@ import twitter4j.Trend
  */
 class MainContract {
 
-    interface View {
-
-        /**
-         * Show a loader to the user
-         */
-        fun showLoader()
+    interface View : BaseContract.View {
 
         /**
          * Show a list of trends
@@ -20,22 +16,14 @@ class MainContract {
          */
         fun showTrends(trends: Array<Trend>)
 
-        /**
-         * Show a error message to the user
-         * @param message with the error
-         */
-        fun showError(message: String)
-
         fun showConnectionErrorMessage()
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
 
         /**
          * Get the list of trends
          */
         fun getTrends()
-
-        fun dispose()
     }
 }

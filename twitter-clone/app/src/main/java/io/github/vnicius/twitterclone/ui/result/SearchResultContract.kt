@@ -1,5 +1,6 @@
 package io.github.vnicius.twitterclone.ui.result
 
+import io.github.vnicius.twitterclone.ui.common.BaseContract
 import twitter4j.Status
 
 /**
@@ -7,12 +8,7 @@ import twitter4j.Status
  */
 interface SearchResultContract {
 
-    interface View {
-        /**
-         * Show a loader to the user
-         */
-        fun showLoader()
-
+    interface View : BaseContract.View {
         /**
          * Show the tweets of the search result
          * @param [tweets] list o tweets
@@ -23,15 +19,9 @@ interface SearchResultContract {
          * Show the message that has no result to the query
          */
         fun showNoResult()
-
-        /**
-         * Show a error message to the user
-         * @param message with the error
-         */
-        fun showError(message: String)
     }
 
-    interface Presenter {
+    interface Presenter : BaseContract.Presenter {
 
         /**
          * Search the tweets for a query
