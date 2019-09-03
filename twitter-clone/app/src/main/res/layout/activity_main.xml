@@ -1,43 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.main.MainActivity"
         android:background="@color/bg_color"
->
+        tools:context=".ui.main.MainActivity">
 
     <android.support.design.widget.AppBarLayout
             android:id="@+id/app_bar"
-            android:fitsSystemWindows="true"
-            android:layout_height="wrap_content"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
                 android:id="@+id/toolbar_layout"
-                android:fitsSystemWindows="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:toolbarId="@+id/toolbar_main"
-                app:layout_scrollFlags="scroll|enterAlways"
-                app:contentScrim="@color/white"
+                android:fitsSystemWindows="true"
                 android:theme="@style/ToolbarColoredBackArrow"
-        >
+                app:contentScrim="@color/white"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:toolbarId="@+id/toolbar_main">
 
             <android.support.v7.widget.Toolbar
                     android:id="@+id/toolbar_main"
-                    android:layout_height="?attr/actionBarSize"
                     android:layout_width="match_parent"
-                    app:layout_collapseMode="pin"
-                    android:theme="@style/ToolbarColoredBackArrow"
-                    app:popupTheme="@style/AppTheme.PopupOverlay"
-                    app:contentInsetStart="0dp"
+                    android:layout_height="?attr/actionBarSize"
                     android:background="@color/white"
-            >
-                <include layout="@layout/searchfield"/>
+                    android:theme="@style/ToolbarColoredBackArrow"
+                    app:contentInsetStart="0dp"
+                    app:layout_collapseMode="pin"
+                    app:popupTheme="@style/AppTheme.PopupOverlay">
+
+                <include layout="@layout/partial_search_field" />
             </android.support.v7.widget.Toolbar>
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -50,13 +47,12 @@
             android:clipToPadding="false"
             android:fillViewport="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
         <FrameLayout
                 android:id="@+id/frame_main"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-        />
+                android:layout_height="wrap_content" />
     </android.support.v4.widget.NestedScrollView>
-
 
 
 </android.support.design.widget.CoordinatorLayout>

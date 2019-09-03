@@ -43,7 +43,7 @@
                         android:layout_height="30dp"
                         android:text="@string/follow"
                         android:layout_alignParentEnd="true"
-                        android:background="@drawable/rounded_btn"
+                        android:background="@drawable/btn_primary_rounded"
                         android:textColor="@color/colorPrimary"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp"

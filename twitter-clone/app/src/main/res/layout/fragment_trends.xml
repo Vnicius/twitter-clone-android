@@ -33,7 +33,7 @@
                 android:id="@+id/rv_trends"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/trend_item"
+                tools:listitem="@layout/item_trend"
         >
 
         </android.support.v7.widget.RecyclerView>

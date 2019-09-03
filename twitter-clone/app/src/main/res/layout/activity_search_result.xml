@@ -16,7 +16,7 @@
             android:theme="@style/ToolbarColoredBackArrow"
             android:background="@color/white"
     >
-        <include layout="@layout/searchfield"/>
+        <include layout="@layout/partial_search_field"/>
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout

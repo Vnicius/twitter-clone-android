@@ -23,7 +23,7 @@ import twitter4j.Status
 class TweetsAdapter(private val tweets: MutableList<Status>, val listener: AdapterClickHandler<Status>): RecyclerView.Adapter<TweetsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflate the view
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.tweet_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_tweet, parent, false)
 
         // add the view and the listener to the ViewHolder
         return ViewHolder(

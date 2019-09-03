@@ -13,10 +13,10 @@ import android.widget.Toast
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.fragments.LoaderFragment
 import io.github.vnicius.twitterclone.ui.common.fragments.NoResultFragment
-import io.github.vnicius.twitterclone.ui.common.fragments.TweetsFragment
+import io.github.vnicius.twitterclone.ui.common.fragments.TweetsListFragment
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
 import kotlinx.android.synthetic.main.activity_search_result.*
-import kotlinx.android.synthetic.main.searchfield.*
+import kotlinx.android.synthetic.main.partial_search_field.*
 import twitter4j.Status
 import java.io.Serializable
 
@@ -88,11 +88,11 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
     }
 
     override fun showResult(tweets: MutableList<Status>) {
-        val fragment = TweetsFragment.newInstance()
+        val fragment = TweetsListFragment.newInstance()
         val args = Bundle()
 
         // pass the list of trends to the Trend Fragment by argument
-        args.putSerializable(TweetsFragment.ARG_CODE, tweets as Serializable)
+        args.putSerializable(TweetsListFragment.ARG_CODE, tweets as Serializable)
         fragment.arguments = args
 
         changeFragment(fragment)

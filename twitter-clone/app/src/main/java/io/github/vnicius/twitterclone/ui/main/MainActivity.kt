@@ -14,7 +14,7 @@ import io.github.vnicius.twitterclone.ui.common.fragments.LoaderFragment
 import io.github.vnicius.twitterclone.ui.main.fragments.TrendsFragment
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.searchfield.*
+import kotlinx.android.synthetic.main.partial_search_field.*
 import twitter4j.Trend
 import java.io.Serializable
 

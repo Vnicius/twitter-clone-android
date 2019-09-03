@@ -18,7 +18,7 @@ import twitter4j.Trend
 class TrendsAdapter(val trends: Array<Trend>, val listener: AdapterClickHandler<Trend>): RecyclerView.Adapter<TrendsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // inflate the view
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.trend_item, viewGroup, false)
+        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_trend, viewGroup, false)
 
         // add the view and the listener to the ViewHolder
         return ViewHolder(

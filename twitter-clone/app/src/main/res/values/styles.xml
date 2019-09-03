@@ -36,7 +36,7 @@
         <item name="android:textStyle">bold</item>
     </style>
     <style name="PrimaryButton">
-        <item name="android:background">@drawable/rounded_btn</item>
+        <item name="android:background">@drawable/btn_primary_rounded</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
         <item name="android:paddingStart">16dp</item>
