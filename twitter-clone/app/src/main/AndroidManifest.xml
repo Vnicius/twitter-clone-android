@@ -26,7 +26,7 @@
 
         </activity>
         <activity android:name=".ui.searchable.SearchableActivity"
-                  android:theme="@style/noAnimTheme"
+                  android:theme="@style/AppTheme.NoAnimTheme"
                 android:screenOrientation="portrait"
                 android:noHistory="true"
         >

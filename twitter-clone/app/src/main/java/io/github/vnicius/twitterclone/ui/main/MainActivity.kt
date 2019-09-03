@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import io.github.vnicius.twitterclone.R
+import io.github.vnicius.twitterclone.ui.common.fragments.ConnectionErrorFragment
 import io.github.vnicius.twitterclone.ui.common.fragments.LoaderFragment
 import io.github.vnicius.twitterclone.ui.main.fragments.TrendsFragment
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
@@ -21,6 +22,7 @@ import java.io.Serializable
  * Main Activity View
  */
 class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListener {
+
 
     // presenter instance
     private val mPresenter: MainContract.Presenter = MainPresenter(this)
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
     }
 
     override fun onClick(view: View?) {
-        when(view?.id) {
+        when (view?.id) {
             search_item.id -> {
                 // open the Searchable activity
                 val intent = Intent(this, SearchableActivity::class.java)
@@ -53,7 +55,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
      * Change the fragment in the view
      * @param fragment
      */
-    private fun changeFragment(fragment: Fragment){
+    private fun changeFragment(fragment: Fragment) {
         mTransaction = supportFragmentManager.beginTransaction()
         mTransaction.replace(frame_main.id, fragment)
         mTransaction.commitAllowingStateLoss()
@@ -83,6 +85,17 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
         menuInflater.inflate(R.menu.menu_main, menu)
 
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun showConnectionErrorMessage() {
+        changeFragment(ConnectionErrorFragment.newInstance {
+            mPresenter.getTrends()
+        })
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mPresenter.dispose()
     }
 
 }

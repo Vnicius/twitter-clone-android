@@ -25,6 +25,8 @@ class MainContract {
          * @param message with the error
          */
         fun showError(message: String)
+
+        fun showConnectionErrorMessage()
     }
 
     interface Presenter {
@@ -33,5 +35,7 @@ class MainContract {
          * Get the list of trends
          */
         fun getTrends()
+
+        fun dispose()
     }
 }

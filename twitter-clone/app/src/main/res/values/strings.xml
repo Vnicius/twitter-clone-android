@@ -22,4 +22,6 @@
     <string name="mute">Mute</string>
     <string name="block">Block</string>
     <string name="report">Report</string>
+    <string name="try_again">try again</string>
+    <string name="connection_error">Connection error</string>
 </resources>
