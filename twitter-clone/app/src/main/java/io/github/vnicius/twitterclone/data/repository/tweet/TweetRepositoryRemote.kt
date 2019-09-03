@@ -13,6 +13,6 @@ class TweetRepositoryRemote: TweetRepository {
     // API instance
     private val mApi: APIInterface = TwitterAPI.instance
 
-    override fun getTweetsByQuery(query: String, count: Int): Deferred<MutableList<Status>> = mApi.search(query, count)
+    override fun getTweetsByQueryAsync(query: String, count: Int): Deferred<MutableList<Status>> = mApi.searchAsync(query, count)
 
 }

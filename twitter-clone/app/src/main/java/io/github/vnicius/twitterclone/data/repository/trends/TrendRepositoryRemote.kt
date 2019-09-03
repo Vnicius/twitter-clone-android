@@ -13,5 +13,5 @@ class TrendRepositoryRemote: TrendRepository {
     // API instance
     private val mApi: APIInterface = TwitterAPI.instance
 
-    override fun getTrends(woeid: Int): Deferred<Array<Trend>> = mApi.getTrends(woeid)
+    override fun getTrendsAsync(woeid: Int): Deferred<Array<Trend>> = mApi.getTrendsAsync(woeid)
 }

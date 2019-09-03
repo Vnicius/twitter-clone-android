@@ -39,22 +39,22 @@ class TwitterAPI: APIInterface {
         return configBuilder.build()
     }
 
-    override fun search(query: String, count: Int) = GlobalScope.async {
+    override fun searchAsync(query: String, count: Int) = GlobalScope.async {
             val querySearch = Query(query).count(count)
             val result = twitterInstance.search(querySearch)
             result.tweets
         }
 
-    override fun getTrends(woeid: Int) = GlobalScope.async {
+    override fun getTrendsAsync(woeid: Int) = GlobalScope.async {
         val trends = twitterInstance.getPlaceTrends(woeid)
         trends.trends
     }
 
-    override fun getUser(userId: Long) = GlobalScope.async {
+    override fun getUserAsync(userId: Long) = GlobalScope.async {
         twitterInstance.showUser(userId)
     }
 
-    override fun getUserTweest(userId: Long, count: Int) = GlobalScope.async {
+    override fun getUserTweetsAsync(userId: Long, count: Int) = GlobalScope.async {
         twitterInstance.getUserTimeline(userId, Paging(1, count))
     }
 

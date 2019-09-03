@@ -27,7 +27,7 @@ class ProfilePresenter(val view: ProfileContract.View) : ProfileContract.Present
 
             coroutineScope {
                 try {
-                    user = mRepository.getUser(userId).await()
+                    user = mRepository.getUserAsync(userId).await()
                     view.showUser(user)
                 } catch (e: Exception) {
                     view.showError("Connection Error")
@@ -45,7 +45,7 @@ class ProfilePresenter(val view: ProfileContract.View) : ProfileContract.Present
 
             try {
                 coroutineScope {
-                    tweets = mRepository.getUserTweets(userId, TWEETS_COUNT).await()
+                    tweets = mRepository.getUserTweetsAsync(userId, TWEETS_COUNT).await()
                     view.showTweets(tweets.toMutableList())
                 }
             } catch (e: Exception) {

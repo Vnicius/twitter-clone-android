@@ -15,7 +15,7 @@ interface UserRepository {
      * @param [userId] the id of the user
      * @return a async [User] object
      */
-    fun getUser(userId: Long): Deferred<User>
+    fun getUserAsync(userId: Long): Deferred<User>
 
     /**
      * Get the tweets of a specific user
@@ -23,5 +23,5 @@ interface UserRepository {
      * @param [count] the maximum number of tweets
      * @return a async [ResponseList] of [Status]
      */
-    fun getUserTweets(userId: Long, count: Int): Deferred<ResponseList<Status>>
+    fun getUserTweetsAsync(userId: Long, count: Int): Deferred<ResponseList<Status>>
 }

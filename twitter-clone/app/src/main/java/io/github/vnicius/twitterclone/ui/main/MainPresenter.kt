@@ -26,7 +26,7 @@ class MainPresenter(val view: MainContract.View) : MainContract.Presenter {
             var trends: Array<Trend>
             try {
                 coroutineScope {
-                    trends = mTrendRepository.getTrends(1).await()
+                    trends = mTrendRepository.getTrendsAsync(1).await()
 
                     // show the trends
                     view.showTrends(trends)

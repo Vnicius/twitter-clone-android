@@ -15,7 +15,7 @@ class UserRepositoryRemote: UserRepository {
     // API instance
     private val mApi: APIInterface = TwitterAPI.instance
 
-    override fun getUser(userId: Long): Deferred<User> = mApi.getUser(userId)
-    override fun getUserTweets(userId: Long, count: Int): Deferred<ResponseList<Status>> = mApi.getUserTweest(userId, count)
+    override fun getUserAsync(userId: Long): Deferred<User> = mApi.getUserAsync(userId)
+    override fun getUserTweetsAsync(userId: Long, count: Int): Deferred<ResponseList<Status>> = mApi.getUserTweetsAsync(userId, count)
 
 }

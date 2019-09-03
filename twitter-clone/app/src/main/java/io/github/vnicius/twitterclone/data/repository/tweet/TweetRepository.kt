@@ -14,5 +14,5 @@ interface TweetRepository {
      * @param [count] maximum number of tweets
      * @return a async [MutableList] of [Status]
      */
-    fun getTweetsByQuery(query: String, count: Int): Deferred<MutableList<Status>>
+    fun getTweetsByQueryAsync(query: String, count: Int): Deferred<MutableList<Status>>
 }

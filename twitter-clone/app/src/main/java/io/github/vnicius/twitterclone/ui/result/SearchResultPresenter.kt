@@ -23,7 +23,7 @@ class SearchResultPresenter(val view: SearchResultContract.View) : SearchResultC
             // search the tweets
             try {
                 coroutineScope {
-                    val result = mTweetRepository.getTweetsByQuery(query, MAX_COUNT).await()
+                    val result = mTweetRepository.getTweetsByQueryAsync(query, MAX_COUNT).await()
 
                     // check if has any result
                     if (result.size == 0) {

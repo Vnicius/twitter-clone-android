@@ -13,5 +13,5 @@ interface TrendRepository {
      * @param [woeid] code of the location
      * @return a async [Array] of [Trend]
      */
-    fun getTrends(woeid: Int): Deferred<Array<Trend>>
+    fun getTrendsAsync(woeid: Int): Deferred<Array<Trend>>
 }
