@@ -8,11 +8,12 @@ import twitter4j.Status
 /**
  * Implementation of the [TweetRepository] using the [APIInterface]
  */
-class TweetRepositoryRemote: TweetRepository {
+class TweetRepositoryRemote : TweetRepository {
 
     // API instance
     private val mApi: APIInterface = TwitterAPI.instance
 
-    override fun getTweetsByQueryAsync(query: String, count: Int): Deferred<MutableList<Status>> = mApi.searchAsync(query, count)
+    override fun getTweetsByQueryAsync(query: String, count: Int): Deferred<MutableList<Status>> =
+        mApi.searchAsync(query, count)
 
 }

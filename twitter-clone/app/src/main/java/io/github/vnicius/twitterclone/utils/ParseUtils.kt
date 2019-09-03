@@ -23,19 +23,18 @@ class ParseUtils {
                 val firstPart: Int = number / 1000000
                 val secondPart: Int = (number - firstPart * 1000000)
 
-                if(secondPart < 100000) {
+                if (secondPart < 100000) {
                     return "${firstPart}M"
                 }
 
                 return "$firstPart.${secondPart / 100000}M"
-            }
-            else if(number >= 1000) {
+            } else if (number >= 1000) {
                 // for thousands
                 val fistPart: Int = number / 1000
                 val secondPart = (number - fistPart * 1000)
 
-                if(fistPart in 10..99) {
-                    if(secondPart < 100) {
+                if (fistPart in 10..99) {
+                    if (secondPart < 100) {
                         return "${fistPart}K"
                     }
 
@@ -48,7 +47,7 @@ class ParseUtils {
                 if (secondPart < 10) {
                     return "$fistPart.00$secondPart"
                 }
-                if(secondPart < 100) {
+                if (secondPart < 100) {
                     return "$fistPart.0$secondPart"
                 }
 
@@ -102,7 +101,7 @@ class ParseUtils {
                 var formater: SimpleDateFormat
                 valueDate.time = Date(value)
 
-                formater = if(valueDate.get(Calendar.YEAR) != actualDate.get(Calendar.YEAR)) {
+                formater = if (valueDate.get(Calendar.YEAR) != actualDate.get(Calendar.YEAR)) {
                     SimpleDateFormat("MM dd yy")
                 } else {
                     SimpleDateFormat("MM dd")
@@ -110,14 +109,14 @@ class ParseUtils {
 
                 return formater.format(valueDate.time)
 
-            } else if(days > 0) {
+            } else if (days > 0) {
                 return "${days}d"
             }
 
             // get the hours
             val hours = TimeUnit.MILLISECONDS.toHours(diffDate)
 
-            if(hours > 0) {
+            if (hours > 0) {
                 return "${hours}h"
             }
 
@@ -126,7 +125,7 @@ class ParseUtils {
 
             return if (minutes > 0) {
                 "${minutes}m"
-            } else{
+            } else {
                 // get the seconds
                 val seconds = TimeUnit.MILLISECONDS.toSeconds(diffDate)
                 "${seconds}s"

@@ -10,12 +10,13 @@ import twitter4j.User
 /**
  * Implementation of the [UserRepository] using the [APIInterface]
  */
-class UserRepositoryRemote: UserRepository {
+class UserRepositoryRemote : UserRepository {
 
     // API instance
     private val mApi: APIInterface = TwitterAPI.instance
 
     override fun getUserAsync(userId: Long): Deferred<User> = mApi.getUserAsync(userId)
-    override fun getUserTweetsAsync(userId: Long, count: Int): Deferred<ResponseList<Status>> = mApi.getUserTweetsAsync(userId, count)
+    override fun getUserTweetsAsync(userId: Long, count: Int): Deferred<ResponseList<Status>> =
+        mApi.getUserTweetsAsync(userId, count)
 
 }

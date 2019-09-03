@@ -8,7 +8,7 @@ import twitter4j.Trend
 /**
  * Implementation of the [TrendRepository] using the [APIInterface]
  */
-class TrendRepositoryRemote: TrendRepository {
+class TrendRepositoryRemote : TrendRepository {
 
     // API instance
     private val mApi: APIInterface = TwitterAPI.instance

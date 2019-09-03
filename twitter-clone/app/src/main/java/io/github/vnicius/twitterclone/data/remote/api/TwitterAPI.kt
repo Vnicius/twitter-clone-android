@@ -10,7 +10,7 @@ import twitter4j.conf.ConfigurationBuilder
 /**
  * Class to access the Twitter API using Twitter4j
  */
-class TwitterAPI: APIInterface {
+class TwitterAPI : APIInterface {
 
     private var twitterInstance: Twitter
 
@@ -40,10 +40,10 @@ class TwitterAPI: APIInterface {
     }
 
     override fun searchAsync(query: String, count: Int) = GlobalScope.async {
-            val querySearch = Query(query).count(count)
-            val result = twitterInstance.search(querySearch)
-            result.tweets
-        }
+        val querySearch = Query(query).count(count)
+        val result = twitterInstance.search(querySearch)
+        result.tweets
+    }
 
     override fun getTrendsAsync(woeid: Int) = GlobalScope.async {
         val trends = twitterInstance.getPlaceTrends(woeid)
