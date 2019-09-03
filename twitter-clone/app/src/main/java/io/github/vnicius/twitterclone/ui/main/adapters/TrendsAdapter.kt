@@ -15,10 +15,12 @@ import twitter4j.Trend
  * @property trends a list of Trend objects
  * @property listener listener to handle the click in the item
  */
-class TrendsAdapter(val trends: Array<Trend>, val listener: AdapterClickHandler<Trend>): RecyclerView.Adapter<TrendsAdapter.ViewHolder>() {
+class TrendsAdapter(val trends: Array<Trend>, val listener: AdapterClickHandler<Trend>) :
+    RecyclerView.Adapter<TrendsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // inflate the view
-        val view = LayoutInflater.from(viewGroup.context).inflate(R.layout.item_trend, viewGroup, false)
+        val view =
+            LayoutInflater.from(viewGroup.context).inflate(R.layout.item_trend, viewGroup, false)
 
         // add the view and the listener to the ViewHolder
         return ViewHolder(
@@ -42,7 +44,7 @@ class TrendsAdapter(val trends: Array<Trend>, val listener: AdapterClickHandler<
     /**
      * Interface to handle click with the item position
      */
-    interface OnClickTrendListener{
+    interface OnClickTrendListener {
         fun onClick(view: View, position: Int)
     }
 
@@ -51,13 +53,14 @@ class TrendsAdapter(val trends: Array<Trend>, val listener: AdapterClickHandler<
      * @property itemView view with the elements
      * @property listener to handle the clicks
      */
-    class ViewHolder(itemView: View, private val listener: OnClickTrendListener): RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    class ViewHolder(itemView: View, private val listener: OnClickTrendListener) :
+        RecyclerView.ViewHolder(itemView), View.OnClickListener {
         init {
             itemView.setOnClickListener(this)
         }
 
         override fun onClick(view: View) {
-           listener.onClick(view, adapterPosition)
+            listener.onClick(view, adapterPosition)
         }
 
         /**
@@ -65,11 +68,12 @@ class TrendsAdapter(val trends: Array<Trend>, val listener: AdapterClickHandler<
          */
         fun bindView(trend: Trend) {
             val tvTweetsCount = itemView.findViewById<TextView>(R.id.tv_trend_tweets_count)
-            itemView.findViewById<TextView>(R.id.tv_trend_position).text = (adapterPosition + 1).toString()
+            itemView.findViewById<TextView>(R.id.tv_trend_position).text =
+                (adapterPosition + 1).toString()
             itemView.findViewById<TextView>(R.id.tv_trend_name).text = trend.name
 
             // check if the trend has the any volume of Tweets
-            if(trend.tweetVolume != -1) {
+            if (trend.tweetVolume != -1) {
                 tvTweetsCount.text = "${ParseUtils.parseNumber(trend.tweetVolume)} Tweets"
             } else {
                 tvTweetsCount.visibility = View.GONE

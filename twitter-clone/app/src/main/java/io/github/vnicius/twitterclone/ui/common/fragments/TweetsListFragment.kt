@@ -17,9 +17,13 @@ import twitter4j.Status
 /**
  * [Fragment] to show a list of tweets
  */
-class TweetsListFragment: Fragment() {
+class TweetsListFragment : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         val view = inflater.inflate(R.layout.fragment_tweets_list, container, false)
 
         // get the list of tweets by the argument

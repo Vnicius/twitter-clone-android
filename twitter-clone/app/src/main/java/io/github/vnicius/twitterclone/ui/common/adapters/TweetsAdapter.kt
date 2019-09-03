@@ -20,7 +20,10 @@ import twitter4j.Status
  * @property tweets a list of Status objects
  * @property listener listener to handle the click in the item
  */
-class TweetsAdapter(private val tweets: MutableList<Status>, val listener: AdapterClickHandler<Status>): RecyclerView.Adapter<TweetsAdapter.ViewHolder>() {
+class TweetsAdapter(
+    private val tweets: MutableList<Status>,
+    val listener: AdapterClickHandler<Status>
+) : RecyclerView.Adapter<TweetsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflate the view
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_tweet, parent, false)
@@ -47,7 +50,7 @@ class TweetsAdapter(private val tweets: MutableList<Status>, val listener: Adapt
     /**
      * Interface to handle click with the item position
      */
-    interface OnClickTweetListener{
+    interface OnClickTweetListener {
         fun onClick(view: View, position: Int)
     }
 
@@ -56,7 +59,8 @@ class TweetsAdapter(private val tweets: MutableList<Status>, val listener: Adapt
      * @property itemView view with the elements
      * @property listener to handle the clicks
      */
-    class ViewHolder(itemView: View, private val listener: OnClickTweetListener): RecyclerView.ViewHolder(itemView), View.OnClickListener{
+    class ViewHolder(itemView: View, private val listener: OnClickTweetListener) :
+        RecyclerView.ViewHolder(itemView), View.OnClickListener {
         init {
             itemView.setOnClickListener(this)
         }
@@ -71,25 +75,34 @@ class TweetsAdapter(private val tweets: MutableList<Status>, val listener: Adapt
         fun bindView(item: Status) {
 
             // user name and user screen name
-            itemView.findViewById<TextView>(R.id.tv_user_name).text = HtmlCompat.fromHtml("<b>${item.user.name}</b> @${item.user.screenName}", HtmlCompat.FROM_HTML_MODE_COMPACT)
+            itemView.findViewById<TextView>(R.id.tv_user_name).text = HtmlCompat.fromHtml(
+                "<b>${item.user.name}</b> @${item.user.screenName}",
+                HtmlCompat.FROM_HTML_MODE_COMPACT
+            )
 
             // tweet text
-            itemView.findViewById<TextView>(R.id.tv_tweet_text).text = ParseUtils.parseTweetText(item.text)
+            itemView.findViewById<TextView>(R.id.tv_tweet_text).text =
+                ParseUtils.parseTweetText(item.text)
 
             // number of favourites
-            itemView.findViewById<TextView>(R.id.tv_tweet_favs_count).text = ParseUtils.parseCountNumber(item.favoriteCount)
+            itemView.findViewById<TextView>(R.id.tv_tweet_favs_count).text =
+                ParseUtils.parseCountNumber(item.favoriteCount)
 
             // number of retweets
-            itemView.findViewById<TextView>(R.id.tv_tweet_retweets_count).text = ParseUtils.parseCountNumber(item.retweetCount)
+            itemView.findViewById<TextView>(R.id.tv_tweet_retweets_count).text =
+                ParseUtils.parseCountNumber(item.retweetCount)
 
             // time of the tweet
-            itemView.findViewById<TextView>(R.id.tv_tweet_time).text = "• ${ParseUtils.parseTime(item.createdAt.time)}"
+            itemView.findViewById<TextView>(R.id.tv_tweet_time).text =
+                "• ${ParseUtils.parseTime(item.createdAt.time)}"
 
             // set the click listener of the fav button
-            itemView.findViewById<LinearLayout>(R.id.btn_favorite).setOnClickListener { view -> onFavClick(view, item) }
+            itemView.findViewById<LinearLayout>(R.id.btn_favorite)
+                .setOnClickListener { view -> onFavClick(view, item) }
 
             // set the click listener of the retweet button
-            itemView.findViewById<LinearLayout>(R.id.btn_retweet).setOnClickListener { view -> onRetweetClick(view, item) }
+            itemView.findViewById<LinearLayout>(R.id.btn_retweet)
+                .setOnClickListener { view -> onRetweetClick(view, item) }
 
             // get the user profile image and set in the view
             Picasso.get().load(item.user.profileImageURLHttps)
@@ -110,7 +123,7 @@ class TweetsAdapter(private val tweets: MutableList<Status>, val listener: Adapt
             val tvCount = view.findViewById<TextView>(R.id.tv_tweet_favs_count)
 
             // check if the fav button is active
-            if(icon.visibility == View.VISIBLE) {
+            if (icon.visibility == View.VISIBLE) {
 
                 // hide the static icon
                 icon.visibility = View.GONE
@@ -122,7 +135,13 @@ class TweetsAdapter(private val tweets: MutableList<Status>, val listener: Adapt
                 animation.playAnimation()
 
                 // change the count color and value
-                tvCount.setTextColor(ResourcesCompat.getColor(itemView.resources, R.color.red, null))
+                tvCount.setTextColor(
+                    ResourcesCompat.getColor(
+                        itemView.resources,
+                        R.color.red,
+                        null
+                    )
+                )
                 tvCount.text = ParseUtils.parseCountNumber(item.favoriteCount + 1)
             } else {
                 // show static icon
@@ -132,7 +151,13 @@ class TweetsAdapter(private val tweets: MutableList<Status>, val listener: Adapt
                 animation.visibility = View.GONE
 
                 // change the count color and value
-                tvCount.setTextColor(ResourcesCompat.getColor(itemView.resources, R.color.gray_dark, null))
+                tvCount.setTextColor(
+                    ResourcesCompat.getColor(
+                        itemView.resources,
+                        R.color.gray_dark,
+                        null
+                    )
+                )
                 tvCount.text = ParseUtils.parseCountNumber(item.favoriteCount)
             }
         }
@@ -150,7 +175,7 @@ class TweetsAdapter(private val tweets: MutableList<Status>, val listener: Adapt
             val gray = ResourcesCompat.getColor(itemView.resources, R.color.gray_dark, null)
 
             // check if the retweet button is active
-            if(tvCount.currentTextColor == gray) {
+            if (tvCount.currentTextColor == gray) {
                 // change the colors
                 icon.setColorFilter(green)
                 tvCount.setTextColor(green)

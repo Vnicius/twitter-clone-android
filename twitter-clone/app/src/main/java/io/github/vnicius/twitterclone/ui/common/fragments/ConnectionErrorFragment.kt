@@ -15,7 +15,8 @@ import io.github.vnicius.twitterclone.R
  * A simple [Fragment] subclass.
  */
 @SuppressLint("ValidFragment")
-class ConnectionErrorFragment(private val tryAgainHandler: (() -> Unit)) : Fragment(), View.OnClickListener {
+class ConnectionErrorFragment(private val tryAgainHandler: (() -> Unit)) : Fragment(),
+    View.OnClickListener {
 
 
     override fun onCreateView(
@@ -31,7 +32,7 @@ class ConnectionErrorFragment(private val tryAgainHandler: (() -> Unit)) : Fragm
     }
 
     override fun onClick(v: View) {
-        when(v.id) {
+        when (v.id) {
             R.id.btn_connection_try_again -> tryAgainHandler()
         }
     }
