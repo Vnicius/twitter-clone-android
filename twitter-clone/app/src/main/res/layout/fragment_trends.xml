@@ -22,7 +22,7 @@
                     style="@style/TextAppearance.AppCompat.TextAppearanceNormal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/world_wide_trends" />
+                    android:text="@string/title_world_wide_trends" />
 
         </FrameLayout>
 

@@ -4,7 +4,7 @@
       xmlns:tools="http://schemas.android.com/tools"
       tools:context="io.github.vnicius.twitterclone.ui.main.MainActivity">
     <item android:id="@+id/action_settings"
-          android:title="@string/action_settings"
+          android:title="@string/label_item_settings"
           android:orderInCategory="100"
           app:showAsAction="always"
           android:icon="@drawable/ic_settings"

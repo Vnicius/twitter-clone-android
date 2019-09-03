@@ -54,7 +54,7 @@ class SearchableActivity : AppCompatActivity() {
             requestFocus()
             maxWidth = Int.MAX_VALUE
             isIconified = false
-            queryHint = resources.getString(R.string.search_hint)
+            queryHint = resources.getString(R.string.hint_search)
             findViewById<View>(android.support.v7.appcompat.R.id.search_plate).setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
             findViewById<View>(android.support.v7.appcompat.R.id.search_mag_icon).visibility = View.GONE
             setQuery(queryText, false)

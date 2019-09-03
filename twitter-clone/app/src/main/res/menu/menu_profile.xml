@@ -1,33 +1,33 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context="io.github.vnicius.twitterclone.ui.profile.ProfileActivity">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="io.github.vnicius.twitterclone.ui.profile.ProfileActivity">
     <item
-          android:title="@string/search_action_name"
-          android:orderInCategory="100"
-          app:showAsAction="never"/>
-    <item
-            android:title="@string/add_to_list"
             android:orderInCategory="100"
-            app:showAsAction="never"/>
+            android:title="@string/label_item_search"
+            app:showAsAction="never" />
     <item
-            android:title="@string/view_lists"
             android:orderInCategory="100"
-            app:showAsAction="never"/>
+            android:title="@string/label_item_add_to_list"
+            app:showAsAction="never" />
     <item
-            android:title="@string/view_moments"
             android:orderInCategory="100"
-            app:showAsAction="never"/>
+            android:title="@string/label_item_view_lists"
+            app:showAsAction="never" />
     <item
-            android:title="@string/mute"
             android:orderInCategory="100"
-            app:showAsAction="never"/>
+            android:title="@string/label_item_view_moments"
+            app:showAsAction="never" />
     <item
-            android:title="@string/block"
             android:orderInCategory="100"
-            app:showAsAction="never"/>
+            android:title="@string/label_item_mute"
+            app:showAsAction="never" />
     <item
-            android:title="@string/report"
             android:orderInCategory="100"
-            app:showAsAction="never"/>
+            android:title="@string/label_item_block"
+            app:showAsAction="never" />
+    <item
+            android:orderInCategory="100"
+            android:title="@string/label_item_report"
+            app:showAsAction="never" />
 </menu>

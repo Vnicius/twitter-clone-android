@@ -40,7 +40,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="@dimen/button_height"
                         android:layout_alignParentEnd="true"
-                        android:text="@string/follow" />
+                        android:text="@string/title_follow" />
             </RelativeLayout>
 
             <LinearLayout
@@ -119,7 +119,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/spacing_tiny"
-                            android:text="@string/following" />
+                            android:text="@string/title_following" />
 
                     <TextView
                             android:id="@+id/tv_user_profile_followers"
@@ -136,7 +136,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/spacing_tiny"
-                            android:text="@string/followers" />
+                            android:text="@string/title_followers" />
 
                 </LinearLayout>
             </LinearLayout>

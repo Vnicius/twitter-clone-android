@@ -3,24 +3,24 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/action_search_filter"
-          android:title="@string/action_settings"
+          android:title="@string/label_item_settings"
           android:orderInCategory="100"
           app:showAsAction="always"
           android:icon="@drawable/ic_filter"
           android:iconTint="@color/colorPrimary"
     />
     <item android:id="@+id/action_search_settings"
-          android:title="@string/search_settings_label"
+          android:title="@string/label_item_search_settings"
           android:orderInCategory="100"
           app:showAsAction="never"
     />
     <item android:id="@+id/action_search_save"
-          android:title="@string/save_this_search_label"
+          android:title="@string/label_item_save_this_search"
           android:orderInCategory="100"
           app:showAsAction="never"
     />
     <item android:id="@+id/action_search_share"
-          android:title="@string/share_label"
+          android:title="@string/label_item_share"
           android:orderInCategory="100"
           app:showAsAction="never"
     />

@@ -5,7 +5,7 @@
       tools:context="io.github.vnicius.twitterclone.ui.searchable.SearchableActivity">
 
     <item android:id="@+id/action_search"
-          android:title="@string/search_action_name"
+          android:title="@string/label_item_search"
           android:orderInCategory="100"
           app:showAsAction="always"
           app:actionViewClass="android.support.v7.widget.SearchView"

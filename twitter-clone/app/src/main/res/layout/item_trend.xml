@@ -48,7 +48,7 @@
                         style="@style/TextAppearance.AppCompat.TextAppearanceTiny"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/trending" />
+                        android:text="@string/title_trending" />
             </LinearLayout>
 
             <TextView

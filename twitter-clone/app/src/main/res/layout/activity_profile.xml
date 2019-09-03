@@ -74,7 +74,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="@dimen/spacing_tiny"
-                                android:text="@string/tweets" />
+                                android:text="@string/title_tweets" />
                     </LinearLayout>
 
 
