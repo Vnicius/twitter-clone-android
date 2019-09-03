@@ -13,7 +13,7 @@ import android.view.MenuItem
 import android.view.View
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.result.SearchResultActivity
-import kotlinx.android.synthetic.main.activity_search.*
+import kotlinx.android.synthetic.main.activity_searchable.*
 
 /**
  * Searchable Activity
@@ -29,7 +29,7 @@ class SearchableActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
+        setContentView(R.layout.activity_searchable)
         setSupportActionBar(toolbar_search)
         supportActionBar?.setDisplayShowTitleEnabled(false)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

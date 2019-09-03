@@ -1,81 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="?android:attr/selectableItemBackground"
-              android:orientation="vertical"
->
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:orientation="vertical">
+
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="16dp"
-            android:paddingBottom="16dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-    >
+            android:padding="@dimen/spacing_normal">
+
         <ImageView
-                android:layout_width="@dimen/icon_dim"
-                android:layout_height="@dimen/icon_dim"
-                android:src="@drawable/ic_keyboard_arrow_down"
-                android:tint="@color/lightGray"
+                android:layout_width="@dimen/icon_normal"
+                android:layout_height="@dimen/icon_normal"
                 android:layout_alignParentEnd="true"
-        />
+                android:src="@drawable/ic_keyboard_arrow_down"
+                android:tint="@color/lightGray" />
 
         <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-        >
+                android:orientation="vertical">
+
             <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                          android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
                 <TextView
                         android:id="@+id/tv_trend_position"
+                        style="@style/TextAppearance.AppCompat.TextAppearanceTiny"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/darkGray"
-                        android:textSize="12sp"
-                />
+                        tools:text="1" />
+
                 <TextView
+                        style="@style/TextAppearance.AppCompat.TextAppearanceTiny"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:textColor="@color/lightGray"
-                        android:text="•"
-                        android:layout_marginStart="4dp"
-                        android:layout_marginEnd="4dp"
+                        android:layout_marginStart="@dimen/spacing_tiny"
+                        android:layout_marginEnd="@dimen/spacing_tiny"
                         android:gravity="center"
-                        android:textSize="12sp"
-                />
+                        android:text="•" />
+
                 <TextView
+                        style="@style/TextAppearance.AppCompat.TextAppearanceTiny"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/darkGray"
-                        android:text="@string/trending"
-                        android:textSize="12sp"
-                />
+                        android:text="@string/trending" />
             </LinearLayout>
+
             <TextView
                     android:id="@+id/tv_trend_name"
+                    style="@style/TextAppearance.AppCompat.TextAppearanceSmall.Bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
-                    android:layout_marginTop="2dp"
-            />
+                    android:layout_marginTop="@dimen/spacing_tinier"
+                    tools:text="Trend Name" />
+
             <TextView
                     android:id="@+id/tv_trend_tweets_count"
+                    style="@style/TextAppearance.AppCompat.TextAppearanceTiny"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/darkGray"
-                    android:textSize="12sp"
-                    android:layout_marginTop="2dp"
-            />
+                    android:layout_marginTop="@dimen/spacing_tinier"
+                    tools:text="1k" />
         </LinearLayout>
     </RelativeLayout>
 
-    <View android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="@color/extraLightGray"/>
+    <include layout="@layout/view_line" />
 </LinearLayout>

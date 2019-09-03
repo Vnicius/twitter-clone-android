@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="io.github.vnicius.twitterclone.ui.result.SearchResultActivity"
-        android:orientation="vertical"
         android:background="@color/white"
->
+        android:orientation="vertical"
+        tools:context="io.github.vnicius.twitterclone.ui.result.SearchResultActivity">
 
     <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar_search_result"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:theme="@style/ToolbarColoredBackArrow"
             android:background="@color/white"
-    >
-        <include layout="@layout/partial_search_field"/>
+            android:theme="@style/AppTheme.ToolbarColoredBackArrow">
+
+        <include layout="@layout/partial_search_field" />
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout

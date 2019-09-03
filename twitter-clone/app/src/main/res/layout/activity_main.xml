@@ -19,7 +19,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
-                android:theme="@style/ToolbarColoredBackArrow"
+                android:theme="@style/AppTheme.ToolbarColoredBackArrow"
                 app:contentScrim="@color/white"
                 app:layout_scrollFlags="scroll|enterAlways"
                 app:toolbarId="@+id/toolbar_main">
@@ -29,8 +29,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="@color/white"
-                    android:theme="@style/ToolbarColoredBackArrow"
-                    app:contentInsetStart="0dp"
+                    android:theme="@style/AppTheme.ToolbarColoredBackArrow"
+                    app:contentInsetStart="@dimen/spacing_null"
                     app:layout_collapseMode="pin"
                     app:popupTheme="@style/AppTheme.PopupOverlay">
 

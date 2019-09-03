@@ -2,5 +2,34 @@
     <dimen name="app_bar_height">150dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
-    <dimen name="icon_dim">24dp</dimen>
+
+    <!-- Button height -->
+    <dimen name="button_height">30dp</dimen>
+
+    <!-- Icon size -->
+    <dimen name="icon_bigger">80dp</dimen>
+    <dimen name="icon_normal">24dp</dimen>
+    <dimen name="icon_small">20dp</dimen>
+    <dimen name="icon_tiny">16dp</dimen>
+
+    <!-- font sizes -->
+    <dimen name="font_large">24sp</dimen>
+    <dimen name="font_medium">22sp</dimen>
+    <dimen name="font_normal">18sp</dimen>
+    <dimen name="font_small">14sp</dimen>
+    <dimen name="font_tiny">12sp</dimen>
+
+    <!-- spacing -->
+    <dimen name="spacing_large">32dp</dimen>
+    <dimen name="spacing_normal">16dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_tiny">4dp</dimen>
+    <dimen name="spacing_tinier">2dp</dimen>
+    <dimen name="spacing_unit">1dp</dimen>
+    <dimen name="spacing_null">0dp</dimen>
+
+    <!-- avatar image size -->
+    <dimen name="avatar_large">100dp</dimen>
+    <dimen name="avatar_normal">50dp</dimen>
+
 </resources>

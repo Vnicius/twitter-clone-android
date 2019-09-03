@@ -1,40 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
->
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
     <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
         <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:padding="16dp"
                 android:background="@color/white"
                 android:orientation="vertical"
-        >
-            <TextView android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:textSize="20sp"
-                      android:text="@string/world_wide_trends"
-                      android:textColor="@color/black"
-            />
+                android:padding="@dimen/spacing_normal">
+
+            <TextView
+                    style="@style/TextAppearance.AppCompat.TextAppearanceNormal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/world_wide_trends" />
 
         </FrameLayout>
-        <View android:layout_width="match_parent"
-              android:layout_height="1dp"
-              android:background="@color/extraLightGray"/>
+
+        <include layout="@layout/view_line" />
+
         <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_trends"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/item_trend"
-        >
+                tools:listitem="@layout/item_trend">
 
         </android.support.v7.widget.RecyclerView>
     </LinearLayout>
