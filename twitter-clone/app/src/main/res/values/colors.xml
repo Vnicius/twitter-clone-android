@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#1DA1F2</color>
-    <color name="colorPrimaryDark">#141d26</color>
-    <color name="colorAccent">#1DA1F2</color>
+
+    <!-- Basic colors -->
     <color name="black">#14171A</color>
-    <color name="darkGray">#657786</color>
-    <color name="lightGray">#AAB8C2</color>
-    <color name="extraLightGray">#E1E8ED</color>
-    <color name="extraExtraLightGray">#F5F8FA</color>
-    <color name="bg_color">#fff</color>
+    <color name="gray_dark">#657786</color>
+    <color name="gray_light">#AAB8C2</color>
+    <color name="gray_extra_light">#E1E8ED</color>
+    <color name="gray_extra_extra_light">#F5F8FA</color>
     <color name="white">#fff</color>
     <color name="red">#ff0000</color>
     <color name="green">#17bf63</color>
+    <color name="blue">#1DA1F2</color>
+    <color name="blue_dark">#141d26</color>
+
+    <color name="bg_default">@color/white</color>
+    <color name="color_primary">@color/blue</color>
+    <color name="color_primary_dark">@color/blue_dark</color>
+    <color name="color_accent">@color/blue</color>
 </resources>

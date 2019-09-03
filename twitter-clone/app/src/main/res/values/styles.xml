@@ -5,18 +5,18 @@
     </style>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
         <item name="searchViewStyle">@style/SearchViewMy</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
+        <item name="colorAccent">@color/color_accent</item>
     </style>
 
     <style name="AppTheme.NoAnimTheme">
@@ -28,10 +28,10 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="AppTheme.ToolbarColoredBackArrow">
-        <item name="android:textColorSecondary">@color/colorPrimary</item>
-        <item name="android:textColorHint">@color/darkGray</item>
-        <item name="android:textColor">@color/colorPrimary</item>
-        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="android:textColorSecondary">@color/color_primary</item>
+        <item name="android:textColorHint">@color/gray_dark</item>
+        <item name="android:textColor">@color/color_primary</item>
+        <item name="android:textColorPrimary">@color/color_primary</item>
         <item name="android:colorBackground">@color/white</item>
     </style>
 
@@ -55,7 +55,7 @@
     </style>
 
     <style name="TextAppearance.AppCompat.TextAppearanceNormal.Secondary">
-        <item name="android:textColor">@color/darkGray</item>
+        <item name="android:textColor">@color/gray_dark</item>
     </style>
 
     <style name="TextAppearance.AppCompat.TextAppearanceSmall">
@@ -73,11 +73,11 @@
     </style>
 
     <style name="TextAppearance.AppCompat.TextAppearanceSmall.Secondary">
-        <item name="android:textColor">@color/darkGray</item>
+        <item name="android:textColor">@color/gray_dark</item>
     </style>
 
     <style name="TextAppearance.AppCompat.TextAppearanceTiny">
-        <item name="android:textColor">@color/darkGray</item>
+        <item name="android:textColor">@color/gray_dark</item>
         <item name="android:textSize">@dimen/font_tiny</item>
     </style>
 
@@ -95,6 +95,6 @@
 
     <style name="Button.Secondary">
         <item name="android:background">@drawable/btn_secondary_rounded</item>
-        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/gray_dark</item>
     </style>
 </resources>

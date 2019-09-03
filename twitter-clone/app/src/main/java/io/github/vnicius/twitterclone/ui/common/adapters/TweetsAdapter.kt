@@ -132,7 +132,7 @@ class TweetsAdapter(private val tweets: MutableList<Status>, val listener: Adapt
                 animation.visibility = View.GONE
 
                 // change the count color and value
-                tvCount.setTextColor(ResourcesCompat.getColor(itemView.resources, R.color.darkGray, null))
+                tvCount.setTextColor(ResourcesCompat.getColor(itemView.resources, R.color.gray_dark, null))
                 tvCount.text = ParseUtils.parseCountNumber(item.favoriteCount)
             }
         }
@@ -147,7 +147,7 @@ class TweetsAdapter(private val tweets: MutableList<Status>, val listener: Adapt
             val icon = view.findViewById<ImageView>(R.id.icon_retweet)
             val tvCount = view.findViewById<TextView>(R.id.tv_tweet_retweets_count)
             val green = ResourcesCompat.getColor(itemView.resources, R.color.green, null)
-            val gray = ResourcesCompat.getColor(itemView.resources, R.color.darkGray, null)
+            val gray = ResourcesCompat.getColor(itemView.resources, R.color.gray_dark, null)
 
             // check if the retweet button is active
             if(tvCount.currentTextColor == gray) {

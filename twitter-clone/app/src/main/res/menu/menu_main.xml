@@ -8,6 +8,6 @@
           android:orderInCategory="100"
           app:showAsAction="always"
           android:icon="@drawable/ic_settings"
-          android:iconTint="@color/colorPrimary"
+          android:iconTint="@color/color_primary"
     />
 </menu>

@@ -16,7 +16,7 @@
                 android:layout_height="@dimen/icon_normal"
                 android:layout_alignParentEnd="true"
                 android:src="@drawable/ic_keyboard_arrow_down"
-                android:tint="@color/lightGray" />
+                android:tint="@color/gray_dark" />
 
         <LinearLayout
                 android:layout_width="wrap_content"

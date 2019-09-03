@@ -85,7 +85,7 @@
                             android:layout_height="@dimen/icon_tiny"
                             android:layout_gravity="center_vertical"
                             android:src="@drawable/ic_location"
-                            android:tint="@color/darkGray" />
+                            android:tint="@color/gray_dark" />
 
                     <TextView
                             android:id="@+id/tv_user_profile_location"

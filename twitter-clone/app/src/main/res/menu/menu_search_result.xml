@@ -7,7 +7,7 @@
           android:orderInCategory="100"
           app:showAsAction="always"
           android:icon="@drawable/ic_filter"
-          android:iconTint="@color/colorPrimary"
+          android:iconTint="@color/color_primary"
     />
     <item android:id="@+id/action_search_settings"
           android:title="@string/label_item_search_settings"
