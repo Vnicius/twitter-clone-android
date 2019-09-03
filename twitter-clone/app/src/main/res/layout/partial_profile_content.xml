@@ -70,7 +70,8 @@
                         style="@style/TextAppearance.AppCompat.TextAppearanceNormal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_tiny"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:layout_marginBottom="@dimen/spacing_small"
                         tools:text="User description" />
 
                 <LinearLayout
