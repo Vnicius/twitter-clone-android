@@ -1,5 +1,6 @@
 package io.github.vnicius.twitterclone.data.repository.user
 
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import twitter4j.ResponseList
 import twitter4j.Status
@@ -13,15 +14,15 @@ interface UserRepository {
     /**
      * Get the user information by the [userId]
      * @param [userId] the id of the user
-     * @return a async [User] object
+     * @return [User] object
      */
-    fun getUserAsync(userId: Long): Deferred<User>
+    suspend fun getUserAsync(userId: Long): User
 
     /**
      * Get the tweets of a specific user
      * @param [userId] the user id
      * @param [count] the maximum number of tweets
-     * @return a async [ResponseList] of [Status]
+     * @return [ResponseList] of [Status]
      */
-    fun getUserTweetsAsync(userId: Long, count: Int): Deferred<ResponseList<Status>>
+    suspend fun getUserTweetsAsync(userId: Long, count: Int): ResponseList<Status>
 }

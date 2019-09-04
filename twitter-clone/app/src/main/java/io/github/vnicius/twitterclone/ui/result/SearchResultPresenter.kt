@@ -19,18 +19,18 @@ class SearchResultPresenter(val view: SearchResultContract.View) : SearchResultC
 
     override fun searchTweets(query: String) {
         view.showLoader()
+
         presenterScope.launch {
             // search the tweets
             try {
-                coroutineScope {
-                    val result = mTweetRepository.getTweetsByQueryAsync(query, MAX_COUNT).await()
+                val result =
+                    mTweetRepository.getTweetsByQueryAsync(query, MAX_COUNT)
 
-                    // check if has any result
-                    if (result.size == 0) {
-                        view.showNoResult()
-                    } else {
-                        view.showResult(result)
-                    }
+                // check if has any result
+                if (result.size == 0) {
+                    view.showNoResult()
+                } else {
+                    view.showResult(result)
                 }
             } catch (e: Exception) {
                 view.showError("Connection Error")

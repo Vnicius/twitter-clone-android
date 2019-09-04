@@ -22,32 +22,28 @@ class ProfilePresenter(val view: ProfileContract.View) : ProfileContract.Present
 
     override fun getUser(userId: Long) {
         presenterScope.launch {
-            // get the user information
-            var user: User
+            try {
+                // get the user information
+                val user = mRepository.getUserAsync(userId)
 
-            coroutineScope {
-                try {
-                    user = mRepository.getUserAsync(userId).await()
-                    view.showUser(user)
-                } catch (e: Exception) {
-                    view.showError("Connection Error")
-                }
+                view.showUser(user)
+            } catch (e: Exception) {
+                view.showError("Connection Error")
             }
+
         }
     }
 
     override fun getHomeTweets(userId: Long) {
-
         view.showLoader()
-        presenterScope.launch {
-            // get the user tweets
-            var tweets: ResponseList<Status>
 
+        presenterScope.launch {
             try {
-                coroutineScope {
-                    tweets = mRepository.getUserTweetsAsync(userId, TWEETS_COUNT).await()
-                    view.showTweets(tweets.toMutableList())
-                }
+                // get the user tweets
+                val tweets =
+                    mRepository.getUserTweetsAsync(userId, TWEETS_COUNT)
+
+                view.showTweets(tweets.toMutableList())
             } catch (e: Exception) {
                 view.showError("Connection Error")
             }

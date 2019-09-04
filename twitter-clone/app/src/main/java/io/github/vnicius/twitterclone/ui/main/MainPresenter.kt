@@ -1,5 +1,6 @@
 package io.github.vnicius.twitterclone.ui.main
 
+import android.util.Log
 import io.github.vnicius.twitterclone.data.repository.trends.TrendRepository
 import io.github.vnicius.twitterclone.data.repository.trends.TrendRepositoryRemote
 import kotlinx.coroutines.*
@@ -19,21 +20,19 @@ class MainPresenter(val view: MainContract.View) : MainContract.Presenter {
     private val presenterScope = CoroutineScope(Dispatchers.Main + presenterJob)
 
     override fun getTrends() {
-
         view.showLoader()
-        presenterScope.launch {
-            // get the trends
-            var trends: Array<Trend>
-            try {
-                coroutineScope {
-                    trends = mTrendRepository.getTrendsAsync(1).await()
 
-                    // show the trends
-                    view.showTrends(trends)
-                }
+        presenterScope.launch {
+            try {
+                // get the trends
+                val trends = mTrendRepository.getTrendsAsync(1)
+
+                // show the trends
+                view.showTrends(trends)
             } catch (t: TwitterException) {
                 view.showConnectionErrorMessage()
             } catch (e: Exception) {
+                Log.e("debug", e.toString(), e)
                 view.showError("Some error occurred")
             }
         }
