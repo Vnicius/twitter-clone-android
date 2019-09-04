@@ -29,7 +29,7 @@ class TweetsListFragment : Fragment() {
         // get the list of tweets by the argument
         val bundle = arguments
         val tweets: MutableList<Status> = bundle?.getSerializable(ARG_CODE) as MutableList<Status>
-        val rv = view.findViewById<RecyclerView>(R.id.rv_tweets)
+        val rv = view.findViewById<RecyclerView>(R.id.rv_tweets_list)
 
         // inflate the RecyclerView
         rv.layoutManager = LinearLayoutManager(this.context)

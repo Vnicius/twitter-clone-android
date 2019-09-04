@@ -26,10 +26,10 @@
 
         </FrameLayout>
 
-        <include layout="@layout/view_line" />
+        <include layout="@layout/partial_line" />
 
         <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_trends"
+                android:id="@+id/rv_trends_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 tools:listitem="@layout/item_trend">

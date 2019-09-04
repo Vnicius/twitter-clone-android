@@ -55,12 +55,12 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         mPresenter.getHomeTweets(mUserId)
 
         // handle the appbar scroll to show some texts
-        app_bar.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
+        app_bar_profile.addOnOffsetChangedListener(object : AppBarLayout.OnOffsetChangedListener {
             override fun onOffsetChanged(appbar: AppBarLayout?, verticalOffset: Int) {
                 if (appbar?.totalScrollRange!! + verticalOffset == 0) {
-                    toolbar_profile_infos.visibility = View.VISIBLE
+                    ll_profile_toolbar_user_infos.visibility = View.VISIBLE
                 } else {
-                    toolbar_profile_infos.visibility = View.GONE
+                    ll_profile_toolbar_user_infos.visibility = View.GONE
                 }
             }
 
@@ -73,7 +73,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
      */
     private fun changeFragment(fragment: Fragment) {
         mTransaction = supportFragmentManager.beginTransaction()
-        mTransaction.replace(R.id.frame_profile, fragment)
+        mTransaction.replace(R.id.fl_profile_content_fragment_layout, fragment)
         mTransaction.commitAllowingStateLoss()
     }
 
@@ -96,39 +96,39 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
         // show the user location
         if (userLocation == null) {
-            user_profile_location.visibility = View.GONE
+            ll_profile_content_location.visibility = View.GONE
         } else {
-            tv_user_profile_location.text = userLocation
+            tv_profile_content_location.text = userLocation
         }
 
         // User name in the toolbar
-        tv_toolbar_user_name.text = mUser.name
-        tv_toolbar_user_name.setTextColor(userTextColor)
+        tv_profile_toolbar_user_name.text = mUser.name
+        tv_profile_toolbar_user_name.setTextColor(userTextColor)
 
         // User number of tweets
-        tv_toolbar_tweets_number.text = ParseUtils.parseNumber(mUser.statusesCount)
-        tv_toolbar_tweets_number.setTextColor(userTextColor)
-        tv_tweet_label.setTextColor(userTextColor)
+        tv_profile_toolbar_tweets_number.text = ParseUtils.parseNumber(mUser.statusesCount)
+        tv_profile_toolbar_tweets_number.setTextColor(userTextColor)
+        tv_profile_toolbar_tweet_label.setTextColor(userTextColor)
 
         // User name in the profile
         tv_user_profile_name.text = mUser.name
 
         // User screen name
-        tv_user_profile_username.text = "@${mUser.screenName}"
+        tv_profile_content_username.text = "@${mUser.screenName}"
 
         // User bio
-        tv_user_profile_bio.text = ParseUtils.parseTweetText(mUser.description)
+        tv_profile_content_bio.text = ParseUtils.parseTweetText(mUser.description)
 
         // User count of followings
-        tv_user_profile_following.text = ParseUtils.parseNumber(mUser.friendsCount)
+        tv_profile_content_following_label.text = ParseUtils.parseNumber(mUser.friendsCount)
 
         // User count of followers
-        tv_user_profile_followers.text = ParseUtils.parseNumber(mUser.followersCount)
+        tv_user_profile_content_followers_label.text = ParseUtils.parseNumber(mUser.followersCount)
 
         // Toolbar color
-        iv_toolbar_user_header.setBackgroundColor(userBGColor)
-        app_bar.setBackgroundColor(userBGColor)
-        toolbar_layout.setContentScrimColor(userBGColor)
+        iv_profile_toolbar_user_header.setBackgroundColor(userBGColor)
+        app_bar_profile.setBackgroundColor(userBGColor)
+        toolbar_layout_profile.setContentScrimColor(userBGColor)
 
         // Set back button color
         supportActionBar?.setHomeAsUpIndicator(
@@ -143,7 +143,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         // Set the header image
         Picasso.get().load(mUser.profileBanner600x200URL)
             .fit()
-            .into(iv_toolbar_user_header)
+            .into(iv_profile_toolbar_user_header)
 
         // Set the user profile image
         Picasso.get().load(mUser.profileImageURLHttps)

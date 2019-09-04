@@ -2,21 +2,21 @@
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/coordinator"
+        android:id="@+id/coordinator_profile"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fitsSystemWindows="true"
         tools:context=".ui.profile.ProfileActivity">
 
     <android.support.design.widget.AppBarLayout
-            android:id="@+id/app_bar"
+            android:id="@+id/app_bar_profile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/toolbar_layout"
+                android:id="@+id/toolbar_layout_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fitsSystemWindows="true"
@@ -25,7 +25,7 @@
                 app:toolbarId="@+id/toolbar_profile">
 
             <ImageView
-                    android:id="@+id/iv_toolbar_user_header"
+                    android:id="@+id/iv_profile_toolbar_user_header"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/app_bar_height"
                     android:layout_gravity="bottom"
@@ -39,7 +39,7 @@
                     app:popupTheme="@style/AppTheme.PopupOverlay">
 
                 <LinearLayout
-                        android:id="@+id/toolbar_profile_infos"
+                        android:id="@+id/ll_profile_toolbar_user_infos"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
@@ -48,7 +48,7 @@
                         android:paddingBottom="@dimen/spacing_small">
 
                     <TextView
-                            android:id="@+id/tv_toolbar_user_name"
+                            android:id="@+id/tv_profile_toolbar_user_name"
                             style="@style/TextAppearance.AppCompat.TextAppearanceNormal.Light.Bold"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -62,14 +62,14 @@
                             android:orientation="horizontal">
 
                         <TextView
-                                android:id="@+id/tv_toolbar_tweets_number"
+                                android:id="@+id/tv_profile_toolbar_tweets_number"
                                 style="@style/TextAppearance.AppCompat.TextAppearanceSmall.Light"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 tools:text="1K" />
 
                         <TextView
-                                android:id="@+id/tv_tweet_label"
+                                android:id="@+id/tv_profile_toolbar_tweet_label"
                                 style="@style/TextAppearance.AppCompat.TextAppearanceSmall.Light"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

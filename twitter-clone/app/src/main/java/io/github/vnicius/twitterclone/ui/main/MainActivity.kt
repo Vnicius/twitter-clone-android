@@ -38,12 +38,12 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
         mPresenter.getTrends()
 
         // set the search click
-        search_item.setOnClickListener(this)
+        rl_search_field.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            search_item.id -> {
+            rl_search_field.id -> {
                 // open the Searchable activity
                 val intent = Intent(this, SearchableActivity::class.java)
                 startActivity(intent)
@@ -57,7 +57,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
      */
     private fun changeFragment(fragment: Fragment) {
         mTransaction = supportFragmentManager.beginTransaction()
-        mTransaction.replace(frame_main.id, fragment)
+        mTransaction.replace(fl_main_fragment_layout.id, fragment)
         mTransaction.commitAllowingStateLoss()
     }
 

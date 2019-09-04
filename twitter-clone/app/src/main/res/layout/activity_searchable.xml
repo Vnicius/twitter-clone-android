@@ -8,7 +8,7 @@
         tools:context="io.github.vnicius.twitterclone.ui.searchable.SearchableActivity">
 
     <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar_search"
+            android:id="@+id/toolbar_searchable"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/white"

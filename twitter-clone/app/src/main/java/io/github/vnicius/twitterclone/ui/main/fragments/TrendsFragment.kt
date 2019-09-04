@@ -30,7 +30,7 @@ class TrendsFragment : Fragment() {
         // get the list of trends by the arguments
         val bundle = arguments
         val trends: Array<Trend> = bundle?.getSerializable(ARG_CODE) as Array<Trend>
-        val rv = view.findViewById<RecyclerView>(R.id.rv_trends)
+        val rv = view.findViewById<RecyclerView>(R.id.rv_trends_list)
 
         // inflate the RecyclerView
         rv.layoutManager = LinearLayoutManager(this.context)

@@ -75,7 +75,7 @@ class TweetsAdapter(
         fun bindView(item: Status) {
 
             // user name and user screen name
-            itemView.findViewById<TextView>(R.id.tv_user_name).text = HtmlCompat.fromHtml(
+            itemView.findViewById<TextView>(R.id.tv_tweet_user_name).text = HtmlCompat.fromHtml(
                 "<b>${item.user.name}</b> @${item.user.screenName}",
                 HtmlCompat.FROM_HTML_MODE_COMPACT
             )
@@ -85,7 +85,7 @@ class TweetsAdapter(
                 ParseUtils.parseTweetText(item.text)
 
             // number of favourites
-            itemView.findViewById<TextView>(R.id.tv_tweet_favs_count).text =
+            itemView.findViewById<TextView>(R.id.tv_tweet_fav_count).text =
                 ParseUtils.parseCountNumber(item.favoriteCount)
 
             // number of retweets
@@ -97,18 +97,18 @@ class TweetsAdapter(
                 "• ${ParseUtils.parseTime(item.createdAt.time)}"
 
             // set the click listener of the fav button
-            itemView.findViewById<LinearLayout>(R.id.btn_favorite)
+            itemView.findViewById<LinearLayout>(R.id.ll_tweet_favorite)
                 .setOnClickListener { view -> onFavClick(view, item) }
 
             // set the click listener of the retweet button
-            itemView.findViewById<LinearLayout>(R.id.btn_retweet)
+            itemView.findViewById<LinearLayout>(R.id.ll_tweet_retweet)
                 .setOnClickListener { view -> onRetweetClick(view, item) }
 
             // get the user profile image and set in the view
             Picasso.get().load(item.user.profileImageURLHttps)
                 .placeholder(R.drawable.deafult_avatar)
                 .error(R.drawable.deafult_avatar)
-                .into(itemView.findViewById<ImageView>(R.id.iv_user_avatar))
+                .into(itemView.findViewById<ImageView>(R.id.iv_tweet_user_avatar))
         }
 
         /**
@@ -118,9 +118,9 @@ class TweetsAdapter(
          * @param item the object item
          */
         private fun onFavClick(view: View, item: Status) {
-            val icon = view.findViewById<ImageView>(R.id.icon_fav)
-            val animation = view.findViewById<LottieAnimationView>(R.id.icon_fav_animation)
-            val tvCount = view.findViewById<TextView>(R.id.tv_tweet_favs_count)
+            val icon = view.findViewById<ImageView>(R.id.iv_tweet_fav_ic)
+            val animation = view.findViewById<LottieAnimationView>(R.id.iv_tweet_fav_ic_animation)
+            val tvCount = view.findViewById<TextView>(R.id.tv_tweet_fav_count)
 
             // check if the fav button is active
             if (icon.visibility == View.VISIBLE) {
@@ -169,7 +169,7 @@ class TweetsAdapter(
          * @param item the object item
          */
         private fun onRetweetClick(view: View, item: Status) {
-            val icon = view.findViewById<ImageView>(R.id.icon_retweet)
+            val icon = view.findViewById<ImageView>(R.id.iv_tweet_retweet_ic)
             val tvCount = view.findViewById<TextView>(R.id.tv_tweet_retweets_count)
             val green = ResourcesCompat.getColor(itemView.resources, R.color.green, null)
             val gray = ResourcesCompat.getColor(itemView.resources, R.color.gray_dark, null)

@@ -18,7 +18,7 @@
     </android.support.v7.widget.Toolbar>
 
     <FrameLayout
-            android:id="@+id/frame_search_result"
+            android:id="@+id/fl_search_result_fragment_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"></FrameLayout>
 

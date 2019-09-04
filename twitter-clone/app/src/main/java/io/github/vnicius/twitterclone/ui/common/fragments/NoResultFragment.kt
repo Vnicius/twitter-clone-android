@@ -31,7 +31,7 @@ class NoResultFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_no_result, container, false)
-        view.findViewById<TextView>(R.id.tv_no_result).text = "No results for \"$query\""
+        view.findViewById<TextView>(R.id.tv_no_result_message).text = "No results for \"$query\""
 
         return view
     }

@@ -69,5 +69,5 @@
         </LinearLayout>
     </RelativeLayout>
 
-    <include layout="@layout/view_line" />
+    <include layout="@layout/partial_line" />
 </LinearLayout>

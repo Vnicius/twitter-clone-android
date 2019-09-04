@@ -58,7 +58,7 @@
                         tools:text="User Name" />
 
                 <TextView
-                        android:id="@+id/tv_user_profile_username"
+                        android:id="@+id/tv_profile_content_username"
                         style="@style/TextAppearance.AppCompat.TextAppearanceSmall.Secondary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                         tools:text="\@username" />
 
                 <TextView
-                        android:id="@+id/tv_user_profile_bio"
+                        android:id="@+id/tv_profile_content_bio"
                         style="@style/TextAppearance.AppCompat.TextAppearanceNormal"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                         tools:text="User description" />
 
                 <LinearLayout
-                        android:id="@+id/user_profile_location"
+                        android:id="@+id/ll_profile_content_location"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_tiny"
@@ -89,7 +89,7 @@
                             android:tint="@color/gray_dark" />
 
                     <TextView
-                            android:id="@+id/tv_user_profile_location"
+                            android:id="@+id/tv_profile_content_location"
                             style="@style/TextAppearance.AppCompat.TextAppearanceSmall.Secondary"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                         android:orientation="horizontal">
 
                     <TextView
-                            android:id="@+id/tv_user_profile_following"
+                            android:id="@+id/tv_profile_content_following_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/black"
@@ -123,7 +123,7 @@
                             android:text="@string/title_following" />
 
                     <TextView
-                            android:id="@+id/tv_user_profile_followers"
+                            android:id="@+id/tv_user_profile_content_followers_label"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/spacing_normal"
@@ -146,7 +146,7 @@
         </LinearLayout>
 
         <FrameLayout
-                android:id="@+id/frame_profile"
+                android:id="@+id/fl_profile_content_fragment_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

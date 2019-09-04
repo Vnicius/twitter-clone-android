@@ -26,14 +26,14 @@ class ConnectionErrorFragment(private val tryAgainHandler: (() -> Unit)) : Fragm
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_connection_error, container, false)
 
-        view.findViewById<Button>(R.id.btn_connection_try_again).setOnClickListener(this)
+        view.findViewById<Button>(R.id.btn_connection_error_action).setOnClickListener(this)
 
         return view
     }
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btn_connection_try_again -> tryAgainHandler()
+            R.id.btn_connection_error_action -> tryAgainHandler()
         }
     }
 

@@ -42,7 +42,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
         handleIntent(intent)
 
         // set the item search click
-        search_item.setOnClickListener(this)
+        rl_search_field.setOnClickListener(this)
     }
 
     /**
@@ -51,7 +51,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
      */
     private fun changeFragment(fragment: Fragment) {
         mTransaction = supportFragmentManager.beginTransaction()
-        mTransaction.replace(frame_search_result.id, fragment)
+        mTransaction.replace(fl_search_result_fragment_layout.id, fragment)
         mTransaction.commitAllowingStateLoss()
     }
 
@@ -65,7 +65,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
             // get the query value
             intent.getStringExtra(SearchManager.QUERY)?.also { query ->
                 mPresenter.searchTweets(query)
-                tv_search_text.text = query
+                tv_search_field_search_label.text = query
                 mQuery = query
                 overridePendingTransition(R.anim.slide_left_in, R.anim.fade_out)
             }
@@ -74,7 +74,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            search_item.id -> {
+            rl_search_field.id -> {
                 val intent = Intent(this, SearchableActivity::class.java).apply {
                     putExtra(SearchableActivity.QUERY, mQuery)
                 }
