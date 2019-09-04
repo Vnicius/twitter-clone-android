@@ -96,7 +96,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         val userTextColor = Color.parseColor("#$textColor")
 
         // show the user location
-        if (userLocation == null) {
+        if (userLocation.isEmpty()) {
             ll_profile_content_location.visibility = View.GONE
         } else {
             tv_profile_content_location.text = userLocation
@@ -118,8 +118,11 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         tv_profile_content_username.text = "@${mUser.screenName}"
 
         // User bio
-        tv_profile_content_bio.text = mUser.description.highlightClickable()
-
+        if (mUser.description.isEmpty()) {
+            tv_profile_content_bio.visibility = View.GONE
+        } else {
+            tv_profile_content_bio.text = mUser.description.highlightClickable()
+        }
         // User count of followings
         tv_profile_content_following_label.text = mUser.friendsCount.summarizeNumber()
 
