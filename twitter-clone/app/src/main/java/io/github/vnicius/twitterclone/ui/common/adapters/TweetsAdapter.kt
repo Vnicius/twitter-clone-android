@@ -12,7 +12,9 @@ import android.widget.TextView
 import com.airbnb.lottie.LottieAnimationView
 import com.squareup.picasso.Picasso
 import io.github.vnicius.twitterclone.R
-import io.github.vnicius.twitterclone.utils.ParseUtils
+import io.github.vnicius.twitterclone.utils.highlightClickable
+import io.github.vnicius.twitterclone.utils.parseTweetTime
+import io.github.vnicius.twitterclone.utils.summarizeCountNumber
 import twitter4j.Status
 
 /**
@@ -82,19 +84,19 @@ class TweetsAdapter(
 
             // tweet text
             itemView.findViewById<TextView>(R.id.tv_tweet_text).text =
-                ParseUtils.parseTweetText(item.text)
+                item.text.highlightClickable()
 
             // number of favourites
             itemView.findViewById<TextView>(R.id.tv_tweet_fav_count).text =
-                ParseUtils.parseCountNumber(item.favoriteCount)
+                item.favoriteCount.summarizeCountNumber()
 
             // number of retweets
             itemView.findViewById<TextView>(R.id.tv_tweet_retweets_count).text =
-                ParseUtils.parseCountNumber(item.retweetCount)
+                item.retweetCount.summarizeCountNumber()
 
             // time of the tweet
             itemView.findViewById<TextView>(R.id.tv_tweet_time).text =
-                "• ${ParseUtils.parseTime(item.createdAt.time)}"
+                "• ${item.createdAt.time.parseTweetTime()}"
 
             // set the click listener of the fav button
             itemView.findViewById<LinearLayout>(R.id.ll_tweet_favorite)
@@ -142,7 +144,7 @@ class TweetsAdapter(
                         null
                     )
                 )
-                tvCount.text = ParseUtils.parseCountNumber(item.favoriteCount + 1)
+                tvCount.text = (item.favoriteCount + 1).summarizeCountNumber()
             } else {
                 // show static icon
                 icon.visibility = View.VISIBLE
@@ -158,7 +160,7 @@ class TweetsAdapter(
                         null
                     )
                 )
-                tvCount.text = ParseUtils.parseCountNumber(item.favoriteCount)
+                tvCount.text = item.favoriteCount.summarizeCountNumber()
             }
         }
 
@@ -181,14 +183,14 @@ class TweetsAdapter(
                 tvCount.setTextColor(green)
 
                 // change the count value
-                tvCount.text = ParseUtils.parseCountNumber(item.retweetCount + 1)
+                tvCount.text = (item.retweetCount + 1).summarizeCountNumber()
             } else {
                 // change the colors
                 icon.setColorFilter(gray)
                 tvCount.setTextColor(gray)
 
                 // change the count value
-                tvCount.text = ParseUtils.parseCountNumber(item.retweetCount)
+                tvCount.text = item.retweetCount.summarizeCountNumber()
             }
         }
     }

@@ -15,7 +15,8 @@ import com.squareup.picasso.Picasso
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.fragments.LoaderFragment
 import io.github.vnicius.twitterclone.ui.common.fragments.TweetsListFragment
-import io.github.vnicius.twitterclone.utils.ParseUtils
+import io.github.vnicius.twitterclone.utils.highlightClickable
+import io.github.vnicius.twitterclone.utils.summarizeNumber
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.partial_profile_content.*
 import twitter4j.Status
@@ -106,7 +107,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         tv_profile_toolbar_user_name.setTextColor(userTextColor)
 
         // User number of tweets
-        tv_profile_toolbar_tweets_number.text = ParseUtils.parseNumber(mUser.statusesCount)
+        tv_profile_toolbar_tweets_number.text = mUser.statusesCount.summarizeNumber()
         tv_profile_toolbar_tweets_number.setTextColor(userTextColor)
         tv_profile_toolbar_tweet_label.setTextColor(userTextColor)
 
@@ -117,13 +118,13 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         tv_profile_content_username.text = "@${mUser.screenName}"
 
         // User bio
-        tv_profile_content_bio.text = ParseUtils.parseTweetText(mUser.description)
+        tv_profile_content_bio.text = mUser.description.highlightClickable()
 
         // User count of followings
-        tv_profile_content_following_label.text = ParseUtils.parseNumber(mUser.friendsCount)
+        tv_profile_content_following_label.text = mUser.friendsCount.summarizeNumber()
 
         // User count of followers
-        tv_user_profile_content_followers_label.text = ParseUtils.parseNumber(mUser.followersCount)
+        tv_user_profile_content_followers_label.text = mUser.followersCount.summarizeNumber()
 
         // Toolbar color
         iv_profile_toolbar_user_header.setBackgroundColor(userBGColor)
