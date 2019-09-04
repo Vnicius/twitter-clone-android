@@ -8,8 +8,7 @@ import java.util.concurrent.TimeUnit
 
 
 /**
- * Summarize the [number] to a fancy [String]
- * @param [number]
+ * Summarize the number to a fancy [String]
  */
 fun Int.summarizeNumber(): String {
 
