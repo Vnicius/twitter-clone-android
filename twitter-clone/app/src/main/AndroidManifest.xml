@@ -22,7 +22,7 @@
             </intent-filter>
 
             <meta-data android:name="android.app.searchable"
-                       android:resource="@xml/searchable"/>
+                    android:resource="@xml/appwidget_searchable" />
 
         </activity>
         <activity android:name=".ui.searchable.SearchableActivity"

@@ -151,8 +151,8 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
         // Set the user profile image
         Picasso.get().load(mUser.profileImageURLHttps)
-            .placeholder(R.drawable.deafult_avatar)
-            .error(R.drawable.deafult_avatar)
+            .placeholder(R.drawable.img_deafult_avatar)
+            .error(R.drawable.img_deafult_avatar)
             .into(iv_user_profile_avatar)
     }
 
@@ -182,6 +182,6 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
     override fun finish() {
         super.finish()
-        overridePendingTransition(R.anim.fade_in, R.anim.slide_right_out)
+        overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_slide_out_right)
     }
 }

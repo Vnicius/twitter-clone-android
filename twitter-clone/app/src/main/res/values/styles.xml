@@ -88,13 +88,13 @@
     </style>
 
     <style name="Button.Primary">
-        <item name="android:background">@drawable/btn_primary_rounded</item>
+        <item name="android:background">@drawable/btn_primary</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Button.Secondary">
-        <item name="android:background">@drawable/btn_secondary_rounded</item>
+        <item name="android:background">@drawable/btn_secondary</item>
         <item name="android:textColor">@color/blue</item>
     </style>
 </resources>

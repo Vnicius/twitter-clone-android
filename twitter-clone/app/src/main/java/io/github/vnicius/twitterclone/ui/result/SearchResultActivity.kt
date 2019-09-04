@@ -67,7 +67,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
                 mPresenter.searchTweets(query)
                 tv_search_field_search_label.text = query
                 mQuery = query
-                overridePendingTransition(R.anim.slide_left_in, R.anim.fade_out)
+                overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_fade_out)
             }
         }
     }
@@ -126,6 +126,6 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
 
     override fun finish() {
         super.finish()
-        overridePendingTransition(R.anim.fade_in, R.anim.slide_right_out)
+        overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_slide_out_right)
     }
 }

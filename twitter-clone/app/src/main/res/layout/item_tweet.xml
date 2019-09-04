@@ -18,7 +18,7 @@
                 android:layout_width="@dimen/avatar_normal"
                 android:layout_height="@dimen/avatar_normal"
                 android:layout_marginEnd="@dimen/spacing_normal"
-                tools:src="@drawable/deafult_avatar" />
+                tools:src="@drawable/img_deafult_avatar" />
 
         <LinearLayout
                 android:layout_width="match_parent"
