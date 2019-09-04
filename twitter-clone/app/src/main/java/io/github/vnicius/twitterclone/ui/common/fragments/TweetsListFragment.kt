@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.adapters.TweetsAdapter
-import io.github.vnicius.twitterclone.ui.common.adapters.AdapterClickHandler
+import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
 import io.github.vnicius.twitterclone.ui.profile.ProfileActivity
 import twitter4j.Status
 
@@ -35,7 +35,7 @@ class TweetsListFragment : Fragment() {
         rv.layoutManager = LinearLayoutManager(this.context)
         rv.adapter =
             TweetsAdapter(tweets, object :
-                AdapterClickHandler<Status> {
+                ItemClickListener<Status> {
                 override fun onClick(view: View, tweet: Status) {
                     // open a new intent with the user profile
                     val intent = Intent(view.context, ProfileActivity::class.java)

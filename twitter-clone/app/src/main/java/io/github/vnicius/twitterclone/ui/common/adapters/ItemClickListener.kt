@@ -8,7 +8,7 @@ import android.view.View
  * @param T the type of the model object
  */
 
-interface AdapterClickHandler<T> {
+interface ItemClickListener<T> {
 
     /**
      * Handle the click in the [view] for the [item] fo type [T]

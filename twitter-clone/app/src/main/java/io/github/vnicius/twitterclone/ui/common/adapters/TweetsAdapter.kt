@@ -24,7 +24,7 @@ import twitter4j.Status
  */
 class TweetsAdapter(
     private val tweets: MutableList<Status>,
-    val listener: AdapterClickHandler<Status>
+    val listener: ItemClickListener<Status>
 ) : RecyclerView.Adapter<TweetsAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflate the view
@@ -33,12 +33,8 @@ class TweetsAdapter(
         // add the view and the listener to the ViewHolder
         return ViewHolder(
             view,
-            object :
-                OnClickTweetListener {
-                override fun onClick(view: View, position: Int) {
-                    listener.onClick(view, tweets[position])
-                }
-            })
+            listener
+        )
     }
 
     override fun getItemCount(): Int {
@@ -50,31 +46,21 @@ class TweetsAdapter(
     }
 
     /**
-     * Interface to handle click with the item position
-     */
-    interface OnClickTweetListener {
-        fun onClick(view: View, position: Int)
-    }
-
-    /**
      * Class to bind the object items with the view items
      * @property itemView view with the elements
      * @property listener to handle the clicks
      */
-    class ViewHolder(itemView: View, private val listener: OnClickTweetListener) :
-        RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        init {
-            itemView.setOnClickListener(this)
-        }
-
-        override fun onClick(view: View?) {
-            listener.onClick(view!!, adapterPosition)
-        }
+    class ViewHolder(itemView: View, private val listener: ItemClickListener<Status>) :
+        RecyclerView.ViewHolder(itemView) {
 
         /**
          * Bind the item with the view
          */
         fun bindView(item: Status) {
+
+            itemView.setOnClickListener {
+                listener.onClick(it, item)
+            }
 
             // user name and user screen name
             itemView.findViewById<TextView>(R.id.tv_tweet_user_name).text = HtmlCompat.fromHtml(
