@@ -95,6 +95,6 @@
 
     <style name="Button.Secondary">
         <item name="android:background">@drawable/btn_secondary_rounded</item>
-        <item name="android:textColor">@color/gray_dark</item>
+        <item name="android:textColor">@color/blue</item>
     </style>
 </resources>
