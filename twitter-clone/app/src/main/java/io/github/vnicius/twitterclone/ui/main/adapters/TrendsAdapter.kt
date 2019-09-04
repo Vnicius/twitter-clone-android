@@ -15,8 +15,9 @@ import twitter4j.Trend
  * @property trends a list of Trend objects
  * @property listener listener to handle the click in the item
  */
-class TrendsAdapter(val trends: Array<Trend>, val listener: ItemClickListener<Trend>) :
+class TrendsAdapter(val trends: Array<Trend>, private val listener: ItemClickListener<Trend>) :
     RecyclerView.Adapter<TrendsAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
         // inflate the view
         val view =
@@ -51,13 +52,15 @@ class TrendsAdapter(val trends: Array<Trend>, val listener: ItemClickListener<Tr
          */
         fun bindView(trend: Trend) {
 
+            val tvTweetsCount = itemView.findViewById<TextView>(R.id.tv_trend_tweets_count)
+
             itemView.setOnClickListener {
                 listener.onClick(it, trend)
             }
 
-            val tvTweetsCount = itemView.findViewById<TextView>(R.id.tv_trend_tweets_count)
             itemView.findViewById<TextView>(R.id.tv_trend_position).text =
                 (adapterPosition + 1).toString()
+
             itemView.findViewById<TextView>(R.id.tv_trend_name).text = trend.name
 
             // check if the trend has the any volume of Tweets

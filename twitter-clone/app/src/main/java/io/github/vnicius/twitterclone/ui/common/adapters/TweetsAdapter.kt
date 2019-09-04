@@ -24,8 +24,9 @@ import twitter4j.Status
  */
 class TweetsAdapter(
     private val tweets: MutableList<Status>,
-    val listener: ItemClickListener<Status>
+    private val listener: ItemClickListener<Status>
 ) : RecyclerView.Adapter<TweetsAdapter.ViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflate the view
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_tweet, parent, false)
@@ -117,20 +118,25 @@ class TweetsAdapter(
                 icon.visibility = View.GONE
 
                 // set and play the animation
-                animation.visibility = View.VISIBLE
-                animation.setMinFrame(10)
-                animation.speed = 2f
-                animation.playAnimation()
+                animation.apply {
+                    visibility = View.VISIBLE
+                    setMinFrame(10)
+                    speed = 2f
+                    playAnimation()
+                }
 
                 // change the count color and value
-                tvCount.setTextColor(
-                    ResourcesCompat.getColor(
-                        itemView.resources,
-                        R.color.red,
-                        null
+                tvCount.apply {
+                    setTextColor(
+                        ResourcesCompat.getColor(
+                            itemView.resources,
+                            R.color.red,
+                            null
+                        )
                     )
-                )
-                tvCount.text = (item.favoriteCount + 1).summarizeCountNumber()
+                    text = (item.favoriteCount + 1).summarizeCountNumber()
+                }
+
             } else {
                 // show static icon
                 icon.visibility = View.VISIBLE
@@ -139,14 +145,16 @@ class TweetsAdapter(
                 animation.visibility = View.GONE
 
                 // change the count color and value
-                tvCount.setTextColor(
-                    ResourcesCompat.getColor(
-                        itemView.resources,
-                        R.color.gray_dark,
-                        null
+                tvCount.apply {
+                    setTextColor(
+                        ResourcesCompat.getColor(
+                            itemView.resources,
+                            R.color.gray_dark,
+                            null
+                        )
                     )
-                )
-                tvCount.text = item.favoriteCount.summarizeCountNumber()
+                    text = item.favoriteCount.summarizeCountNumber()
+                }
             }
         }
 
@@ -166,17 +174,19 @@ class TweetsAdapter(
             if (tvCount.currentTextColor == gray) {
                 // change the colors
                 icon.setColorFilter(green)
-                tvCount.setTextColor(green)
 
-                // change the count value
-                tvCount.text = (item.retweetCount + 1).summarizeCountNumber()
+                tvCount.apply {
+                    setTextColor(green)
+                    text = (item.retweetCount + 1).summarizeCountNumber()
+                }
             } else {
                 // change the colors
                 icon.setColorFilter(gray)
-                tvCount.setTextColor(gray)
 
-                // change the count value
-                tvCount.text = item.retweetCount.summarizeCountNumber()
+                tvCount.apply {
+                    setTextColor(gray)
+                    text = item.retweetCount.summarizeCountNumber()
+                }
             }
         }
     }
