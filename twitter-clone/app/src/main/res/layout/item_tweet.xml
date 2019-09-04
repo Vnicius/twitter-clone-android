@@ -31,7 +31,7 @@
 
                 <TextView
                         android:id="@+id/tv_tweet_user_name"
-                        style="@style/TextAppearance.AppCompat.TextAppearanceSmall.Bold"
+                        style="@style/TextAppearance.AppCompat.TextAppearanceSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentStart="true"
@@ -50,7 +50,7 @@
                         android:layout_alignEnd="@id/tv_tweet_user_name"
                         android:layout_marginStart="@dimen/spacing_tinier"
                         android:paddingStart="@dimen/spacing_tinier"
-                        tools:text="\@username" />
+                        tools:text="1h" />
 
                 <ImageView
                         android:id="@+id/iv_tweet_options"
