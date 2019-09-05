@@ -1,35 +1,33 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="io.github.vnicius.twitterclone.ui.common.fragments.ConnectionErrorFragment"
+        tools:context="io.github.vnicius.twitterclone.ui.common.fragments.ConnectionErrorFragment">
 
-        >
-
-    <LinearLayout
+    <TextView
+            android:id="@+id/tv_connection_error_message"
+            style="@style/TextAppearance.AppCompat.TextAppearanceLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="vertical">
+            android:layout_gravity="center"
+            android:text="@string/error_message_connection"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-                android:id="@+id/tv_connection_error_message"
-                style="@style/TextAppearance.AppCompat.TextAppearanceLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/error_message_connection" />
-
-        <Button
-                android:id="@+id/btn_connection_error_action"
-                style="@style/Button.Primary"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/button_height"
-                android:layout_gravity="center"
-                android:layout_marginTop="@dimen/spacing_small"
-                android:text="@string/label_btn_try_again"
-                ></Button>
-    </LinearLayout>
+    <Button
+            android:id="@+id/btn_connection_error_action"
+            style="@style/Button.Primary"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/button_height"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:text="@string/label_btn_try_again"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_connection_error_message" />
 
 
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

@@ -1,7 +1,5 @@
 package io.github.vnicius.twitterclone.data.repository.tweet
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import twitter4j.Status
 
 /**

@@ -16,6 +16,9 @@ class MainContract {
          */
         fun showTrends(trends: Array<Trend>)
 
+        /**
+         * Show a message when get a connection error
+         */
         fun showConnectionErrorMessage()
     }
 

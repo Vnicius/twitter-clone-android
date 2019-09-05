@@ -3,7 +3,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@color/bg_default"
         android:orientation="vertical"
         tools:context="io.github.vnicius.twitterclone.ui.result.SearchResultActivity">
 
@@ -20,6 +20,6 @@
     <FrameLayout
             android:id="@+id/fl_search_result_fragment_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></FrameLayout>
+            android:layout_height="match_parent" />
 
 </LinearLayout>

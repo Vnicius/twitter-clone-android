@@ -1,11 +1,10 @@
 package io.github.vnicius.twitterclone.ui.profile
 
+import android.util.Log
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
 import io.github.vnicius.twitterclone.data.repository.user.UserRepositoryRemote
+import io.github.vnicius.twitterclone.utils.LogTagsUtils
 import kotlinx.coroutines.*
-import twitter4j.ResponseList
-import twitter4j.Status
-import twitter4j.User
 
 const val TWEETS_COUNT = 50
 
@@ -15,22 +14,21 @@ const val TWEETS_COUNT = 50
  */
 class ProfilePresenter(val view: ProfileContract.View) : ProfileContract.Presenter {
 
-    // instance of the repository
-    private val mRepository: UserRepository = UserRepositoryRemote()
+    private val userRepository: UserRepository = UserRepositoryRemote()
     private val presenterJob = SupervisorJob()
     private val presenterScope = CoroutineScope(Dispatchers.Main + presenterJob)
 
     override fun getUser(userId: Long) {
         presenterScope.launch {
             try {
-                // get the user information
-                val user = mRepository.getUserAsync(userId)
+                val user = userRepository.getUserAsync(userId)
 
                 view.showUser(user)
             } catch (e: Exception) {
+                Log.e("debug error", "Unknown exception", e)
+
                 view.showError("Connection Error")
             }
-
         }
     }
 
@@ -41,10 +39,12 @@ class ProfilePresenter(val view: ProfileContract.View) : ProfileContract.Present
             try {
                 // get the user tweets
                 val tweets =
-                    mRepository.getUserTweetsAsync(userId, TWEETS_COUNT)
+                    userRepository.getUserTweetsAsync(userId, TWEETS_COUNT)
 
                 view.showTweets(tweets.toMutableList())
             } catch (e: Exception) {
+                Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Unknown exception", e)
+
                 view.showError("Connection Error")
             }
         }
@@ -53,5 +53,4 @@ class ProfilePresenter(val view: ProfileContract.View) : ProfileContract.Present
     override fun dispose() {
         presenterScope.coroutineContext.cancelChildren()
     }
-
 }

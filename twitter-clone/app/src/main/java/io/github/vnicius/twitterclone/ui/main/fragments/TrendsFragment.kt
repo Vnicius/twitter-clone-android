@@ -26,8 +26,6 @@ class TrendsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_trends, container, false)
-
-        // get the list of trends by the arguments
         val bundle = arguments
         val trends: Array<Trend> = bundle?.getSerializable(ARG_CODE) as Array<Trend>
         val rv = view.findViewById<RecyclerView>(R.id.rv_trends_list)
@@ -42,7 +40,9 @@ class TrendsFragment : Fragment() {
                     action = Intent.ACTION_SEARCH
                     putExtra(SearchManager.QUERY, item.name)
                 }
+
                 startActivity(intent)
+
                 activity!!.overridePendingTransition(
                     R.anim.anim_slide_in_left,
                     R.anim.anim_fade_out

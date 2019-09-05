@@ -15,6 +15,7 @@
                 android:layout_width="@dimen/icon_normal"
                 android:layout_height="@dimen/icon_normal"
                 android:layout_alignParentEnd="true"
+                android:contentDescription="@string/description_more_options_btn"
                 android:src="@drawable/ic_keyboard_arrow_down"
                 android:tint="@color/gray_dark" />
 

@@ -13,7 +13,7 @@ private const val MAX_COUNT = 50
 class SearchResultPresenter(val view: SearchResultContract.View) : SearchResultContract.Presenter {
 
     // repository instance
-    private val mTweetRepository: TweetRepository = TweetRepositoryRemote()
+    private val tweetRepository: TweetRepository = TweetRepositoryRemote()
     private val presenterJob = SupervisorJob()
     private val presenterScope = CoroutineScope(Dispatchers.Main + presenterJob)
 
@@ -24,7 +24,7 @@ class SearchResultPresenter(val view: SearchResultContract.View) : SearchResultC
             // search the tweets
             try {
                 val result =
-                    mTweetRepository.getTweetsByQueryAsync(query, MAX_COUNT)
+                    tweetRepository.getTweetsByQueryAsync(query, MAX_COUNT)
 
                 // check if has any result
                 if (result.size == 0) {

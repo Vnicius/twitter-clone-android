@@ -1,8 +1,6 @@
 package io.github.vnicius.twitterclone.ui.common.fragments
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.LayoutInflater
@@ -18,7 +16,6 @@ import io.github.vnicius.twitterclone.R
 class ConnectionErrorFragment(private val tryAgainHandler: (() -> Unit)) : Fragment(),
     View.OnClickListener {
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -32,8 +29,8 @@ class ConnectionErrorFragment(private val tryAgainHandler: (() -> Unit)) : Fragm
     }
 
     override fun onClick(v: View) {
-        when (v.id) {
-            R.id.btn_connection_error_action -> tryAgainHandler()
+        if (v.id == R.id.btn_connection_error_action) {
+            tryAgainHandler()
         }
     }
 
@@ -42,5 +39,4 @@ class ConnectionErrorFragment(private val tryAgainHandler: (() -> Unit)) : Fragm
         fun newInstance(tryAgainHandler: (() -> Unit)) =
             ConnectionErrorFragment(tryAgainHandler)
     }
-
 }

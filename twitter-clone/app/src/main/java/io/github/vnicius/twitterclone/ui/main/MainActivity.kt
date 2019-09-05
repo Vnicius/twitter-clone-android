@@ -4,7 +4,6 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
@@ -23,10 +22,7 @@ import java.io.Serializable
  */
 class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListener {
 
-
-    // presenter instance
-    private val mPresenter: MainContract.Presenter = MainPresenter(this)
-    private lateinit var mTransaction: FragmentTransaction
+    private val presenter: MainContract.Presenter = MainPresenter(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,31 +30,19 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
         setSupportActionBar(toolbar_main)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
-        // get the list of trends
-        mPresenter.getTrends()
+        presenter.getTrends()
 
-        // set the search click
         rl_search_field.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
         when (view?.id) {
             rl_search_field.id -> {
-                // open the Searchable activity
                 val intent = Intent(this, SearchableActivity::class.java)
+
                 startActivity(intent)
             }
         }
-    }
-
-    /**
-     * Change the fragment in the view
-     * @param fragment
-     */
-    private fun changeFragment(fragment: Fragment) {
-        mTransaction = supportFragmentManager.beginTransaction()
-        mTransaction.replace(fl_main_fragment_layout.id, fragment)
-        mTransaction.commitAllowingStateLoss()
     }
 
     override fun showLoader() {
@@ -89,13 +73,23 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
 
     override fun showConnectionErrorMessage() {
         changeFragment(ConnectionErrorFragment.newInstance {
-            mPresenter.getTrends()
+            presenter.getTrends()
         })
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mPresenter.dispose()
+        presenter.dispose()
     }
 
+    /**
+     * Change the fragment in the view
+     * @param fragment
+     */
+    private fun changeFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(fl_main_fragment_layout.id, fragment)
+            commitAllowingStateLoss()
+        }
+    }
 }

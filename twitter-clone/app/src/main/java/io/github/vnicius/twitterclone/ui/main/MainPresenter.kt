@@ -3,8 +3,8 @@ package io.github.vnicius.twitterclone.ui.main
 import android.util.Log
 import io.github.vnicius.twitterclone.data.repository.trends.TrendRepository
 import io.github.vnicius.twitterclone.data.repository.trends.TrendRepositoryRemote
+import io.github.vnicius.twitterclone.utils.LogTagsUtils
 import kotlinx.coroutines.*
-import twitter4j.Trend
 import twitter4j.TwitterException
 
 /**
@@ -13,9 +13,7 @@ import twitter4j.TwitterException
  */
 class MainPresenter(val view: MainContract.View) : MainContract.Presenter {
 
-
-    // instance of the repository
-    private val mTrendRepository: TrendRepository = TrendRepositoryRemote()
+    private val trendRepository: TrendRepository = TrendRepositoryRemote()
     private var presenterJob = SupervisorJob()
     private val presenterScope = CoroutineScope(Dispatchers.Main + presenterJob)
 
@@ -24,15 +22,16 @@ class MainPresenter(val view: MainContract.View) : MainContract.Presenter {
 
         presenterScope.launch {
             try {
-                // get the trends
-                val trends = mTrendRepository.getTrendsAsync(1)
+                val trends = trendRepository.getTrendsAsync(1)
 
-                // show the trends
                 view.showTrends(trends)
-            } catch (t: TwitterException) {
+            } catch (e: TwitterException) {
+                Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
+
                 view.showConnectionErrorMessage()
             } catch (e: Exception) {
-                Log.e("debug", e.toString(), e)
+                Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Unknown exception", e)
+
                 view.showError("Some error occurred")
             }
         }

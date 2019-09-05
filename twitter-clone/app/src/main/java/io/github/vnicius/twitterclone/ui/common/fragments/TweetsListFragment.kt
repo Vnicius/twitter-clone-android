@@ -25,8 +25,6 @@ class TweetsListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_tweets_list, container, false)
-
-        // get the list of tweets by the argument
         val bundle = arguments
         val tweets: MutableList<Status> = bundle?.getSerializable(ARG_CODE) as MutableList<Status>
         val rv = view.findViewById<RecyclerView>(R.id.rv_tweets_list)
@@ -36,11 +34,13 @@ class TweetsListFragment : Fragment() {
         rv.adapter =
             TweetsAdapter(tweets, object :
                 ItemClickListener<Status> {
-                override fun onClick(view: View, tweet: Status) {
+                override fun onClick(view: View, item: Status) {
                     // open a new intent with the user profile
                     val intent = Intent(view.context, ProfileActivity::class.java)
-                    intent.putExtra(ProfileActivity.USER_ID, tweet.user.id)
+                    intent.putExtra(ProfileActivity.USER_ID, item.user.id)
+
                     startActivity(intent)
+
                     activity!!.overridePendingTransition(
                         R.anim.anim_slide_in_left,
                         R.anim.anim_fade_out

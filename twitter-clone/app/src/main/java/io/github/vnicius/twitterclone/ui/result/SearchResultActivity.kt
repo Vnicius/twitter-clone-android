@@ -5,7 +5,6 @@ import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentTransaction
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -25,34 +24,23 @@ import java.io.Serializable
  */
 class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, View.OnClickListener {
 
-    // presenter interface
-    private val mPresenter: SearchResultContract.Presenter = SearchResultPresenter(this)
-    private lateinit var mTransaction: FragmentTransaction
-    private lateinit var mQuery: String
+    private val presenter: SearchResultContract.Presenter = SearchResultPresenter(this)
+    private lateinit var query: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_result)
         setSupportActionBar(toolbar_search_result)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        // handle the intent call
+        supportActionBar?.apply {
+            setDisplayShowTitleEnabled(false)
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+        }
+
         handleIntent(intent)
 
-        // set the item search click
         rl_search_field.setOnClickListener(this)
-    }
-
-    /**
-     * Change the fragment in the view
-     * @param fragment
-     */
-    private fun changeFragment(fragment: Fragment) {
-        mTransaction = supportFragmentManager.beginTransaction()
-        mTransaction.replace(fl_search_result_fragment_layout.id, fragment)
-        mTransaction.commitAllowingStateLoss()
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -62,24 +50,22 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
 
     private fun handleIntent(intent: Intent) {
         if (Intent.ACTION_SEARCH == intent.action) {
-            // get the query value
-            intent.getStringExtra(SearchManager.QUERY)?.also { query ->
-                mPresenter.searchTweets(query)
-                tv_search_field_search_label.text = query
-                mQuery = query
+            intent.getStringExtra(SearchManager.QUERY)?.also {
+                presenter.searchTweets(it)
+                tv_search_field_search_label.text = it
+                query = it
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_fade_out)
             }
         }
     }
 
-    override fun onClick(view: View?) {
-        when (view?.id) {
-            rl_search_field.id -> {
-                val intent = Intent(this, SearchableActivity::class.java).apply {
-                    putExtra(SearchableActivity.QUERY, mQuery)
-                }
-                startActivity(intent)
+    override fun onClick(view: View) {
+        if (view.id == rl_search_field.id) {
+            val intent = Intent(this, SearchableActivity::class.java).apply {
+                putExtra(SearchableActivity.QUERY, query)
             }
+
+            startActivity(intent)
         }
     }
 
@@ -91,7 +77,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
         val fragment = TweetsListFragment.newInstance()
         val args = Bundle()
 
-        // pass the list of trends to the Trend Fragment by argument
+        // pass the list of tweets to the Tweets List Fragment by argument
         args.putSerializable(TweetsListFragment.ARG_CODE, tweets as Serializable)
         fragment.arguments = args
 
@@ -99,18 +85,17 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
     }
 
     override fun showNoResult() {
-        changeFragment(NoResultFragment.newInstance(mQuery))
+        changeFragment(NoResultFragment.newInstance(query))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_search_result, menu)
+
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            android.R.id.home -> onBackPressed()
-        }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) onBackPressed()
 
         return super.onOptionsItemSelected(item)
     }
@@ -121,11 +106,22 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
 
     override fun onDestroy() {
         super.onDestroy()
-        mPresenter.dispose()
+        presenter.dispose()
     }
 
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_slide_out_right)
+    }
+
+    /**
+     * Change the fragment in the view
+     * @param fragment
+     */
+    private fun changeFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(fl_search_result_fragment_layout.id, fragment)
+            commitAllowingStateLoss()
+        }
     }
 }

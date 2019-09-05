@@ -1,7 +1,5 @@
 package io.github.vnicius.twitterclone.data.remote.api
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import twitter4j.ResponseList
 import twitter4j.Status
 import twitter4j.Trend

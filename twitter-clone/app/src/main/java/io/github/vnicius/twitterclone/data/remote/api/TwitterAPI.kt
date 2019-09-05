@@ -3,7 +3,6 @@ package io.github.vnicius.twitterclone.data.remote.api
 import io.github.vnicius.twitterclone.BuildConfig
 import kotlinx.coroutines.*
 import twitter4j.*
-import twitter4j.conf.Configuration
 import twitter4j.conf.ConfigurationBuilder
 
 /**
@@ -11,11 +10,29 @@ import twitter4j.conf.ConfigurationBuilder
  */
 class TwitterAPI : APIInterface {
 
-    private var twitterInstance: Twitter = createConfiguration().let { TwitterFactory(it) }.instance
+    private var twitterInstance: Twitter = TwitterFactory(createConfiguration()).instance
 
-    companion object {
-        val instance: APIInterface = TwitterAPI()
+    override suspend fun searchAsync(query: String, count: Int): MutableList<Status> =
+        withContext(Dispatchers.IO) {
+            val querySearch = Query(query).count(count)
+            val result = twitterInstance.search(querySearch)
+
+            result.tweets
+        }
+
+    override suspend fun getTrendsAsync(woeid: Int): Array<Trend> = withContext(Dispatchers.IO) {
+        val trends = twitterInstance.getPlaceTrends(woeid)
+
+        trends.trends
     }
+
+    override suspend fun getUserAsync(userId: Long): User =
+        withContext(Dispatchers.IO) { twitterInstance.showUser(userId) }
+
+    override suspend fun getUserTweetsAsync(userId: Long, count: Int): ResponseList<Status> =
+        withContext(Dispatchers.IO) {
+            twitterInstance.getUserTimeline(userId, Paging(1, count))
+        }
 
     /**
      * Create the configuration of the Twitter4j
@@ -29,24 +46,7 @@ class TwitterAPI : APIInterface {
         setTweetModeExtended(true)
     }.build()
 
-
-    override suspend fun searchAsync(query: String, count: Int) = withContext(Dispatchers.IO) {
-        val querySearch = Query(query).count(count)
-        val result = twitterInstance.search(querySearch)
-        result.tweets
+    companion object {
+        val instance: APIInterface = TwitterAPI()
     }
-
-    override suspend fun getTrendsAsync(woeid: Int) = withContext(Dispatchers.IO) {
-        val trends = twitterInstance.getPlaceTrends(woeid)
-        trends.trends
-    }
-
-    override suspend fun getUserAsync(userId: Long) =
-        withContext(Dispatchers.IO) { twitterInstance.showUser(userId) }
-
-    override suspend fun getUserTweetsAsync(userId: Long, count: Int) =
-        withContext(Dispatchers.IO) {
-            twitterInstance.getUserTimeline(userId, Paging(1, count))
-        }
-
 }

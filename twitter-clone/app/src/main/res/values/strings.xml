@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Twitter Clone</string>
 
-    <!-- Title -->
+    <!-- region Titles -->
     <string name="title_trending">Trending</string>
     <string name="title_world_wide_trends">Worldwide Trends</string>
     <string name="title_follow">Follow</string>
@@ -9,8 +9,9 @@
     <string name="title_followers">Followers</string>
     <string name="title_tweets">Tweets</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <!--  endregion  -->
 
-    <!-- Menu items labels -->
+    <!-- region Menu items labels -->
     <string name="label_item_search_settings">Search Settings</string>
     <string name="label_item_save_this_search">Save this search</string>
     <string name="label_item_share">Share</string>
@@ -22,15 +23,29 @@
     <string name="label_item_block">Block</string>
     <string name="label_item_report">Report</string>
     <string name="label_item_settings">Settings</string>
+    <!--  endregion  -->
 
-    <!-- Buttons labels -->
+    <!-- region Buttons labels -->
     <string name="label_btn_try_again">Try again</string>
     <string name="label_btn_edit_profile">Edit Profile</string>
+    <!--  endregion  -->
 
-    <!-- Error messages -->
+    <!-- region Error messages -->
     <string name="error_message_connection">Connection error</string>
+    <!--  endregion  -->
 
-    <!-- Hint texts -->
+    <!-- region Hint texts -->
     <string name="hint_search">Search Twitter</string>
+    <!--  endregion  -->
+
+    <!-- region Images descriptions  -->
+    <string name="description_user_header">User header</string>
+    <string name="description_more_options_btn">More options button</string>
+    <string name="description_comment_ic">Comment icon</string>
+    <string name="description_retweet_ic">Retweet icon</string>
+    <string name="description_favourite_ic">Favourite icon</string>
+    <string name="description_share_ic">Share icon</string>
+    <string name="description_location_pin_ic">Location pin icon</string>
+    <!--  endregion  -->
 
 </resources>

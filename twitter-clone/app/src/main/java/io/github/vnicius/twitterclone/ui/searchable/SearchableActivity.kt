@@ -20,32 +20,27 @@ import kotlinx.android.synthetic.main.activity_searchable.*
  */
 class SearchableActivity : AppCompatActivity() {
 
-    // initial query text
     private var queryText: String = ""
-
-    companion object {
-        const val QUERY = "QUERY"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_searchable)
         setSupportActionBar(toolbar_searchable)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        // get the initial query text
+        supportActionBar?.apply {
+            setDisplayShowTitleEnabled(false)
+            setDisplayHomeAsUpEnabled(true)
+            setDisplayShowHomeEnabled(true)
+        }
+
         queryText = intent.getStringExtra(QUERY) ?: ""
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        val inflater = menuInflater
-        inflater.inflate(R.menu.menu_search, menu)
-
         val searchManager = getSystemService(Context.SEARCH_SERVICE) as SearchManager
         val componentName = ComponentName(baseContext, SearchResultActivity::class.java)
+
+        menuInflater.inflate(R.menu.menu_search, menu)
 
         // configure the SearchView
         (menu.findItem(R.id.action_search).actionView as SearchView).apply {
@@ -66,11 +61,13 @@ class SearchableActivity : AppCompatActivity() {
         return true
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            android.R.id.home -> onBackPressed()
-        }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) onBackPressed()
 
         return super.onOptionsItemSelected(item)
+    }
+
+    companion object {
+        const val QUERY = "QUERY"
     }
 }

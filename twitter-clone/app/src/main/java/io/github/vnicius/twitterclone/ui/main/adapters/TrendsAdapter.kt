@@ -1,5 +1,6 @@
 package io.github.vnicius.twitterclone.ui.main.adapters
 
+import android.annotation.SuppressLint
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +39,6 @@ class TrendsAdapter(val trends: Array<Trend>, private val listener: ItemClickLis
         viewHolder.bindView(trends[position])
     }
 
-
     /**
      * Class to bind the object items with the view items
      * @property itemView view with the elements
@@ -50,6 +50,7 @@ class TrendsAdapter(val trends: Array<Trend>, private val listener: ItemClickLis
         /**
          * Bind the item with the view
          */
+        @SuppressLint("SetTextI18n")
         fun bindView(trend: Trend) {
 
             val tvTweetsCount = itemView.findViewById<TextView>(R.id.tv_trend_tweets_count)

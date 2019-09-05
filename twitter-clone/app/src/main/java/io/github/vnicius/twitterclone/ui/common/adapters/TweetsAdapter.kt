@@ -95,8 +95,8 @@ class TweetsAdapter(
 
             // get the user profile image and set in the view
             Picasso.get().load(item.user.profileImageURLHttps)
-                .placeholder(R.drawable.img_deafult_avatar)
-                .error(R.drawable.img_deafult_avatar)
+                .placeholder(R.drawable.img_default_avatar)
+                .error(R.drawable.img_default_avatar)
                 .into(itemView.findViewById<ImageView>(R.id.iv_tweet_user_avatar))
         }
 
