@@ -10,6 +10,7 @@ import android.support.v7.widget.SearchView
 
 import android.view.Menu
 import android.view.MenuItem
+import android.view.SearchEvent
 import android.view.View
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.result.SearchResultActivity
@@ -56,6 +57,20 @@ class SearchableActivity : AppCompatActivity() {
             findViewById<View>(android.support.v7.appcompat.R.id.search_mag_icon).visibility =
                 View.GONE
             setQuery(queryText, false)
+            setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(text: String?): Boolean {
+                    if (text == queryText) {
+                        onBackPressed()
+                        return true
+                    }
+
+                    return false
+                }
+
+                override fun onQueryTextChange(text: String?): Boolean {
+                    return false
+                }
+            })
         }
 
         return true
