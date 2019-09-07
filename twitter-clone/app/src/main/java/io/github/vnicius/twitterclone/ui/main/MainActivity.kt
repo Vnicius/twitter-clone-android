@@ -1,21 +1,22 @@
 package io.github.vnicius.twitterclone.ui.main
 
+import android.app.SearchManager
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import io.github.vnicius.twitterclone.R
-import io.github.vnicius.twitterclone.ui.common.fragments.ConnectionErrorFragment
-import io.github.vnicius.twitterclone.ui.common.fragments.LoaderFragment
-import io.github.vnicius.twitterclone.ui.main.fragments.TrendsFragment
+import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
+import io.github.vnicius.twitterclone.ui.main.adapters.TrendsAdapter
+import io.github.vnicius.twitterclone.ui.result.SearchResultActivity
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_connection_error.*
 import kotlinx.android.synthetic.main.partial_search_field.*
 import twitter4j.Trend
-import java.io.Serializable
 
 /**
  * Main Activity View
@@ -33,6 +34,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
         presenter.getTrends()
 
         rl_search_field.setOnClickListener(this)
+        btn_connection_error_action.setOnClickListener(this)
     }
 
     override fun onClick(view: View?) {
@@ -42,28 +44,46 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
 
                 startActivity(intent)
             }
+
+            btn_connection_error_action.id -> {
+                presenter.getTrends()
+            }
         }
     }
 
     override fun showLoader() {
-        changeFragment(LoaderFragment.newInstance())
+        hideContent()
+        inc_main_spinner.visibility = View.VISIBLE
     }
 
     override fun showTrends(trends: Array<Trend>) {
-        val fragment = TrendsFragment.newInstance()
-        val args = Bundle()
+        hideContent()
+        ll_main_trends.visibility = View.VISIBLE
 
-        // pass the list of trends to the Trend Fragment by argument
-        args.putSerializable(TrendsFragment.ARG_CODE, trends as Serializable)
-        fragment.arguments = args
+        rv_main_trends_list.apply {
+            layoutManager = LinearLayoutManager(this.context)
+            adapter = TrendsAdapter(trends, object : ItemClickListener<Trend> {
+                override fun onClick(view: View, item: Trend) {
+                    // make the search with the trend name
+                    val intent = Intent(view.context, SearchResultActivity::class.java).apply {
+                        action = Intent.ACTION_SEARCH
+                        putExtra(SearchManager.QUERY, item.name)
+                    }
 
-        changeFragment(fragment)
+                    startActivity(intent)
+
+                    overridePendingTransition(
+                        R.anim.anim_slide_in_left,
+                        R.anim.anim_fade_out
+                    )
+                }
+            })
+        }
     }
 
     override fun showError(message: String) {
         Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
     }
-
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -72,9 +92,8 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
     }
 
     override fun showConnectionErrorMessage() {
-        changeFragment(ConnectionErrorFragment.newInstance {
-            presenter.getTrends()
-        })
+        hideContent()
+        inc_main_connection_error.visibility = View.VISIBLE
     }
 
     override fun onDestroy() {
@@ -82,14 +101,9 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
         presenter.dispose()
     }
 
-    /**
-     * Change the fragment in the view
-     * @param fragment
-     */
-    private fun changeFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().apply {
-            replace(fl_main_fragment_layout.id, fragment)
-            commitAllowingStateLoss()
-        }
+    private fun hideContent() {
+        inc_main_spinner.visibility = View.GONE
+        ll_main_trends.visibility = View.GONE
+        inc_main_connection_error.visibility = View.GONE
     }
 }

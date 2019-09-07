@@ -49,10 +49,46 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <FrameLayout
-                android:id="@+id/fl_main_fragment_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-    </android.support.v4.widget.NestedScrollView>
+                android:layout_height="wrap_content">
 
+            <LinearLayout
+                    android:id="@+id/ll_main_trends"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <TextView
+                        style="@style/TextAppearance.AppCompat.TextAppearanceNormal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="@dimen/spacing_normal"
+                        android:text="@string/title_world_wide_trends" />
+
+                <include layout="@layout/partial_line" />
+
+                <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_main_trends_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:listitem="@layout/item_trend">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
+
+            <include
+                    android:id="@+id/inc_main_spinner"
+                    layout="@layout/fragment_loader"
+                    android:visibility="gone" />
+
+            <include
+                    android:id="@+id/inc_main_connection_error"
+                    layout="@layout/fragment_connection_error"
+                    android:visibility="gone" />
+
+        </FrameLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
