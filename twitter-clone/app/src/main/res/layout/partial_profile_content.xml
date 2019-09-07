@@ -141,7 +141,7 @@
 
         <include
                 android:id="@+id/inc_profile_content_tweets_spinner"
-                layout="@layout/fragment_loader"
+                layout="@layout/partial_spinner"
                 android:visibility="gone" />
 
     </LinearLayout>

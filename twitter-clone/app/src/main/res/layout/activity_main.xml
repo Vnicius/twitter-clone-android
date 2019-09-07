@@ -79,12 +79,12 @@
 
             <include
                     android:id="@+id/inc_main_spinner"
-                    layout="@layout/fragment_loader"
+                    layout="@layout/partial_spinner"
                     android:visibility="gone" />
 
             <include
                     android:id="@+id/inc_main_connection_error"
-                    layout="@layout/fragment_connection_error"
+                    layout="@layout/partial_connection_error"
                     android:visibility="gone" />
 
         </FrameLayout>

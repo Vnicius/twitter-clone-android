@@ -14,7 +14,7 @@ import io.github.vnicius.twitterclone.ui.main.adapters.TrendsAdapter
 import io.github.vnicius.twitterclone.ui.result.SearchResultActivity
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_connection_error.*
+import kotlinx.android.synthetic.main.partial_connection_error.*
 import kotlinx.android.synthetic.main.partial_search_field.*
 import twitter4j.Trend
 

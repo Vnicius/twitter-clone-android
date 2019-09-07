@@ -37,12 +37,12 @@
 
     <include
             android:id="@+id/inc_search_result_spinner"
-            layout="@layout/fragment_loader"
+            layout="@layout/partial_spinner"
             android:visibility="gone" />
 
     <include
             android:id="@+id/inc_search_result_connection_error"
-            layout="@layout/fragment_connection_error"
+            layout="@layout/partial_connection_error"
             android:visibility="gone" />
 
 </LinearLayout>

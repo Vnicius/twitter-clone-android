@@ -15,7 +15,7 @@ import io.github.vnicius.twitterclone.ui.common.adapters.TweetsAdapter
 import io.github.vnicius.twitterclone.ui.profile.ProfileActivity
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
 import kotlinx.android.synthetic.main.activity_search_result.*
-import kotlinx.android.synthetic.main.fragment_connection_error.*
+import kotlinx.android.synthetic.main.partial_connection_error.*
 import kotlinx.android.synthetic.main.partial_search_field.*
 import twitter4j.Status
 
