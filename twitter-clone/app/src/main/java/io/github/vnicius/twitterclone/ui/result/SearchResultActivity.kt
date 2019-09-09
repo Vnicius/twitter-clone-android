@@ -4,20 +4,20 @@ import android.app.SearchManager
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import android.support.v4.app.Fragment
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import io.github.vnicius.twitterclone.R
-import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
-import io.github.vnicius.twitterclone.ui.common.adapters.TweetsAdapter
-import io.github.vnicius.twitterclone.ui.profile.ProfileActivity
+import io.github.vnicius.twitterclone.ui.common.fragments.LoaderFragment
+import io.github.vnicius.twitterclone.ui.common.fragments.NoResultFragment
+import io.github.vnicius.twitterclone.ui.common.fragments.TweetsListFragment
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
 import kotlinx.android.synthetic.main.activity_search_result.*
-import kotlinx.android.synthetic.main.partial_connection_error.*
 import kotlinx.android.synthetic.main.partial_search_field.*
 import twitter4j.Status
+import java.io.Serializable
 
 /**
  * SearchResult Activity View
@@ -26,7 +26,6 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
 
     private val presenter: SearchResultContract.Presenter = SearchResultPresenter(this)
     private lateinit var query: String
-    private lateinit var tweetsAdapter: TweetsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,12 +38,9 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
             setDisplayShowHomeEnabled(true)
         }
 
-        setupTweetsRecyclerView()
-
         handleIntent(intent)
 
         rl_search_field.setOnClickListener(this)
-        btn_connection_error_action.setOnClickListener(this)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -64,40 +60,32 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
     }
 
     override fun onClick(view: View) {
-        when (view.id) {
-            rl_search_field.id -> {
-                val intent = Intent(this, SearchableActivity::class.java).apply {
-                    putExtra(SearchableActivity.QUERY, query)
-                }
-
-                startActivity(intent)
+        if (view.id == rl_search_field.id) {
+            val intent = Intent(this, SearchableActivity::class.java).apply {
+                putExtra(SearchableActivity.QUERY, query)
             }
 
-            btn_connection_error_action.id -> {
-                presenter.searchTweets(query)
-            }
+            startActivity(intent)
         }
     }
 
     override fun showLoader() {
-        hideContent()
-        inc_search_result_spinner.visibility = View.GONE
+        changeFragment(LoaderFragment.newInstance())
     }
 
     override fun showResult(tweets: MutableList<Status>) {
-        hideContent()
-        rv_search_result_tweets_list.visibility = View.VISIBLE
+        val fragment = TweetsListFragment.newInstance()
+        val args = Bundle()
 
-        tweetsAdapter.apply {
-            this.tweets = tweets
-            notifyDataSetChanged()
-        }
+        // pass the list of tweets to the Tweets List Fragment by argument
+        args.putSerializable(TweetsListFragment.ARG_CODE, tweets as Serializable)
+        fragment.arguments = args
+
+        changeFragment(fragment)
     }
 
     override fun showNoResult() {
-        hideContent()
-        tv_search_result_no_result_message.visibility = View.VISIBLE
-        tv_search_result_no_result_message.text = getString(R.string.error_message_no_result, query)
+        changeFragment(NoResultFragment.newInstance(query))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -116,11 +104,6 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
         Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
     }
 
-    override fun showConnectionErrorMessage() {
-        hideContent()
-        inc_search_result_connection_error.visibility = View.VISIBLE
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         presenter.dispose()
@@ -131,31 +114,14 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
         overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_slide_out_right)
     }
 
-    private fun hideContent() {
-        inc_search_result_connection_error.visibility = View.GONE
-        inc_search_result_spinner.visibility = View.GONE
-        rv_search_result_tweets_list.visibility = View.GONE
-        tv_search_result_no_result_message.visibility = View.GONE
-    }
-
-    private fun setupTweetsRecyclerView() {
-        tweetsAdapter = TweetsAdapter(mutableListOf(), object : ItemClickListener<Status> {
-            override fun onClick(view: View, item: Status) {
-                val intent = Intent(view.context, ProfileActivity::class.java)
-                intent.putExtra(ProfileActivity.USER_ID, item.user.id)
-
-                startActivity(intent)
-
-                overridePendingTransition(
-                    R.anim.anim_slide_in_left,
-                    R.anim.anim_fade_out
-                )
-            }
-        })
-
-        rv_search_result_tweets_list.apply {
-            layoutManager = LinearLayoutManager(this.context)
-            adapter = tweetsAdapter
+    /**
+     * Change the fragment in the view
+     * @param fragment
+     */
+    private fun changeFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(fl_search_result_fragment_layout.id, fragment)
+            commitAllowingStateLoss()
         }
     }
 }

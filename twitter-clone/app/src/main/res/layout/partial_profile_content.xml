@@ -132,18 +132,12 @@
 
         </LinearLayout>
 
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_profile_content_tweets_list"
+        <FrameLayout
+                android:id="@+id/fl_profile_content_fragment_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                tools:listitem="@layout/item_tweet" />
+                android:layout_height="wrap_content">
 
-        <include
-                android:id="@+id/inc_profile_content_tweets_spinner"
-                layout="@layout/partial_spinner"
-                android:visibility="gone" />
-
+        </FrameLayout>
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
