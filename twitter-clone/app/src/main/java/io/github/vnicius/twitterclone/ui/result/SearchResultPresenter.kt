@@ -1,6 +1,8 @@
 package io.github.vnicius.twitterclone.ui.result
 
+import android.content.res.Resources
 import android.util.Log
+import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepository
 import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepositoryRemote
 import io.github.vnicius.twitterclone.utils.LogTagsUtils
@@ -42,7 +44,7 @@ class SearchResultPresenter(val view: SearchResultContract.View) : SearchResultC
             } catch (e: Exception) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Unknown exception", e)
 
-                view.showError("Connection Error")
+                view.showError(Resources.getSystem().getString(R.string.error_message_connection))
             }
         }
     }
