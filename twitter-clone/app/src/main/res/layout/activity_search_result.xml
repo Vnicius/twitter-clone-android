@@ -17,9 +17,32 @@
         <include layout="@layout/partial_search_field" />
     </android.support.v7.widget.Toolbar>
 
-    <FrameLayout
-            android:id="@+id/fl_search_result_fragment_layout"
+    <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_search_result_tweets_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            tools:listitem="@layout/item_tweet" />
+
+    <TextView
+            android:id="@+id/tv_search_result_no_result_message"
+            style="@style/TextAppearance.AppCompat.TextAppearanceNormal.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="@dimen/spacing_normal"
+            android:textAlignment="center"
+            android:visibility="gone"
+            tools:text="No results for" />
+
+    <include
+            android:id="@+id/inc_search_result_spinner"
+            layout="@layout/partial_spinner"
+            android:visibility="gone" />
+
+    <include
+            android:id="@+id/inc_search_result_connection_error"
+            layout="@layout/partial_connection_error"
+            android:visibility="gone" />
 
 </LinearLayout>
