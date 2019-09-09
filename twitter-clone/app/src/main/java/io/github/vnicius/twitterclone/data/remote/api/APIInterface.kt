@@ -35,5 +35,5 @@ interface APIInterface {
      * @param [count] the maximum number of tweets
      * @return a [ResponseList] of [Status]
      */
-    suspend fun getUserTweetsAsync(userId: Long, count: Int): ResponseList<Status>
+    suspend fun getUserTweetsAsync(userId: Long, count: Int, page: Int = 1): ResponseList<Status>
 }

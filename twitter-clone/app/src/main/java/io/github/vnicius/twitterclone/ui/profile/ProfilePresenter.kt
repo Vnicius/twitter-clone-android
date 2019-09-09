@@ -1,12 +1,21 @@
 package io.github.vnicius.twitterclone.ui.profile
 
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
+import android.arch.paging.LivePagedListBuilder
+import android.arch.paging.PagedList
 import android.util.Log
+import io.github.vnicius.twitterclone.data.datasource.usertweets.UserTweetsDataSource
+import io.github.vnicius.twitterclone.data.datasource.usertweets.UserTweetsDataSourceFactory
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
 import io.github.vnicius.twitterclone.data.repository.user.UserRepositoryRemote
 import io.github.vnicius.twitterclone.utils.LogTagsUtils
+import io.github.vnicius.twitterclone.utils.State
 import kotlinx.coroutines.*
+import twitter4j.Status
 
-const val TWEETS_COUNT = 50
+private const val MAX_PAGES = 5
+private const val MAX_ITEMS = 10
 
 /**
  * Profile Presenter
@@ -17,6 +26,8 @@ class ProfilePresenter(val view: ProfileContract.View) : ProfileContract.Present
     private val userRepository: UserRepository = UserRepositoryRemote()
     private val presenterJob = SupervisorJob()
     private val presenterScope = CoroutineScope(Dispatchers.Main + presenterJob)
+    private lateinit var homeTweetsList: LiveData<PagedList<Status>>
+    private lateinit var homeTweetsDataSourceFactory: UserTweetsDataSourceFactory
 
     override fun getUser(userId: Long) {
         presenterScope.launch {
@@ -32,23 +43,22 @@ class ProfilePresenter(val view: ProfileContract.View) : ProfileContract.Present
         }
     }
 
-    override fun getHomeTweets(userId: Long) {
-        view.showLoader()
-
-        presenterScope.launch {
-            try {
-                // get the user tweets
-                val tweets =
-                    userRepository.getUserTweetsAsync(userId, TWEETS_COUNT)
-
-                view.showTweets(tweets.toMutableList())
-            } catch (e: Exception) {
-                Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Unknown exception", e)
-
-                view.showError("Connection Error")
-            }
-        }
+    override fun buildTweets(userId: Long) {
+        homeTweetsDataSourceFactory = UserTweetsDataSourceFactory(userId, MAX_ITEMS, userRepository)
+        val config = PagedList.Config.Builder()
+            .setPageSize(MAX_PAGES)
+            .setInitialLoadSizeHint(MAX_PAGES * 2)
+            .setEnablePlaceholders(false)
+            .build()
+        homeTweetsList = LivePagedListBuilder(homeTweetsDataSourceFactory, config).build()
     }
+
+    override fun getTweetsValue() = homeTweetsList
+
+    override fun getTweetsState(): LiveData<State> = Transformations.switchMap(
+        homeTweetsDataSourceFactory.userTweetsDataSourceLiveData,
+        UserTweetsDataSource::state
+    )
 
     override fun dispose() {
         presenterScope.coroutineContext.cancelChildren()

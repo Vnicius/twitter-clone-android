@@ -12,7 +12,7 @@ import android.view.View
 import android.widget.Toast
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
-import io.github.vnicius.twitterclone.ui.common.adapters.SearchTweetsAdapter
+import io.github.vnicius.twitterclone.ui.common.adapters.TweetsAdapter
 import io.github.vnicius.twitterclone.ui.profile.ProfileActivity
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
 import io.github.vnicius.twitterclone.utils.State
@@ -28,7 +28,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
 
     private val presenter: SearchResultContract.Presenter = SearchResultPresenter()
     private lateinit var query: String
-    private lateinit var tweetsAdapter: SearchTweetsAdapter
+    private lateinit var tweetsAdapter: TweetsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -135,7 +135,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
     }
 
     private fun setupTweetsRecyclerView() {
-        tweetsAdapter = SearchTweetsAdapter(object : ItemClickListener<Status> {
+        tweetsAdapter = TweetsAdapter(object : ItemClickListener<Status> {
             override fun onClick(view: View, item: Status) {
                 val intent = Intent(view.context, ProfileActivity::class.java)
                 intent.putExtra(ProfileActivity.USER_ID, item.user.id)

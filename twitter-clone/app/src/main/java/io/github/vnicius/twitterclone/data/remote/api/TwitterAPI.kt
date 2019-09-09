@@ -28,9 +28,13 @@ class TwitterAPI : APIInterface {
     override suspend fun getUserAsync(userId: Long): User =
         withContext(Dispatchers.IO) { twitterInstance.showUser(userId) }
 
-    override suspend fun getUserTweetsAsync(userId: Long, count: Int): ResponseList<Status> =
+    override suspend fun getUserTweetsAsync(
+        userId: Long,
+        count: Int,
+        page: Int
+    ): ResponseList<Status> =
         withContext(Dispatchers.IO) {
-            twitterInstance.getUserTimeline(userId, Paging(1, count))
+            twitterInstance.getUserTimeline(userId, Paging(page, count))
         }
 
     /**

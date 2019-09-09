@@ -1,6 +1,9 @@
 package io.github.vnicius.twitterclone.ui.profile
 
+import android.arch.lifecycle.LiveData
+import android.arch.paging.PagedList
 import io.github.vnicius.twitterclone.ui.common.BaseContract
+import io.github.vnicius.twitterclone.utils.State
 import twitter4j.Status
 import twitter4j.User
 
@@ -19,9 +22,8 @@ interface ProfileContract {
 
         /**
          * Show the tweets of the user
-         * @param [tweets] a list os [Status] (tweets)
          */
-        fun showTweets(tweets: MutableList<Status>)
+        fun showTweets()
     }
 
     interface Presenter : BaseContract.Presenter {
@@ -32,10 +34,10 @@ interface ProfileContract {
          */
         fun getUser(userId: Long)
 
-        /**
-         * Get the tweets of the user by the [userId]
-         * @param [userId] the user id
-         */
-        fun getHomeTweets(userId: Long)
+        fun buildTweets(userId: Long)
+
+        fun getTweetsValue(): LiveData<PagedList<Status>>
+
+        fun getTweetsState(): LiveData<State>
     }
 }
