@@ -1,5 +1,7 @@
 package io.github.vnicius.twitterclone.data.repository.tweet
 
+import twitter4j.Query
+import twitter4j.QueryResult
 import twitter4j.Status
 
 /**
@@ -13,5 +15,9 @@ interface TweetRepository {
      * @param [count] maximum number of tweets
      * @return [MutableList] of [Status]
      */
-    suspend fun getTweetsByQueryAsync(query: String, count: Int): MutableList<Status>
+    suspend fun getTweetsByQueryAsync(
+        query: String,
+        count: Int,
+        nextQuery: Query? = null
+    ): QueryResult
 }

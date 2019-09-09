@@ -1,6 +1,10 @@
 package io.github.vnicius.twitterclone.ui.result
 
+import android.arch.lifecycle.LiveData
+import android.arch.paging.PagedList
+import io.github.vnicius.twitterclone.data.datasource.searchtweets.SearchTweetsDataSource
 import io.github.vnicius.twitterclone.ui.common.BaseContract
+import io.github.vnicius.twitterclone.utils.State
 import twitter4j.Status
 
 /**
@@ -13,7 +17,7 @@ interface SearchResultContract {
          * Show the tweets of the search result
          * @param [tweets] list o tweets
          */
-        fun showResult(tweets: MutableList<Status>)
+        fun showResult()
 
         /**
          * Show the message that has no result to the query
@@ -23,11 +27,17 @@ interface SearchResultContract {
         fun showConnectionErrorMessage()
     }
 
-    interface Presenter : BaseContract.Presenter {
+    interface Presenter {
 
         /**
          * Search the tweets for a query
          */
-        fun searchTweets(query: String)
+        fun build(query: String)
+
+        fun getValue(): LiveData<PagedList<Status>>
+
+        fun getState(): LiveData<State>
+
+        fun getDataSourceValue(): SearchTweetsDataSource?
     }
 }

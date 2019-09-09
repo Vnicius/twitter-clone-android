@@ -1,6 +1,7 @@
 package io.github.vnicius.twitterclone.ui.result
 
 import android.app.SearchManager
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -11,9 +12,10 @@ import android.view.View
 import android.widget.Toast
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
-import io.github.vnicius.twitterclone.ui.common.adapters.TweetsAdapter
+import io.github.vnicius.twitterclone.ui.common.adapters.SearchTweetsAdapter
 import io.github.vnicius.twitterclone.ui.profile.ProfileActivity
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
+import io.github.vnicius.twitterclone.utils.State
 import kotlinx.android.synthetic.main.activity_search_result.*
 import kotlinx.android.synthetic.main.partial_connection_error.*
 import kotlinx.android.synthetic.main.partial_search_field.*
@@ -24,9 +26,9 @@ import twitter4j.Status
  */
 class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, View.OnClickListener {
 
-    private val presenter: SearchResultContract.Presenter = SearchResultPresenter(this)
+    private val presenter: SearchResultContract.Presenter = SearchResultPresenter()
     private lateinit var query: String
-    private lateinit var tweetsAdapter: TweetsAdapter
+    private lateinit var tweetsAdapter: SearchTweetsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +40,6 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
-
-        setupTweetsRecyclerView()
 
         handleIntent(intent)
 
@@ -55,11 +55,13 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
     private fun handleIntent(intent: Intent) {
         if (Intent.ACTION_SEARCH == intent.action) {
             intent.getStringExtra(SearchManager.QUERY)?.also {
-                presenter.searchTweets(it)
+                presenter.build(it)
                 tv_search_field_search_label.text = it
                 query = it
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_fade_out)
             }
+            initState()
+            setupTweetsRecyclerView()
         }
     }
 
@@ -74,22 +76,21 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
             }
 
             btn_connection_error_action.id -> {
-                presenter.searchTweets(query)
+                presenter.getDataSourceValue()?.invalidate()
             }
         }
     }
 
     override fun showLoader() {
         hideContent()
-        inc_search_result_spinner.visibility = View.GONE
+        inc_search_result_spinner.visibility = View.VISIBLE
     }
 
-    override fun showResult(tweets: MutableList<Status>) {
+    override fun showResult() {
         hideContent()
         rv_search_result_tweets_list.visibility = View.VISIBLE
 
         tweetsAdapter.apply {
-            this.tweets = tweets
             notifyDataSetChanged()
         }
     }
@@ -121,11 +122,6 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
         inc_search_result_connection_error.visibility = View.VISIBLE
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.dispose()
-    }
-
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_slide_out_right)
@@ -139,7 +135,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
     }
 
     private fun setupTweetsRecyclerView() {
-        tweetsAdapter = TweetsAdapter(mutableListOf(), object : ItemClickListener<Status> {
+        tweetsAdapter = SearchTweetsAdapter(object : ItemClickListener<Status> {
             override fun onClick(view: View, item: Status) {
                 val intent = Intent(view.context, ProfileActivity::class.java)
                 intent.putExtra(ProfileActivity.USER_ID, item.user.id)
@@ -157,5 +153,20 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
             layoutManager = LinearLayoutManager(this.context)
             adapter = tweetsAdapter
         }
+
+        presenter.getValue().observe(this, Observer {
+            tweetsAdapter.submitList(it)
+        })
+    }
+
+    private fun initState() {
+        presenter.getState().observe(this, Observer {
+            when (it) {
+                State.NO_RESULT -> showNoResult()
+                State.ERROR -> showConnectionErrorMessage()
+                State.DONE -> showResult()
+                State.LOADING -> showLoader()
+            }
+        })
     }
 }

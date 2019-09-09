@@ -12,12 +12,11 @@ class TwitterAPI : APIInterface {
 
     private var twitterInstance: Twitter = TwitterFactory(createConfiguration()).instance
 
-    override suspend fun searchAsync(query: String, count: Int): MutableList<Status> =
+    override suspend fun searchAsync(query: String, count: Int, nextQuery: Query?): QueryResult =
         withContext(Dispatchers.IO) {
-            val querySearch = Query(query).count(count)
-            val result = twitterInstance.search(querySearch)
-
-            result.tweets
+            val queryObj = nextQuery ?: Query(query)
+            val querySearch = queryObj.count(count)
+            twitterInstance.search(querySearch)
         }
 
     override suspend fun getTrendsAsync(woeid: Int): Array<Trend> = withContext(Dispatchers.IO) {
