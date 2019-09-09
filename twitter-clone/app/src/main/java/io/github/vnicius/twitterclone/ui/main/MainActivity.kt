@@ -24,6 +24,7 @@ import twitter4j.Trend
 class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListener {
 
     private val presenter: MainContract.Presenter = MainPresenter(this)
+    private lateinit var trendsAdapter: TrendsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +32,7 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
         setSupportActionBar(toolbar_main)
         supportActionBar?.setDisplayShowTitleEnabled(false)
 
+        setupTrendsRecyclerView()
         presenter.getTrends()
 
         rl_search_field.setOnClickListener(this)
@@ -60,24 +62,9 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
         hideContent()
         ll_main_trends.visibility = View.VISIBLE
 
-        rv_main_trends_list.apply {
-            layoutManager = LinearLayoutManager(this.context)
-            adapter = TrendsAdapter(trends, object : ItemClickListener<Trend> {
-                override fun onClick(view: View, item: Trend) {
-                    // make the search with the trend name
-                    val intent = Intent(view.context, SearchResultActivity::class.java).apply {
-                        action = Intent.ACTION_SEARCH
-                        putExtra(SearchManager.QUERY, item.name)
-                    }
-
-                    startActivity(intent)
-
-                    overridePendingTransition(
-                        R.anim.anim_slide_in_left,
-                        R.anim.anim_fade_out
-                    )
-                }
-            })
+        trendsAdapter.apply {
+            this.trends = trends
+            notifyDataSetChanged()
         }
     }
 
@@ -105,5 +92,29 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
         inc_main_spinner.visibility = View.GONE
         ll_main_trends.visibility = View.GONE
         inc_main_connection_error.visibility = View.GONE
+    }
+
+    private fun setupTrendsRecyclerView() {
+        trendsAdapter = TrendsAdapter(arrayOf(), object : ItemClickListener<Trend> {
+            override fun onClick(view: View, item: Trend) {
+                // make the search with the trend name
+                val intent = Intent(view.context, SearchResultActivity::class.java).apply {
+                    action = Intent.ACTION_SEARCH
+                    putExtra(SearchManager.QUERY, item.name)
+                }
+
+                startActivity(intent)
+
+                overridePendingTransition(
+                    R.anim.anim_slide_in_left,
+                    R.anim.anim_fade_out
+                )
+            }
+        })
+
+        rv_main_trends_list.apply {
+            layoutManager = LinearLayoutManager(this.context)
+            adapter = trendsAdapter
+        }
     }
 }

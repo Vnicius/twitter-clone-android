@@ -26,6 +26,7 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
 
     private val presenter: SearchResultContract.Presenter = SearchResultPresenter(this)
     private lateinit var query: String
+    private lateinit var tweetsAdapter: TweetsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +38,8 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
             setDisplayHomeAsUpEnabled(true)
             setDisplayShowHomeEnabled(true)
         }
+
+        setupTweetsRecyclerView()
 
         handleIntent(intent)
 
@@ -85,28 +88,16 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
         hideContent()
         rv_search_result_tweets_list.visibility = View.VISIBLE
 
-        rv_search_result_tweets_list.apply {
-            layoutManager = LinearLayoutManager(this.context)
-            adapter = TweetsAdapter(tweets, object : ItemClickListener<Status> {
-                override fun onClick(view: View, item: Status) {
-                    val intent = Intent(view.context, ProfileActivity::class.java)
-                    intent.putExtra(ProfileActivity.USER_ID, item.user.id)
-
-                    startActivity(intent)
-
-                    overridePendingTransition(
-                        R.anim.anim_slide_in_left,
-                        R.anim.anim_fade_out
-                    )
-                }
-            })
+        tweetsAdapter.apply {
+            this.tweets = tweets
+            notifyDataSetChanged()
         }
     }
 
     override fun showNoResult() {
         hideContent()
         tv_search_result_no_result_message.visibility = View.VISIBLE
-        tv_search_result_no_result_message.text = "No results for \"$query\""
+        tv_search_result_no_result_message.text = getString(R.string.error_message_no_result, query)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -145,5 +136,26 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
         inc_search_result_spinner.visibility = View.GONE
         rv_search_result_tweets_list.visibility = View.GONE
         tv_search_result_no_result_message.visibility = View.GONE
+    }
+
+    private fun setupTweetsRecyclerView() {
+        tweetsAdapter = TweetsAdapter(mutableListOf(), object : ItemClickListener<Status> {
+            override fun onClick(view: View, item: Status) {
+                val intent = Intent(view.context, ProfileActivity::class.java)
+                intent.putExtra(ProfileActivity.USER_ID, item.user.id)
+
+                startActivity(intent)
+
+                overridePendingTransition(
+                    R.anim.anim_slide_in_left,
+                    R.anim.anim_fade_out
+                )
+            }
+        })
+
+        rv_search_result_tweets_list.apply {
+            layoutManager = LinearLayoutManager(this.context)
+            adapter = tweetsAdapter
+        }
     }
 }

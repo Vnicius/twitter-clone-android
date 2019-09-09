@@ -32,6 +32,7 @@
 
     <!-- region Error messages -->
     <string name="error_message_connection">Connection error</string>
+    <string name="error_message_no_result">No results for \"%1$s\"</string>
     <!--  endregion  -->
 
     <!-- region Hint texts -->

@@ -28,6 +28,7 @@ import twitter4j.User
 class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
     private val presenter: ProfileContract.Presenter = ProfilePresenter(this)
+    private lateinit var tweetsAdapter: TweetsAdapter
     private var currentUserID: Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,6 +43,8 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         }
 
         currentUserID = intent.getLongExtra(USER_ID, -1)
+
+        setupTweetsRecyclerView()
 
         presenter.getUser(currentUserID)
         presenter.getHomeTweets(currentUserID)
@@ -138,21 +141,9 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         hideContent()
         rv_profile_content_tweets_list.visibility = View.VISIBLE
 
-        rv_profile_content_tweets_list.apply {
-            layoutManager = LinearLayoutManager(this.context)
-            adapter = TweetsAdapter(tweets, object : ItemClickListener<Status> {
-                override fun onClick(view: View, item: Status) {
-                    val intent = Intent(view.context, ProfileActivity::class.java)
-                    intent.putExtra(USER_ID, item.user.id)
-
-                    startActivity(intent)
-
-                    overridePendingTransition(
-                        R.anim.anim_slide_in_left,
-                        R.anim.anim_fade_out
-                    )
-                }
-            })
+        tweetsAdapter.apply {
+            this.tweets = tweets
+            notifyDataSetChanged()
         }
     }
 
@@ -174,6 +165,27 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
     private fun hideContent() {
         inc_profile_content_tweets_spinner.visibility = View.GONE
         rv_profile_content_tweets_list.visibility = View.GONE
+    }
+
+    private fun setupTweetsRecyclerView() {
+        tweetsAdapter = TweetsAdapter(mutableListOf(), object : ItemClickListener<Status> {
+            override fun onClick(view: View, item: Status) {
+                val intent = Intent(view.context, ProfileActivity::class.java)
+                intent.putExtra(USER_ID, item.user.id)
+
+                startActivity(intent)
+
+                overridePendingTransition(
+                    R.anim.anim_slide_in_left,
+                    R.anim.anim_fade_out
+                )
+            }
+        })
+
+        rv_profile_content_tweets_list.apply {
+            layoutManager = LinearLayoutManager(this.context)
+            adapter = tweetsAdapter
+        }
     }
 
     companion object {
