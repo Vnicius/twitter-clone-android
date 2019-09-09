@@ -23,7 +23,7 @@ import twitter4j.Status
  * @property listener listener to handle the click in the item
  */
 class TweetsAdapter(
-    var tweets: MutableList<Status>,
+    private val tweets: MutableList<Status>,
     private val listener: ItemClickListener<Status>
 ) : RecyclerView.Adapter<TweetsAdapter.ViewHolder>() {
 

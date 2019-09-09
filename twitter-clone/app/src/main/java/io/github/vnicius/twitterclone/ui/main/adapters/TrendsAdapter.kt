@@ -16,7 +16,7 @@ import twitter4j.Trend
  * @property trends a list of Trend objects
  * @property listener listener to handle the click in the item
  */
-class TrendsAdapter(var trends: Array<Trend>, private val listener: ItemClickListener<Trend>) :
+class TrendsAdapter(val trends: Array<Trend>, private val listener: ItemClickListener<Trend>) :
     RecyclerView.Adapter<TrendsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {

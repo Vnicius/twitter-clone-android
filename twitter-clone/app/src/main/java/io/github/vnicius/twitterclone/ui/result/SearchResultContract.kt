@@ -19,8 +19,6 @@ interface SearchResultContract {
          * Show the message that has no result to the query
          */
         fun showNoResult()
-
-        fun showConnectionErrorMessage()
     }
 
     interface Presenter : BaseContract.Presenter {

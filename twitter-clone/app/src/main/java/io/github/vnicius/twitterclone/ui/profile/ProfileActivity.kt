@@ -1,26 +1,26 @@
 package io.github.vnicius.twitterclone.ui.profile
 
-import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
+import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.squareup.picasso.Picasso
 import io.github.vnicius.twitterclone.R
-import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
-import io.github.vnicius.twitterclone.ui.common.adapters.TweetsAdapter
+import io.github.vnicius.twitterclone.ui.common.fragments.LoaderFragment
+import io.github.vnicius.twitterclone.ui.common.fragments.TweetsListFragment
 import io.github.vnicius.twitterclone.utils.highlightClickable
 import io.github.vnicius.twitterclone.utils.summarizeNumber
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.partial_profile_content.*
 import twitter4j.Status
 import twitter4j.User
+import java.io.Serializable
 
 /**
  * Profile Activity View
@@ -28,7 +28,6 @@ import twitter4j.User
 class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
     private val presenter: ProfileContract.Presenter = ProfilePresenter(this)
-    private lateinit var tweetsAdapter: TweetsAdapter
     private var currentUserID: Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,8 +42,6 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         }
 
         currentUserID = intent.getLongExtra(USER_ID, -1)
-
-        setupTweetsRecyclerView()
 
         presenter.getUser(currentUserID)
         presenter.getHomeTweets(currentUserID)
@@ -138,18 +135,18 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
     }
 
     override fun showTweets(tweets: MutableList<Status>) {
-        hideContent()
-        rv_profile_content_tweets_list.visibility = View.VISIBLE
+        val fragment = TweetsListFragment.newInstance()
+        val args = Bundle()
 
-        tweetsAdapter.apply {
-            this.tweets = tweets
-            notifyDataSetChanged()
-        }
+        // pass the list of tweets to the Tweets List Fragment by argument
+        args.putSerializable(TweetsListFragment.ARG_CODE, tweets as Serializable)
+        fragment.arguments = args
+
+        changeFragment(fragment)
     }
 
     override fun showLoader() {
-        hideContent()
-        inc_profile_content_tweets_spinner.visibility = View.VISIBLE
+        changeFragment(LoaderFragment.newInstance())
     }
 
     override fun onDestroy() {
@@ -162,29 +159,14 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_slide_out_right)
     }
 
-    private fun hideContent() {
-        inc_profile_content_tweets_spinner.visibility = View.GONE
-        rv_profile_content_tweets_list.visibility = View.GONE
-    }
-
-    private fun setupTweetsRecyclerView() {
-        tweetsAdapter = TweetsAdapter(mutableListOf(), object : ItemClickListener<Status> {
-            override fun onClick(view: View, item: Status) {
-                val intent = Intent(view.context, ProfileActivity::class.java)
-                intent.putExtra(USER_ID, item.user.id)
-
-                startActivity(intent)
-
-                overridePendingTransition(
-                    R.anim.anim_slide_in_left,
-                    R.anim.anim_fade_out
-                )
-            }
-        })
-
-        rv_profile_content_tweets_list.apply {
-            layoutManager = LinearLayoutManager(this.context)
-            adapter = tweetsAdapter
+    /**
+     * Change the fragment in the view
+     * @param fragment
+     */
+    private fun changeFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fl_profile_content_fragment_layout, fragment)
+            commitAllowingStateLoss()
         }
     }
 
