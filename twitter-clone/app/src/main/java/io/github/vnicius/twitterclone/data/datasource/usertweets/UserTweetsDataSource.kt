@@ -16,7 +16,6 @@ class UserTweetsDataSource(
 
     private val userTweetsDataSourceJob = SupervisorJob()
     private val userTweetsDataSourceScope = CoroutineScope(Dispatchers.IO + userTweetsDataSourceJob)
-    private var currentPage = 1
     var state: MutableLiveData<State> = MutableLiveData()
 
     override fun loadInitial(
@@ -27,8 +26,14 @@ class UserTweetsDataSource(
 
         userTweetsDataSourceScope.launch {
             try {
-                val result = userRepository.getUserTweetsAsync(userId, pageSize, currentPage)
-                callback.onResult(result.toMutableList(), null, ++currentPage)
+                val result = userRepository.getUserTweetsAsync(userId, pageSize, 1)
+                var nextPage: Int? = 2
+
+                if (result.isEmpty()) {
+                    nextPage = null
+                }
+
+                callback.onResult(result.toMutableList(), null, nextPage)
                 setStateValue(State.DONE)
             } catch (e: Exception) {
                 setStateValue(State.ERROR)
@@ -39,8 +44,14 @@ class UserTweetsDataSource(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Status>) {
         userTweetsDataSourceScope.launch {
             try {
-                val result = userRepository.getUserTweetsAsync(userId, pageSize, currentPage)
-                callback.onResult(result.toMutableList(), ++currentPage)
+                val result = userRepository.getUserTweetsAsync(userId, pageSize, params.key)
+                var nextPage: Int? = params.key + 1
+
+                if (result.isEmpty()) {
+                    nextPage = null
+                }
+
+                callback.onResult(result.toMutableList(), nextPage)
             } catch (e: Exception) {
                 setStateValue(State.ERROR)
             }
@@ -50,8 +61,14 @@ class UserTweetsDataSource(
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Status>) {
         userTweetsDataSourceScope.launch {
             try {
-                val result = userRepository.getUserTweetsAsync(userId, pageSize, --currentPage)
-                callback.onResult(result.toMutableList(), --currentPage)
+                val result = userRepository.getUserTweetsAsync(userId, pageSize, params.key - 1)
+                var nextPage: Int? = params.key - 2
+
+                if (result.isEmpty() || nextPage == -1) {
+                    nextPage = null
+                }
+
+                callback.onResult(result.toMutableList(), nextPage)
             } catch (e: Exception) {
                 setStateValue(State.ERROR)
             }
