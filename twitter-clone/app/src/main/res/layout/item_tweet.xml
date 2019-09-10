@@ -58,7 +58,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:contentDescription="@string/description_more_options_btn"
-                        android:src="@drawable/ic_keyboard_arrow_down"
+                        app:srcCompat="@drawable/ic_keyboard_arrow_down"
                         android:tint="@color/gray_dark" />
 
             </RelativeLayout>
@@ -95,7 +95,7 @@
                                 android:layout_height="@dimen/icon_normal"
                                 android:layout_gravity="center_horizontal"
                                 android:contentDescription="@string/description_comment_ic"
-                                android:src="@drawable/ic_reply"
+                                app:srcCompat="@drawable/ic_reply"
                                 android:tint="@color/gray_dark" />
 
                         <TextView
@@ -121,7 +121,7 @@
                                 android:layout_height="@dimen/icon_normal"
                                 android:layout_gravity="center_horizontal"
                                 android:contentDescription="@string/description_retweet_ic"
-                                android:src="@drawable/ic_retweet"
+                                app:srcCompat="@drawable/ic_retweet"
                                 android:tint="@color/gray_dark" />
 
                         <TextView
@@ -147,7 +147,7 @@
                                 android:layout_height="@dimen/icon_normal"
                                 android:layout_gravity="center_horizontal"
                                 android:contentDescription="@string/description_favourite_ic"
-                                android:src="@drawable/ic_fav"
+                                app:srcCompat="@drawable/ic_fav"
                                 android:tint="@color/gray_dark" />
 
                         <com.airbnb.lottie.LottieAnimationView
@@ -182,7 +182,7 @@
                                 android:layout_height="@dimen/icon_normal"
                                 android:layout_gravity="center_horizontal"
                                 android:contentDescription="@string/description_share_ic"
-                                android:src="@drawable/ic_share"
+                                app:srcCompat="@drawable/ic_share"
                                 android:tint="@color/gray_dark" />
                     </LinearLayout>
                 </TableRow>
