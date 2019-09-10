@@ -1,5 +1,6 @@
 package io.github.vnicius.twitterclone.ui.profile
 
+import android.arch.lifecycle.Observer
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.PorterDuff
@@ -15,6 +16,7 @@ import com.squareup.picasso.Picasso
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
 import io.github.vnicius.twitterclone.ui.common.adapters.TweetsAdapter
+import io.github.vnicius.twitterclone.utils.State
 import io.github.vnicius.twitterclone.utils.highlightClickable
 import io.github.vnicius.twitterclone.utils.summarizeNumber
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -44,10 +46,11 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
         currentUserID = intent.getLongExtra(USER_ID, -1)
 
-        setupTweetsRecyclerView()
-
         presenter.getUser(currentUserID)
-        presenter.getHomeTweets(currentUserID)
+        presenter.buildTweets(currentUserID)
+
+        setupTweetsRecyclerView()
+        initState()
 
         // handle the appbar scroll to show some texts
         app_bar_profile.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbar, verticalOffset ->
@@ -137,14 +140,9 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
     }
 
-    override fun showTweets(tweets: MutableList<Status>) {
+    override fun showTweets() {
         hideContent()
         rv_profile_content_tweets_list.visibility = View.VISIBLE
-
-        tweetsAdapter.apply {
-            this.tweets = tweets
-            notifyDataSetChanged()
-        }
     }
 
     override fun showLoader() {
@@ -168,7 +166,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
     }
 
     private fun setupTweetsRecyclerView() {
-        tweetsAdapter = TweetsAdapter(mutableListOf(), object : ItemClickListener<Status> {
+        tweetsAdapter = TweetsAdapter(object : ItemClickListener<Status> {
             override fun onClick(view: View, item: Status) {
                 val intent = Intent(view.context, ProfileActivity::class.java)
                 intent.putExtra(USER_ID, item.user.id)
@@ -186,6 +184,19 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
             layoutManager = LinearLayoutManager(this.context)
             adapter = tweetsAdapter
         }
+
+        presenter.getTweetsValue().observe(this, Observer {
+            tweetsAdapter.submitList(it)
+        })
+    }
+
+    private fun initState() {
+        presenter.getTweetsState().observe(this, Observer {
+            when (it) {
+                State.LOADING -> showLoader()
+                State.DONE -> showTweets()
+            }
+        })
     }
 
     companion object {

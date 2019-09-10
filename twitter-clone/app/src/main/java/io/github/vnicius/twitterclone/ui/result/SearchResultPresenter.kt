@@ -1,55 +1,47 @@
 package io.github.vnicius.twitterclone.ui.result
 
-import android.content.res.Resources
-import android.util.Log
-import io.github.vnicius.twitterclone.R
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Transformations
+import android.arch.paging.LivePagedListBuilder
+import android.arch.paging.PagedList
+import io.github.vnicius.twitterclone.data.datasource.searchtweets.SearchTweetsDataSource
+import io.github.vnicius.twitterclone.data.datasource.searchtweets.SearchTweetsDataSourceFactory
 import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepository
 import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepositoryRemote
-import io.github.vnicius.twitterclone.utils.LogTagsUtils
-import kotlinx.coroutines.*
-import twitter4j.TwitterException
-import java.lang.Exception
+import io.github.vnicius.twitterclone.utils.State
+import twitter4j.Status
 
-private const val MAX_COUNT = 50
+private const val MAX_PAGES = 5
+private const val MAX_ITEMS = 10
 
 /**
  * SearchResult Presenter
  */
-class SearchResultPresenter(val view: SearchResultContract.View) : SearchResultContract.Presenter {
+class SearchResultPresenter : SearchResultContract.Presenter {
 
     // repository instance
     private val tweetRepository: TweetRepository = TweetRepositoryRemote()
-    private val presenterJob = SupervisorJob()
-    private val presenterScope = CoroutineScope(Dispatchers.Main + presenterJob)
+    private lateinit var tweetsList: LiveData<PagedList<Status>>
+    private lateinit var searchTweetsDataSourceFactory: SearchTweetsDataSourceFactory
 
-    override fun searchTweets(query: String) {
-        view.showLoader()
-
-        presenterScope.launch {
-            // search the tweets
-            try {
-                val result =
-                    tweetRepository.getTweetsByQueryAsync(query, MAX_COUNT)
-
-                // check if has any result
-                if (result.size == 0) {
-                    view.showNoResult()
-                } else {
-                    view.showResult(result)
-                }
-            } catch (e: TwitterException) {
-                Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
-
-                view.showConnectionErrorMessage()
-            } catch (e: Exception) {
-                Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Unknown exception", e)
-
-                view.showError(Resources.getSystem().getString(R.string.error_message_connection))
-            }
-        }
+    override fun build(query: String) {
+        searchTweetsDataSourceFactory =
+            SearchTweetsDataSourceFactory(query, MAX_ITEMS, tweetRepository)
+        val config = PagedList.Config.Builder()
+            .setPageSize(MAX_PAGES)
+            .setInitialLoadSizeHint(MAX_PAGES * 2)
+            .setEnablePlaceholders(false)
+            .build()
+        tweetsList = LivePagedListBuilder(searchTweetsDataSourceFactory, config).build()
     }
 
-    override fun dispose() {
-        presenterScope.coroutineContext.cancelChildren()
-    }
+    override fun getValue() = tweetsList
+
+    override fun getState(): LiveData<State> = Transformations.switchMap(
+        searchTweetsDataSourceFactory.searchTweetsDataSourceLiveData,
+        SearchTweetsDataSource::state
+    )
+
+    override fun getDataSourceValue(): SearchTweetsDataSource? =
+        searchTweetsDataSourceFactory.searchTweetsDataSourceLiveData.value
 }

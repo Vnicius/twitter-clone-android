@@ -12,12 +12,9 @@ class TwitterAPI : APIInterface {
 
     private var twitterInstance: Twitter = TwitterFactory(createConfiguration()).instance
 
-    override suspend fun searchAsync(query: String, count: Int): MutableList<Status> =
+    override suspend fun searchAsync(query: Query, pageSize: Int): QueryResult =
         withContext(Dispatchers.IO) {
-            val querySearch = Query(query).count(count)
-            val result = twitterInstance.search(querySearch)
-
-            result.tweets
+            twitterInstance.search(query.count(pageSize))
         }
 
     override suspend fun getTrendsAsync(woeid: Int): Array<Trend> = withContext(Dispatchers.IO) {
@@ -29,9 +26,13 @@ class TwitterAPI : APIInterface {
     override suspend fun getUserAsync(userId: Long): User =
         withContext(Dispatchers.IO) { twitterInstance.showUser(userId) }
 
-    override suspend fun getUserTweetsAsync(userId: Long, count: Int): ResponseList<Status> =
+    override suspend fun getUserTweetsAsync(
+        userId: Long,
+        pageSize: Int,
+        page: Int
+    ): ResponseList<Status> =
         withContext(Dispatchers.IO) {
-            twitterInstance.getUserTimeline(userId, Paging(1, count))
+            twitterInstance.getUserTimeline(userId, Paging(page, pageSize))
         }
 
     /**

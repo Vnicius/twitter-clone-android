@@ -1,7 +1,9 @@
 package io.github.vnicius.twitterclone.ui.common.adapters
 
+import android.arch.paging.PagedListAdapter
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.text.HtmlCompat
+import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -23,9 +25,8 @@ import twitter4j.Status
  * @property listener listener to handle the click in the item
  */
 class TweetsAdapter(
-    var tweets: MutableList<Status>,
     private val listener: ItemClickListener<Status>
-) : RecyclerView.Adapter<TweetsAdapter.ViewHolder>() {
+) : PagedListAdapter<Status, TweetsAdapter.ViewHolder>(tweetsDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflate the view
@@ -38,12 +39,8 @@ class TweetsAdapter(
         )
     }
 
-    override fun getItemCount(): Int {
-        return tweets.size
-    }
-
     override fun onBindViewHolder(vh: ViewHolder, index: Int) {
-        vh.bindView(tweets[index])
+        getItem(index)?.let { vh.bindView(it) }
     }
 
     /**
@@ -188,6 +185,16 @@ class TweetsAdapter(
                     text = item.retweetCount.summarizeCountNumber()
                 }
             }
+        }
+    }
+
+    companion object {
+        val tweetsDiffCallback = object : DiffUtil.ItemCallback<Status>() {
+            override fun areItemsTheSame(oldItem: Status, newItem: Status): Boolean =
+                oldItem.id == newItem.id
+
+            override fun areContentsTheSame(oldItem: Status, newItem: Status): Boolean =
+                (oldItem.retweetCount == newItem.retweetCount) && (oldItem.favoriteCount == newItem.favoriteCount)
         }
     }
 }
