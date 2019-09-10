@@ -40,7 +40,7 @@ class TweetsAdapter(
     }
 
     override fun onBindViewHolder(vh: ViewHolder, index: Int) {
-        vh.bindView(getItem(index)!!)
+        getItem(index)?.let { vh.bindView(it) }
     }
 
     /**
