@@ -27,13 +27,9 @@ class UserTweetsDataSource(
         userTweetsDataSourceScope.launch {
             try {
                 val result = userRepository.getUserTweetsAsync(userId, pageSize, 1)
-                var nextPage: Int? = 2
+                val nextPage: Int? = if (result.isEmpty()) null else 2
 
-                if (result.isEmpty()) {
-                    nextPage = null
-                }
-
-                callback.onResult(result.toMutableList(), null, nextPage)
+                callback.onResult(result, null, nextPage)
                 state.postValue(State.DONE)
             } catch (e: Exception) {
                 state.postValue(State.ERROR)
@@ -45,13 +41,9 @@ class UserTweetsDataSource(
         userTweetsDataSourceScope.launch {
             try {
                 val result = userRepository.getUserTweetsAsync(userId, pageSize, params.key)
-                var nextPage: Int? = params.key + 1
+                val nextPage: Int? = if (result.isEmpty()) null else params.key + 1
 
-                if (result.isEmpty()) {
-                    nextPage = null
-                }
-
-                callback.onResult(result.toMutableList(), nextPage)
+                callback.onResult(result, nextPage)
             } catch (e: Exception) {
                 state.postValue(State.ERROR)
             }
@@ -62,13 +54,10 @@ class UserTweetsDataSource(
         userTweetsDataSourceScope.launch {
             try {
                 val result = userRepository.getUserTweetsAsync(userId, pageSize, params.key - 1)
-                var nextPage: Int? = params.key - 2
+                val previousPage: Int? =
+                    if (result.isEmpty() || params.key - 2 == -1) null else params.key - 2
 
-                if (result.isEmpty() || nextPage == -1) {
-                    nextPage = null
-                }
-
-                callback.onResult(result.toMutableList(), nextPage)
+                callback.onResult(result, previousPage)
             } catch (e: Exception) {
                 state.postValue(State.ERROR)
             }
