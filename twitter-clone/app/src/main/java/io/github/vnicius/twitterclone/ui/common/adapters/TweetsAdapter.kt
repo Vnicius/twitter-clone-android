@@ -194,7 +194,7 @@ class TweetsAdapter(
                 oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: Status, newItem: Status): Boolean =
-                oldItem.id == newItem.id
+                oldItem.equals(newItem)
         }
     }
 }
