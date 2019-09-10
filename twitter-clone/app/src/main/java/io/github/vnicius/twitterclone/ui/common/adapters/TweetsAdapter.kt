@@ -1,6 +1,7 @@
 package io.github.vnicius.twitterclone.ui.common.adapters
 
 import android.arch.paging.PagedListAdapter
+import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v4.text.HtmlCompat
 import android.support.v7.util.DiffUtil
@@ -96,6 +97,7 @@ class TweetsAdapter(
                 .error(R.drawable.img_default_avatar)
                 .into(itemView.findViewById<ImageView>(R.id.iv_tweet_user_avatar))
         }
+
 
         /**
          * Handle the favourite button

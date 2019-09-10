@@ -2,12 +2,14 @@ package io.github.vnicius.twitterclone.ui.main
 
 import android.app.SearchManager
 import android.content.Intent
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
+import com.google.android.gms.security.ProviderInstaller
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
 import io.github.vnicius.twitterclone.ui.main.adapters.TrendsAdapter
@@ -31,6 +33,12 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar_main)
         supportActionBar?.setDisplayShowTitleEnabled(false)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN
+            && Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT
+        ) {
+            ProviderInstaller.installIfNeeded(baseContext)
+        }
 
         setupTrendsRecyclerView()
         presenter.getTrends()

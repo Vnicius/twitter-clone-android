@@ -33,7 +33,7 @@
                         android:layout_width="@dimen/avatar_large"
                         android:layout_height="@dimen/avatar_large"
                         android:layout_alignParentStart="true"
-                        android:src="@drawable/img_default_avatar" />
+                        tools:src="@drawable/img_default_avatar" />
 
                 <Button
                         style="@style/Button.Secondary"
