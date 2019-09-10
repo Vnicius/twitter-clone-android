@@ -26,7 +26,7 @@ import twitter4j.Status
  */
 class TweetsAdapter(
     private val listener: ItemClickListener<Status>
-) : PagedListAdapter<Status, TweetsAdapter.ViewHolder>(TweetsDiffCallback) {
+) : PagedListAdapter<Status, TweetsAdapter.ViewHolder>(tweetsDiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         // inflate the view
@@ -189,7 +189,7 @@ class TweetsAdapter(
     }
 
     companion object {
-        val TweetsDiffCallback = object : DiffUtil.ItemCallback<Status>() {
+        val tweetsDiffCallback = object : DiffUtil.ItemCallback<Status>() {
             override fun areItemsTheSame(oldItem: Status, newItem: Status): Boolean =
                 oldItem.id == newItem.id
 
