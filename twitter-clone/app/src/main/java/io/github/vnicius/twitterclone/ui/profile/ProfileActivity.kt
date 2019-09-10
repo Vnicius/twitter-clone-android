@@ -131,6 +131,8 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
         // set the user profile image
         Picasso.get().load(user.profileImageURLHttps)
+            .placeholder(R.drawable.img_default_avatar)
+            .error(R.drawable.img_default_avatar)
             .into(iv_user_profile_avatar)
     }
 
