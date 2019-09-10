@@ -81,7 +81,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing_tiny"
-                        android:drawableStart="@drawable/ic_location"
+                        tools:drawableStart="@drawable/ic_location"
                         android:drawablePadding="@dimen/spacing_tiny"
                         android:gravity="center_vertical"
                         tools:text="My location" />

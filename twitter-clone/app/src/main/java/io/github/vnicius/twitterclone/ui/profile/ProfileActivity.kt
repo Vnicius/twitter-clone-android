@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
@@ -77,6 +78,12 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         if (userLocation.isEmpty()) {
             tv_profile_content_location.visibility = View.GONE
         } else {
+            tv_profile_content_location.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                AppCompatResources.getDrawable(this, R.drawable.ic_location),
+                null,
+                null,
+                null
+            )
             tv_profile_content_location.text = userLocation
         }
 
@@ -116,11 +123,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
         // set back button color
         supportActionBar?.setHomeAsUpIndicator(
-            ResourcesCompat.getDrawable(
-                resources,
-                R.drawable.ic_arrow_back,
-                null
-            )?.apply {
+            AppCompatResources.getDrawable(this, R.drawable.ic_arrow_back)?.apply {
                 setColorFilter(userTextColor, PorterDuff.Mode.SRC_ATOP)
             })
 
