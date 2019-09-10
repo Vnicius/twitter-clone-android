@@ -6,10 +6,7 @@ import android.util.Log
 import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepository
 import io.github.vnicius.twitterclone.utils.LogTagsUtils
 import io.github.vnicius.twitterclone.utils.State
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import twitter4j.Query
 import twitter4j.Status
 import twitter4j.TwitterException
@@ -66,6 +63,11 @@ class SearchTweetsDataSource(
     }
 
     override fun loadBefore(params: LoadParams<Query>, callback: LoadCallback<Query, Status>) {
+    }
+
+    override fun invalidate() {
+        super.invalidate()
+        tweetsDataSourceScope.coroutineContext.cancelChildren()
     }
 
     private fun setStateValue(value: State) {

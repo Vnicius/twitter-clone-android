@@ -4,10 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.PageKeyedDataSource
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
 import io.github.vnicius.twitterclone.utils.State
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import twitter4j.Status
 import java.lang.Exception
 
@@ -59,6 +56,11 @@ class UserTweetsDataSource(
                 setStateValue(State.ERROR)
             }
         }
+    }
+
+    override fun invalidate() {
+        super.invalidate()
+        userTweetsDataSourceScope.coroutineContext.cancelChildren()
     }
 
     private fun setStateValue(value: State) {
