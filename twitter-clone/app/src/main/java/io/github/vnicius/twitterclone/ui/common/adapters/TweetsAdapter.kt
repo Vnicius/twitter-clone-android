@@ -194,7 +194,7 @@ class TweetsAdapter(
                 oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: Status, newItem: Status): Boolean =
-                oldItem.equals(newItem)
+                (oldItem.retweetCount == newItem.retweetCount) && (oldItem.favoriteCount == newItem.favoriteCount)
         }
     }
 }
