@@ -16,10 +16,9 @@ import twitter4j.TwitterException
 
 class SearchTweetsDataSource(
     val queryText: String,
-    val itemsCount: Int,
+    val pageSize: Int,
     val tweetsRepository: TweetRepository
-) :
-    PageKeyedDataSource<Query, Status>() {
+) : PageKeyedDataSource<Query, Status>() {
 
     private val tweetsDataSourceJob = SupervisorJob()
     private val tweetsDataSourceScope = CoroutineScope(Dispatchers.IO + tweetsDataSourceJob)
@@ -33,7 +32,7 @@ class SearchTweetsDataSource(
 
         tweetsDataSourceScope.launch {
             try {
-                val result = tweetsRepository.getTweetsByQueryAsync(queryText, itemsCount)
+                val result = tweetsRepository.getTweetsByQueryAsync(queryText, pageSize)
                 callback.onResult(result.tweets, null, result.nextQuery())
 
                 if (result.tweets.isEmpty()) {
@@ -54,7 +53,7 @@ class SearchTweetsDataSource(
     override fun loadAfter(params: LoadParams<Query>, callback: LoadCallback<Query, Status>) {
         tweetsDataSourceScope.launch {
             try {
-                val result = tweetsRepository.getTweetsByQueryAsync(queryText, itemsCount)
+                val result = tweetsRepository.getTweetsByQueryAsync(queryText, pageSize)
                 callback.onResult(result.tweets, result.nextQuery())
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)

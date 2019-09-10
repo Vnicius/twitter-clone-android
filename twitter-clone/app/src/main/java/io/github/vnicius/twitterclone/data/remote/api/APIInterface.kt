@@ -13,7 +13,7 @@ interface APIInterface {
      * @param [count] maximum number of tweets
      * @return a [MutableList] of [Status]
      */
-    suspend fun searchAsync(query: String, count: Int, nextQuery: Query? = null): QueryResult
+    suspend fun searchAsync(query: String, pageSize: Int, nextQuery: Query? = null): QueryResult
 
     /**
      * Get the trends of a location by the [woeid]
@@ -35,5 +35,5 @@ interface APIInterface {
      * @param [count] the maximum number of tweets
      * @return a [ResponseList] of [Status]
      */
-    suspend fun getUserTweetsAsync(userId: Long, count: Int, page: Int = 1): ResponseList<Status>
+    suspend fun getUserTweetsAsync(userId: Long, pageSize: Int, page: Int = 1): ResponseList<Status>
 }

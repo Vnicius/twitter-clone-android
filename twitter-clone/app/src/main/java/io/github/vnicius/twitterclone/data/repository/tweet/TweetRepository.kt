@@ -17,7 +17,7 @@ interface TweetRepository {
      */
     suspend fun getTweetsByQueryAsync(
         query: String,
-        count: Int,
+        pageSize: Int,
         nextQuery: Query? = null
     ): QueryResult
 }

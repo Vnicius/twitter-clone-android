@@ -7,14 +7,14 @@ import twitter4j.Status
 
 class UserTweetsDataSourceFactory(
     private val userId: Long,
-    private val itemsCount: Int,
+    private val pageSize: Int,
     private val userRepository: UserRepository
 ) : DataSource.Factory<Int, Status>() {
 
     val userTweetsDataSourceLiveData = MutableLiveData<UserTweetsDataSource>()
 
     override fun create(): DataSource<Int, Status> {
-        val userTweetsDataSource = UserTweetsDataSource(userId, itemsCount, userRepository)
+        val userTweetsDataSource = UserTweetsDataSource(userId, pageSize, userRepository)
         userTweetsDataSourceLiveData.postValue(userTweetsDataSource)
         return userTweetsDataSource
     }

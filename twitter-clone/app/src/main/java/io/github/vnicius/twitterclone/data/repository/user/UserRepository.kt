@@ -22,5 +22,5 @@ interface UserRepository {
      * @param [count] the maximum number of tweets
      * @return [ResponseList] of [Status]
      */
-    suspend fun getUserTweetsAsync(userId: Long, count: Int, page: Int = 1): ResponseList<Status>
+    suspend fun getUserTweetsAsync(userId: Long, pageSize: Int, page: Int = 1): ResponseList<Status>
 }

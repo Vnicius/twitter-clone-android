@@ -12,6 +12,6 @@ class UserRepositoryRemote : UserRepository {
 
     override suspend fun getUserAsync(userId: Long) = mApi.getUserAsync(userId)
 
-    override suspend fun getUserTweetsAsync(userId: Long, count: Int, page: Int) =
-        mApi.getUserTweetsAsync(userId, count, page)
+    override suspend fun getUserTweetsAsync(userId: Long, pageSize: Int, page: Int) =
+        mApi.getUserTweetsAsync(userId, pageSize, page)
 }

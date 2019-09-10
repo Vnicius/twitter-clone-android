@@ -13,7 +13,7 @@ import java.lang.Exception
 
 class UserTweetsDataSource(
     private val userId: Long,
-    private val itemsCount: Int,
+    private val pageSize: Int,
     private val userRepository: UserRepository
 ) : PageKeyedDataSource<Int, Status>() {
 
@@ -30,7 +30,7 @@ class UserTweetsDataSource(
 
         userTweetsDataSourceScope.launch {
             try {
-                val result = userRepository.getUserTweetsAsync(userId, itemsCount, currentPage)
+                val result = userRepository.getUserTweetsAsync(userId, pageSize, currentPage)
                 callback.onResult(result.toMutableList(), null, ++currentPage)
                 setStateValue(State.DONE)
             } catch (e: Exception) {
@@ -42,7 +42,7 @@ class UserTweetsDataSource(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Status>) {
         userTweetsDataSourceScope.launch {
             try {
-                val result = userRepository.getUserTweetsAsync(userId, itemsCount, currentPage)
+                val result = userRepository.getUserTweetsAsync(userId, pageSize, currentPage)
                 callback.onResult(result.toMutableList(), ++currentPage)
             } catch (e: Exception) {
                 setStateValue(State.ERROR)
@@ -53,7 +53,7 @@ class UserTweetsDataSource(
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Status>) {
         userTweetsDataSourceScope.launch {
             try {
-                val result = userRepository.getUserTweetsAsync(userId, itemsCount, --currentPage)
+                val result = userRepository.getUserTweetsAsync(userId, pageSize, --currentPage)
                 callback.onResult(result.toMutableList(), --currentPage)
             } catch (e: Exception) {
                 setStateValue(State.ERROR)

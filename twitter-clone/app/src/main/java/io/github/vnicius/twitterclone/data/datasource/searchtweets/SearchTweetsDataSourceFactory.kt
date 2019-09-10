@@ -8,14 +8,14 @@ import twitter4j.Status
 
 class SearchTweetsDataSourceFactory(
     val queryText: String,
-    val itemsCount: Int,
+    val pageSize: Int,
     val tweetsRepository: TweetRepository
 ) : DataSource.Factory<Query, Status>() {
 
     val searchTweetsDataSourceLiveData = MutableLiveData<SearchTweetsDataSource>()
 
     override fun create(): DataSource<Query, Status> {
-        val searchTweetsDataSource = SearchTweetsDataSource(queryText, itemsCount, tweetsRepository)
+        val searchTweetsDataSource = SearchTweetsDataSource(queryText, pageSize, tweetsRepository)
         searchTweetsDataSourceLiveData.postValue(searchTweetsDataSource)
         return searchTweetsDataSource
     }
