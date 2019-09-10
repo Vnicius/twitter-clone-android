@@ -16,8 +16,7 @@ interface TweetRepository {
      * @return [MutableList] of [Status]
      */
     suspend fun getTweetsByQueryAsync(
-        query: String,
-        pageSize: Int,
-        nextQuery: Query? = null
+        query: Query,
+        pageSize: Int
     ): QueryResult
 }

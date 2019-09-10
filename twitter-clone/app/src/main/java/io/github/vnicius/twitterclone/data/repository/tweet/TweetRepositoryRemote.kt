@@ -11,6 +11,6 @@ class TweetRepositoryRemote : TweetRepository {
 
     private val mApi: APIInterface = TwitterAPI.instance    // API instance
 
-    override suspend fun getTweetsByQueryAsync(query: String, pageSize: Int, nextQuery: Query?) =
-        mApi.searchAsync(query, pageSize, nextQuery)
+    override suspend fun getTweetsByQueryAsync(query: Query, pageSize: Int) =
+        mApi.searchAsync(query, pageSize)
 }

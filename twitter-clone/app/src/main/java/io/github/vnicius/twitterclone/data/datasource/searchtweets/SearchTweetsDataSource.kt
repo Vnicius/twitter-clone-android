@@ -29,7 +29,7 @@ class SearchTweetsDataSource(
 
         tweetsDataSourceScope.launch {
             try {
-                val result = tweetsRepository.getTweetsByQueryAsync(queryText, pageSize)
+                val result = tweetsRepository.getTweetsByQueryAsync(Query(queryText), pageSize)
                 callback.onResult(result.tweets, null, result.nextQuery())
 
                 if (result.tweets.isEmpty()) {
@@ -50,7 +50,7 @@ class SearchTweetsDataSource(
     override fun loadAfter(params: LoadParams<Query>, callback: LoadCallback<Query, Status>) {
         tweetsDataSourceScope.launch {
             try {
-                val result = tweetsRepository.getTweetsByQueryAsync(queryText, pageSize)
+                val result = tweetsRepository.getTweetsByQueryAsync(params.key, pageSize)
                 callback.onResult(result.tweets, result.nextQuery())
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)

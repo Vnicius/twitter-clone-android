@@ -2,6 +2,7 @@ package io.github.vnicius.twitterclone.data.remote.api
 
 import twitter4j.*
 
+
 /**
  * Interface to the Twitter API calls
  */
@@ -13,7 +14,7 @@ interface APIInterface {
      * @param [count] maximum number of tweets
      * @return a [MutableList] of [Status]
      */
-    suspend fun searchAsync(query: String, pageSize: Int, nextQuery: Query? = null): QueryResult
+    suspend fun searchAsync(query: Query, pageSize: Int): QueryResult
 
     /**
      * Get the trends of a location by the [woeid]
