@@ -89,10 +89,6 @@ class SearchResultActivity : AppCompatActivity(), SearchResultContract.View, Vie
     override fun showResult() {
         hideContent()
         rv_search_result_tweets_list.visibility = View.VISIBLE
-
-        tweetsAdapter.apply {
-            notifyDataSetChanged()
-        }
     }
 
     override fun showNoResult() {

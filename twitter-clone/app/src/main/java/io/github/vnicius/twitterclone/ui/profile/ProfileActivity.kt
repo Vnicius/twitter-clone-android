@@ -143,10 +143,6 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
     override fun showTweets() {
         hideContent()
         rv_profile_content_tweets_list.visibility = View.VISIBLE
-
-        tweetsAdapter.apply {
-            notifyDataSetChanged()
-        }
     }
 
     override fun showLoader() {
