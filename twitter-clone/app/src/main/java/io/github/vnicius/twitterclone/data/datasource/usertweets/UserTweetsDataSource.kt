@@ -22,7 +22,7 @@ class UserTweetsDataSource(
         params: LoadInitialParams<Int>,
         callback: LoadInitialCallback<Int, Status>
     ) {
-        setStateValue(State.LOADING)
+        state.postValue(State.LOADING)
 
         userTweetsDataSourceScope.launch {
             try {
@@ -34,9 +34,9 @@ class UserTweetsDataSource(
                 }
 
                 callback.onResult(result.toMutableList(), null, nextPage)
-                setStateValue(State.DONE)
+                state.postValue(State.DONE)
             } catch (e: Exception) {
-                setStateValue(State.ERROR)
+                state.postValue(State.ERROR)
             }
         }
     }
@@ -53,7 +53,7 @@ class UserTweetsDataSource(
 
                 callback.onResult(result.toMutableList(), nextPage)
             } catch (e: Exception) {
-                setStateValue(State.ERROR)
+                state.postValue(State.ERROR)
             }
         }
     }
@@ -70,7 +70,7 @@ class UserTweetsDataSource(
 
                 callback.onResult(result.toMutableList(), nextPage)
             } catch (e: Exception) {
-                setStateValue(State.ERROR)
+                state.postValue(State.ERROR)
             }
         }
     }
@@ -78,9 +78,5 @@ class UserTweetsDataSource(
     override fun invalidate() {
         super.invalidate()
         userTweetsDataSourceScope.coroutineContext.cancelChildren()
-    }
-
-    private fun setStateValue(value: State) {
-        state.postValue(value)
     }
 }

@@ -25,7 +25,7 @@ class SearchTweetsDataSource(
         params: LoadInitialParams<Query>,
         callback: LoadInitialCallback<Query, Status>
     ) {
-        setStateValue(State.LOADING)
+        state.postValue(State.LOADING)
 
         tweetsDataSourceScope.launch {
             try {
@@ -33,14 +33,14 @@ class SearchTweetsDataSource(
                 callback.onResult(result.tweets, null, result.nextQuery())
 
                 if (result.tweets.isEmpty()) {
-                    setStateValue(State.NO_RESULT)
+                    state.postValue(State.NO_RESULT)
                 } else {
-                    setStateValue(State.DONE)
+                    state.postValue(State.DONE)
                 }
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
 
-                setStateValue(State.ERROR)
+                state.postValue(State.ERROR)
             } catch (e: Exception) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Unknown exception", e)
             }
@@ -55,7 +55,7 @@ class SearchTweetsDataSource(
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
 
-                setStateValue(State.ERROR)
+                state.postValue(State.ERROR)
             } catch (e: Exception) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Unknown exception", e)
             }
@@ -68,9 +68,5 @@ class SearchTweetsDataSource(
     override fun invalidate() {
         super.invalidate()
         tweetsDataSourceScope.coroutineContext.cancelChildren()
-    }
-
-    private fun setStateValue(value: State) {
-        state.postValue(value)
     }
 }
