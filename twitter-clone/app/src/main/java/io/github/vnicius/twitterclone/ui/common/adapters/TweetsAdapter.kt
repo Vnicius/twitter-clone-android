@@ -52,6 +52,12 @@ class TweetsAdapter(
     class ViewHolder(itemView: View, private val listener: ItemClickListener<Status>) :
         RecyclerView.ViewHolder(itemView) {
 
+        private val activeRetweetColor =
+            ResourcesCompat.getColor(itemView.resources, R.color.green, null)
+        private val inactiveItemColor =
+            ResourcesCompat.getColor(itemView.resources, R.color.gray_dark, null)
+        private val activeFavColor = ResourcesCompat.getColor(itemView.resources, R.color.red, null)
+
         /**
          * Bind the item with the view
          */
@@ -86,10 +92,12 @@ class TweetsAdapter(
             // set the click listener of the fav button
             itemView.findViewById<LinearLayout>(R.id.ll_tweet_favorite)
                 .setOnClickListener { view -> onFavClick(view, item) }
+            setFavInactive(itemView)
 
             // set the click listener of the retweet button
             itemView.findViewById<LinearLayout>(R.id.ll_tweet_retweet)
                 .setOnClickListener { view -> onRetweetClick(view, item) }
+            setRetweetInactive(itemView)
 
             // get the user profile image and set in the view
             Picasso.get().load(item.user.profileImageURLHttps)
@@ -106,55 +114,55 @@ class TweetsAdapter(
          * @param item the object item
          */
         private fun onFavClick(view: View, item: Status) {
-            val icon = view.findViewById<ImageView>(R.id.iv_tweet_fav_ic)
-            val animation = view.findViewById<LottieAnimationView>(R.id.iv_tweet_fav_ic_animation)
             val tvCount = view.findViewById<TextView>(R.id.tv_tweet_fav_count)
 
             // check if the fav button is active
-            if (icon.visibility == View.VISIBLE) {
+            if (tvCount.currentTextColor == inactiveItemColor) {
+                setFavActive(view)
 
-                // hide the static icon
-                icon.visibility = View.GONE
-
-                // set and play the animation
-                animation.apply {
-                    visibility = View.VISIBLE
-                    setMinFrame(10)
-                    speed = 2f
-                    playAnimation()
-                }
-
-                // change the count color and value
-                tvCount.apply {
-                    setTextColor(
-                        ResourcesCompat.getColor(
-                            itemView.resources,
-                            R.color.red,
-                            null
-                        )
-                    )
-                    text = (item.favoriteCount + 1).summarizeCountNumber()
-                }
-
+                tvCount.text = (item.favoriteCount + 1).summarizeCountNumber()
             } else {
-                // show static icon
-                icon.visibility = View.VISIBLE
+                setFavInactive(view)
 
-                // hide the animation
-                animation.visibility = View.GONE
-
-                // change the count color and value
-                tvCount.apply {
-                    setTextColor(
-                        ResourcesCompat.getColor(
-                            itemView.resources,
-                            R.color.gray_dark,
-                            null
-                        )
-                    )
-                    text = item.favoriteCount.summarizeCountNumber()
-                }
+                tvCount.text = item.favoriteCount.summarizeCountNumber()
             }
+        }
+
+        private fun changeFavColor(view: View, color: Int) {
+            val tvCount = view.findViewById<TextView>(R.id.tv_tweet_fav_count)
+
+            tvCount.setTextColor(color)
+        }
+
+        private fun setFavActive(view: View) {
+            val icon = view.findViewById<ImageView>(R.id.iv_tweet_fav_ic)
+            val animation = view.findViewById<LottieAnimationView>(R.id.iv_tweet_fav_ic_animation)
+
+            // hide the static icon
+            icon.visibility = View.GONE
+
+            // set and play the animation
+            animation.apply {
+                visibility = View.VISIBLE
+                setMinFrame(10)
+                speed = 2f
+                playAnimation()
+            }
+
+            changeFavColor(view, activeFavColor)
+        }
+
+        private fun setFavInactive(view: View) {
+            val icon = view.findViewById<ImageView>(R.id.iv_tweet_fav_ic)
+            val animation = view.findViewById<LottieAnimationView>(R.id.iv_tweet_fav_ic_animation)
+
+            // show static icon
+            icon.visibility = View.VISIBLE
+
+            // hide the animation
+            animation.visibility = View.GONE
+
+            changeFavColor(view, inactiveItemColor)
         }
 
         /**
@@ -164,29 +172,36 @@ class TweetsAdapter(
          * @param item the object item
          */
         private fun onRetweetClick(view: View, item: Status) {
-            val icon = view.findViewById<ImageView>(R.id.iv_tweet_retweet_ic)
             val tvCount = view.findViewById<TextView>(R.id.tv_tweet_retweets_count)
-            val green = ResourcesCompat.getColor(itemView.resources, R.color.green, null)
-            val gray = ResourcesCompat.getColor(itemView.resources, R.color.gray_dark, null)
 
             // check if the retweet button is active
-            if (tvCount.currentTextColor == gray) {
+            if (tvCount.currentTextColor == inactiveItemColor) {
                 // change the colors
-                icon.setColorFilter(green)
+                setRetweetActive(view)
 
-                tvCount.apply {
-                    setTextColor(green)
-                    text = (item.retweetCount + 1).summarizeCountNumber()
-                }
+                tvCount.text = (item.retweetCount + 1).summarizeCountNumber()
             } else {
                 // change the colors
-                icon.setColorFilter(gray)
+                setRetweetInactive(view)
 
-                tvCount.apply {
-                    setTextColor(gray)
-                    text = item.retweetCount.summarizeCountNumber()
-                }
+                tvCount.text = item.retweetCount.summarizeCountNumber()
             }
+        }
+
+        private fun changeRetweetColor(view: View, color: Int) {
+            val icon = view.findViewById<ImageView>(R.id.iv_tweet_retweet_ic)
+            val tvCount = view.findViewById<TextView>(R.id.tv_tweet_retweets_count)
+
+            icon.setColorFilter(color)
+            tvCount.setTextColor(color)
+        }
+
+        private fun setRetweetActive(view: View) {
+            changeRetweetColor(view, activeRetweetColor)
+        }
+
+        private fun setRetweetInactive(view: View) {
+            changeRetweetColor(view, inactiveItemColor)
         }
     }
 
