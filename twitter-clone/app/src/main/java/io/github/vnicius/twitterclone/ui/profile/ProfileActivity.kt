@@ -6,7 +6,7 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
-import android.support.v4.content.res.ResourcesCompat
+import android.support.v4.view.ViewCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.content.res.AppCompatResources
 import android.support.v7.widget.LinearLayoutManager
@@ -21,7 +21,6 @@ import io.github.vnicius.twitterclone.utils.State
 import io.github.vnicius.twitterclone.utils.highlightClickable
 import io.github.vnicius.twitterclone.utils.summarizeNumber
 import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.partial_profile_content.*
 import twitter4j.Status
 import twitter4j.User
 
@@ -76,15 +75,15 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
         // show the user location
         if (userLocation.isEmpty()) {
-            tv_profile_content_location.visibility = View.GONE
+            tv_profile_location.visibility = View.GONE
         } else {
-            tv_profile_content_location.setCompoundDrawablesRelativeWithIntrinsicBounds(
+            tv_profile_location.setCompoundDrawablesRelativeWithIntrinsicBounds(
                 AppCompatResources.getDrawable(this, R.drawable.ic_location),
                 null,
                 null,
                 null
             )
-            tv_profile_content_location.text = userLocation
+            tv_profile_location.text = userLocation
         }
 
         // user name in the toolbar
@@ -97,22 +96,22 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         tv_profile_toolbar_tweet_label.setTextColor(userTextColor)
 
         // user name in the profile
-        tv_user_profile_name.text = user.name
+        tv_profile_name.text = user.name
 
         // user screen name
-        tv_profile_content_username.text = "@${user.screenName}"
+        tv_profile_username.text = "@${user.screenName}"
 
         // user bio
         if (user.description.isEmpty()) {
-            tv_profile_content_bio.visibility = View.GONE
+            tv_profile_bio.visibility = View.GONE
         } else {
-            tv_profile_content_bio.text = user.description.highlightClickable()
+            tv_profile_bio.text = user.description.highlightClickable()
         }
         // user count of followings
-        tv_profile_content_following_label.text = user.friendsCount.summarizeNumber()
+        tv_profile_following_label.text = user.friendsCount.summarizeNumber()
 
         // user count of followers
-        tv_user_profile_content_followers_label.text = user.followersCount.summarizeNumber()
+        tv_profile_followers_label.text = user.followersCount.summarizeNumber()
 
         // toolbar color
         userBGColor.let {
@@ -136,7 +135,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         Picasso.get().load(user.profileImageURLHttps)
             .placeholder(R.drawable.img_default_avatar)
             .error(R.drawable.img_default_avatar)
-            .into(iv_user_profile_avatar)
+            .into(iv_profile_avatar)
     }
 
     override fun showError(message: String) {
@@ -145,12 +144,12 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
     override fun showTweets() {
         hideContent()
-        rv_profile_content_tweets_list.visibility = View.VISIBLE
+        rv_profile_tweets_list.visibility = View.VISIBLE
     }
 
     override fun showLoader() {
         hideContent()
-        inc_profile_content_tweets_spinner.visibility = View.VISIBLE
+        inc_profile_tweets_spinner.visibility = View.VISIBLE
     }
 
     override fun onDestroy() {
@@ -164,8 +163,8 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
     }
 
     private fun hideContent() {
-        inc_profile_content_tweets_spinner.visibility = View.GONE
-        rv_profile_content_tweets_list.visibility = View.GONE
+        inc_profile_tweets_spinner.visibility = View.GONE
+        rv_profile_tweets_list.visibility = View.GONE
     }
 
     private fun setupTweetsRecyclerView() {
@@ -183,9 +182,11 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
             }
         })
 
-        rv_profile_content_tweets_list.apply {
+        rv_profile_tweets_list.apply {
             layoutManager = LinearLayoutManager(this.context)
             adapter = tweetsAdapter
+        }.also {
+            ViewCompat.setNestedScrollingEnabled(it, false)
         }
 
         presenter.getTweetsValue().observe(this, Observer {
