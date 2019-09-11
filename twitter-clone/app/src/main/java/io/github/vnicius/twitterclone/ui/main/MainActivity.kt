@@ -9,6 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.security.ProviderInstaller
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
@@ -23,9 +27,9 @@ import twitter4j.Trend
 /**
  * Main Activity View
  */
-class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    private val presenter: MainContract.Presenter = MainPresenter(this)
+    private lateinit var viewModel: MainViewModel
     private lateinit var trendsAdapter: TrendsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,7 +45,14 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
         }
 
         setupTrendsRecyclerView()
-        presenter.getTrends()
+
+        viewModel = ViewModelProviders.of(this)[MainViewModel::class.java].apply {
+            trends.observe(this@MainActivity, Observer {
+                showTrends(it)
+            })
+        }
+
+        viewModel.getTrends()
 
         rl_search_field.setOnClickListener(this)
         btn_connection_error_action.setOnClickListener(this)
@@ -56,28 +67,9 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
             }
 
             btn_connection_error_action.id -> {
-                presenter.getTrends()
+                viewModel.getTrends()
             }
         }
-    }
-
-    override fun showLoader() {
-        hideContent()
-        inc_main_spinner.visibility = View.VISIBLE
-    }
-
-    override fun showTrends(trends: Array<Trend>) {
-        hideContent()
-        ll_main_trends.visibility = View.VISIBLE
-
-        trendsAdapter.apply {
-            this.trends = trends
-            notifyDataSetChanged()
-        }
-    }
-
-    override fun showError(message: String) {
-        Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -86,14 +78,31 @@ class MainActivity : AppCompatActivity(), MainContract.View, View.OnClickListene
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun showConnectionErrorMessage() {
+    private fun showLoader() {
         hideContent()
-        inc_main_connection_error.visibility = View.VISIBLE
+        inc_main_spinner.visibility = View.VISIBLE
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.dispose()
+    private fun showTrends(trends: Array<Trend>) {
+
+        trendsAdapter.apply {
+            this.trends = trends
+            notifyDataSetChanged()
+        }
+
+        if (trends.isNotEmpty()) {
+            hideContent()
+            ll_main_trends.visibility = View.VISIBLE
+        }
+    }
+
+    private fun showError(message: String) {
+        Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
+    }
+
+    private fun showConnectionErrorMessage() {
+        hideContent()
+        inc_main_connection_error.visibility = View.VISIBLE
     }
 
     private fun hideContent() {
