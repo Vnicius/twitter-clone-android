@@ -1,7 +1,7 @@
 package io.github.vnicius.twitterclone.utils
 
 import android.annotation.SuppressLint
-import android.support.v4.text.HtmlCompat
+import androidx.core.text.HtmlCompat
 import android.text.Spanned
 import java.text.SimpleDateFormat
 import java.util.*

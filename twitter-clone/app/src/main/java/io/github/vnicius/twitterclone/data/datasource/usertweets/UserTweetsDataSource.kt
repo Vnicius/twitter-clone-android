@@ -1,7 +1,7 @@
 package io.github.vnicius.twitterclone.data.datasource.usertweets
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.paging.PageKeyedDataSource
+import androidx.lifecycle.MutableLiveData
+import androidx.paging.PageKeyedDataSource
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
 import io.github.vnicius.twitterclone.utils.State
 import kotlinx.coroutines.*

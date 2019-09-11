@@ -8,7 +8,7 @@
           android:title="@string/label_item_search"
           android:orderInCategory="100"
           app:showAsAction="always"
-          app:actionViewClass="android.support.v7.widget.SearchView"
+            app:actionViewClass="androidx.appcompat.widget.SearchView"
           app:iconifiedByDefault="false"
     />
 </menu>

@@ -1,11 +1,9 @@
 package io.github.vnicius.twitterclone.ui.common.adapters
 
-import android.arch.paging.PagedListAdapter
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v4.text.HtmlCompat
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
+import androidx.paging.PagedListAdapter
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.HtmlCompat
+import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -50,7 +48,7 @@ class TweetsAdapter(
      * @property listener to handle the clicks
      */
     class ViewHolder(itemView: View, private val listener: ItemClickListener<Status>) :
-        RecyclerView.ViewHolder(itemView) {
+        androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
         private val activeRetweetColor =
             ResourcesCompat.getColor(itemView.resources, R.color.green, null)
@@ -105,7 +103,6 @@ class TweetsAdapter(
                 .error(R.drawable.img_default_avatar)
                 .into(itemView.findViewById<ImageView>(R.id.iv_tweet_user_avatar))
         }
-
 
         /**
          * Handle the favourite button

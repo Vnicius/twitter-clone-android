@@ -1,7 +1,7 @@
 package io.github.vnicius.twitterclone.data.datasource.usertweets
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.paging.DataSource
+import androidx.lifecycle.MutableLiveData
+import androidx.paging.DataSource
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
 import twitter4j.Status
 

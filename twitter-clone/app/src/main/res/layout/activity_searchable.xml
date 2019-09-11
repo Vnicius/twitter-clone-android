@@ -6,13 +6,13 @@
         android:orientation="vertical"
         tools:context="io.github.vnicius.twitterclone.ui.searchable.SearchableActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_searchable"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/white"
             android:theme="@style/AppTheme.ToolbarColoredBackArrow">
 
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
 </LinearLayout>

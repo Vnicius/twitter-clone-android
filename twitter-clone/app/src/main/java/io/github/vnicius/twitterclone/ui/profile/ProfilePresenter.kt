@@ -1,9 +1,9 @@
 package io.github.vnicius.twitterclone.ui.profile
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Transformations
-import android.arch.paging.LivePagedListBuilder
-import android.arch.paging.PagedList
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import android.util.Log
 import io.github.vnicius.twitterclone.data.datasource.usertweets.UserTweetsDataSource
 import io.github.vnicius.twitterclone.data.datasource.usertweets.UserTweetsDataSourceFactory
