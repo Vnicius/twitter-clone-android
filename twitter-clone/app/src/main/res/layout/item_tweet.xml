@@ -100,10 +100,10 @@
 
                         <TextView
                                 android:id="@+id/tv_tweet_comments_count"
-                                style="@style/TextAppearance.AppCompat.TextAppearanceSmall.Secondary"
+                                style="@style/TextAppearance.AppCompat.TextAppearanceTiny"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:layout_marginStart="@dimen/spacing_small"
+                                android:layout_marginStart="@dimen/spacing_tiny"
                                 android:gravity="center_vertical"
                                 tools:text="1" />
                     </LinearLayout>
@@ -126,10 +126,10 @@
 
                         <TextView
                                 android:id="@+id/tv_tweet_retweets_count"
-                                style="@style/TextAppearance.AppCompat.TextAppearanceSmall.Secondary"
+                                style="@style/TextAppearance.AppCompat.TextAppearanceTiny"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginStart="@dimen/spacing_small"
+                                android:layout_marginStart="@dimen/spacing_tiny"
                                 android:gravity="center_vertical"
                                 tools:text="1" />
                     </LinearLayout>
@@ -162,10 +162,10 @@
 
                         <TextView
                                 android:id="@+id/tv_tweet_fav_count"
-                                style="@style/TextAppearance.AppCompat.TextAppearanceSmall.Secondary"
+                                style="@style/TextAppearance.AppCompat.TextAppearanceTiny"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginStart="@dimen/spacing_small"
+                                android:layout_marginStart="@dimen/spacing_tiny"
                                 android:gravity="center_vertical"
                                 tools:text="1" />
                     </LinearLayout>
