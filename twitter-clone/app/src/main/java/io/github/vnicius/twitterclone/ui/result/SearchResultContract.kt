@@ -1,7 +1,7 @@
 package io.github.vnicius.twitterclone.ui.result
 
-import android.arch.lifecycle.LiveData
-import android.arch.paging.PagedList
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
 import io.github.vnicius.twitterclone.data.datasource.searchtweets.SearchTweetsDataSource
 import io.github.vnicius.twitterclone.ui.common.BaseContract
 import io.github.vnicius.twitterclone.utils.State

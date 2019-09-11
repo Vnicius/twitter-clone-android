@@ -1,7 +1,7 @@
 package io.github.vnicius.twitterclone.data.datasource.searchtweets
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.paging.PageKeyedDataSource
+import androidx.lifecycle.MutableLiveData
+import androidx.paging.PageKeyedDataSource
 import android.util.Log
 import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepository
 import io.github.vnicius.twitterclone.utils.LogTagsUtils

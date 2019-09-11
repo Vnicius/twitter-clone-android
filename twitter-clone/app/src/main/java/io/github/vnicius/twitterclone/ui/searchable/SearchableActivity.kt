@@ -3,10 +3,10 @@ package io.github.vnicius.twitterclone.ui.searchable
 import android.app.SearchManager
 import android.content.ComponentName
 import android.content.Context
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.SearchView
+import androidx.core.content.ContextCompat
+import androidx.appcompat.widget.SearchView
 
 import android.view.Menu
 import android.view.MenuItem
@@ -51,10 +51,10 @@ class SearchableActivity : AppCompatActivity() {
             maxWidth = Int.MAX_VALUE
             isIconified = false
             queryHint = resources.getString(R.string.hint_search)
-            findViewById<View>(android.support.v7.appcompat.R.id.search_plate).setBackgroundColor(
+            findViewById<View>(androidx.appcompat.R.id.search_plate).setBackgroundColor(
                 ContextCompat.getColor(context, android.R.color.transparent)
             )
-            findViewById<View>(android.support.v7.appcompat.R.id.search_mag_icon).visibility =
+            findViewById<View>(androidx.appcompat.R.id.search_mag_icon).visibility =
                 View.GONE
             setQuery(queryText, false)
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {

@@ -7,7 +7,7 @@
         android:orientation="vertical"
         tools:context="io.github.vnicius.twitterclone.ui.result.SearchResultActivity">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar_search_result"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -15,9 +15,9 @@
             android:theme="@style/AppTheme.ToolbarColoredBackArrow">
 
         <include layout="@layout/partial_search_field" />
-    </android.support.v7.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_search_result_tweets_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
