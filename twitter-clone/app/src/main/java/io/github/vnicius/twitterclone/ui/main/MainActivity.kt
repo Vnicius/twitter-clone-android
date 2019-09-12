@@ -10,8 +10,6 @@ import android.view.Menu
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.security.ProviderInstaller
 import io.github.vnicius.twitterclone.R
@@ -19,6 +17,7 @@ import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
 import io.github.vnicius.twitterclone.ui.main.adapters.TrendsAdapter
 import io.github.vnicius.twitterclone.ui.result.SearchResultActivity
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
+import io.github.vnicius.twitterclone.utils.State
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.partial_connection_error.*
 import kotlinx.android.synthetic.main.partial_search_field.*
@@ -30,7 +29,6 @@ import twitter4j.Trend
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var trendsAdapter: TrendsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,15 +42,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             ProviderInstaller.installIfNeeded(baseContext)
         }
 
-        setupTrendsRecyclerView()
-
-        viewModel = ViewModelProviders.of(this)[MainViewModel::class.java].apply {
-            trends.observe(this@MainActivity, Observer {
-                showTrends(it)
-            })
-        }
-
+        viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
         viewModel.getTrends()
+
+        setupTrendsRecyclerView()
+        initState()
 
         rl_search_field.setOnClickListener(this)
         btn_connection_error_action.setOnClickListener(this)
@@ -83,17 +77,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         inc_main_spinner.visibility = View.VISIBLE
     }
 
-    private fun showTrends(trends: Array<Trend>) {
-
-        trendsAdapter.apply {
-            this.trends = trends
-            notifyDataSetChanged()
-        }
-
-        if (trends.isNotEmpty()) {
-            hideContent()
-            ll_main_trends.visibility = View.VISIBLE
-        }
+    private fun showTrends() {
+        hideContent()
+        ll_main_trends.visibility = View.VISIBLE
     }
 
     private fun showError(message: String) {
@@ -112,7 +98,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupTrendsRecyclerView() {
-        trendsAdapter = TrendsAdapter(arrayOf(), object : ItemClickListener<Trend> {
+        val trendsAdapter = TrendsAdapter(arrayOf(), object : ItemClickListener<Trend> {
             override fun onClick(view: View, item: Trend) {
                 // make the search with the trend name
                 val intent = Intent(view.context, SearchResultActivity::class.java).apply {
@@ -133,5 +119,23 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             layoutManager = LinearLayoutManager(this.context)
             adapter = trendsAdapter
         }
+
+        viewModel.trends.observe(this, Observer { trendsData ->
+            trendsAdapter.apply {
+                trends = trendsData
+                notifyDataSetChanged()
+            }
+        })
+    }
+
+    private fun initState() {
+        viewModel.state.observe(this, Observer { state ->
+            when (state) {
+                State.LOADING -> showLoader()
+                State.DONE -> showTrends()
+                State.ERROR -> showError(getString(R.string.error_message_connection))
+                State.CONNECTION_ERROR -> showConnectionErrorMessage()
+            }
+        })
     }
 }
