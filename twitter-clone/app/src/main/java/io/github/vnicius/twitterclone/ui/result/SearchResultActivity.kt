@@ -163,9 +163,10 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener {
         viewModel.state.observe(this, Observer {
             when (it) {
                 State.NO_RESULT -> showNoResult()
-                State.ERROR -> showConnectionErrorMessage()
+                State.ERROR -> showError(getString(R.string.error_message_connection))
                 State.DONE -> showResult()
                 State.LOADING -> showLoader()
+                State.CONNECTION_ERROR -> showConnectionErrorMessage()
             }
         })
     }
