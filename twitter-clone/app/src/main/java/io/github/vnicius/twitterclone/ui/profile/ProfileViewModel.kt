@@ -1,10 +1,9 @@
 package io.github.vnicius.twitterclone.ui.profile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import android.util.Log
+import androidx.lifecycle.*
 import io.github.vnicius.twitterclone.data.datasource.usertweets.UserTweetsDataSource
 import io.github.vnicius.twitterclone.data.datasource.usertweets.UserTweetsDataSourceFactory
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
@@ -13,54 +12,50 @@ import io.github.vnicius.twitterclone.utils.LogTagsUtils
 import io.github.vnicius.twitterclone.utils.State
 import kotlinx.coroutines.*
 import twitter4j.Status
+import twitter4j.User
 
 private const val MAX_PAGES = 5
 private const val MAX_ITEMS = 10
 
 /**
- * Profile Presenter
+ * Profile ViewModel
  * @property view instance of the view
  */
-class ProfilePresenter(val view: ProfileContract.View) : ProfileContract.Presenter {
+class ProfileViewModel : ViewModel() {
 
     private val userRepository: UserRepository = UserRepositoryRemote()
-    private val presenterJob = SupervisorJob()
-    private val presenterScope = CoroutineScope(Dispatchers.Main + presenterJob)
-    private lateinit var homeTweetsList: LiveData<PagedList<Status>>
     private lateinit var homeTweetsDataSourceFactory: UserTweetsDataSourceFactory
+    lateinit var homeTweetsList: LiveData<PagedList<Status>>
+    lateinit var stateTweets: LiveData<State>
+    lateinit var userData: User
+    var stateUserData: MutableLiveData<State> = MutableLiveData()
 
-    override fun getUser(userId: Long) {
-        presenterScope.launch {
+    fun getUser(userId: Long) {
+        viewModelScope.launch {
             try {
-                val user = userRepository.getUserAsync(userId)
+                userData = userRepository.getUserAsync(userId)
 
-                view.showUser(user)
+                stateUserData.postValue(State.DONE)
             } catch (e: Exception) {
                 Log.e("debug error", "Unknown exception", e)
 
-                view.showError("Connection Error")
+                stateUserData.postValue(State.ERROR)
             }
         }
     }
 
-    override fun buildTweets(userId: Long) {
+    fun buildTweets(userId: Long) {
         homeTweetsDataSourceFactory = UserTweetsDataSourceFactory(userId, MAX_ITEMS, userRepository)
         val config = PagedList.Config.Builder()
             .setPageSize(MAX_PAGES)
             .setInitialLoadSizeHint(MAX_PAGES * 2)
             .setEnablePlaceholders(false)
             .build()
+
         homeTweetsList = LivePagedListBuilder(homeTweetsDataSourceFactory, config).build()
-    }
-
-    override fun getTweetsValue() = homeTweetsList
-
-    override fun getTweetsState(): LiveData<State> = Transformations.switchMap(
-        homeTweetsDataSourceFactory.userTweetsDataSourceLiveData,
-        UserTweetsDataSource::state
-    )
-
-    override fun dispose() {
-        presenterScope.coroutineContext.cancelChildren()
+        stateTweets = Transformations.switchMap(
+            homeTweetsDataSourceFactory.userTweetsDataSourceLiveData,
+            UserTweetsDataSource::state
+        )
     }
 }
