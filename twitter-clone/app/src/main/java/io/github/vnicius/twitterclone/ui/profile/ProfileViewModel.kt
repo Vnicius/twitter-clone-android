@@ -12,6 +12,7 @@ import io.github.vnicius.twitterclone.utils.LogTagsUtils
 import io.github.vnicius.twitterclone.utils.State
 import kotlinx.coroutines.*
 import twitter4j.Status
+import twitter4j.TwitterException
 import twitter4j.User
 
 private const val MAX_PAGES = 5
@@ -36,6 +37,10 @@ class ProfileViewModel : ViewModel() {
                 userData.postValue(userRepository.getUserAsync(userId))
 
                 stateUserData.postValue(State.DONE)
+            } catch (e: TwitterException) {
+                Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
+
+                stateUserData.postValue(State.CONNECTION_ERROR)
             } catch (e: Exception) {
                 Log.e("debug error", "Unknown exception", e)
 
@@ -58,4 +63,6 @@ class ProfileViewModel : ViewModel() {
             UserTweetsDataSource::state
         )
     }
+
+    fun getTweetsDataSource() = homeTweetsDataSourceFactory.userTweetsDataSourceLiveData.value
 }

@@ -20,13 +20,14 @@ import io.github.vnicius.twitterclone.ui.profile.adapters.ProfileTweetsAdapter
 import io.github.vnicius.twitterclone.utils.State
 import io.github.vnicius.twitterclone.utils.summarizeNumber
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.partial_connection_error.*
 import twitter4j.Status
 import twitter4j.User
 
 /**
  * Profile Activity View
  */
-class ProfileActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var viewModel: ProfileViewModel
     private var currentUserID: Long = -1
@@ -57,6 +58,8 @@ class ProfileActivity : AppCompatActivity() {
             ll_profile_toolbar_user_infos.visibility =
                 if (appbar?.totalScrollRange!! + verticalOffset == 0) View.VISIBLE else View.GONE
         })
+
+        btn_connection_error_action.setOnClickListener(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -68,6 +71,15 @@ class ProfileActivity : AppCompatActivity() {
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_slide_out_right)
+    }
+
+    override fun onClick(view: View) {
+        when (view.id) {
+            btn_connection_error_action.id -> {
+                viewModel.getUser(currentUserID)
+                viewModel.getTweetsDataSource()?.invalidate()
+            }
+        }
     }
 
     private fun setupToolbarData(user: User) {
@@ -118,8 +130,14 @@ class ProfileActivity : AppCompatActivity() {
         inc_profile_tweets_spinner.visibility = View.VISIBLE
     }
 
+    private fun showConnectionError() {
+        hideContent()
+        inc_profile_connection_error.visibility = View.VISIBLE
+    }
+
     private fun hideContent() {
         inc_profile_tweets_spinner.visibility = View.GONE
+        inc_profile_connection_error.visibility = View.GONE
         rv_profile_tweets_list.visibility = View.GONE
     }
 
@@ -159,6 +177,7 @@ class ProfileActivity : AppCompatActivity() {
             when (it) {
                 State.LOADING -> showLoader()
                 State.DONE -> showTweets()
+                State.CONNECTION_ERROR -> showConnectionError()
             }
         })
     }
@@ -167,6 +186,7 @@ class ProfileActivity : AppCompatActivity() {
         viewModel.stateUserData.observe(this, Observer {
             when (it) {
                 State.ERROR -> showError(getString(R.string.error_message_connection))
+                State.CONNECTION_ERROR -> showConnectionError()
             }
         })
     }

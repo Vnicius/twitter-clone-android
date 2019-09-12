@@ -114,6 +114,11 @@
                     layout="@layout/partial_spinner"
                     android:visibility="gone" />
 
+            <include
+                    android:id="@+id/inc_profile_connection_error"
+                    layout="@layout/partial_connection_error"
+                    android:visibility="gone" />
+
         </LinearLayout>
 
     </io.github.vnicius.twitterclone.utils.SmartNestedScrollView>

@@ -1,11 +1,14 @@
 package io.github.vnicius.twitterclone.data.datasource.usertweets
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
+import io.github.vnicius.twitterclone.utils.LogTagsUtils
 import io.github.vnicius.twitterclone.utils.State
 import kotlinx.coroutines.*
 import twitter4j.Status
+import twitter4j.TwitterException
 import java.lang.Exception
 
 class UserTweetsDataSource(
@@ -31,7 +34,13 @@ class UserTweetsDataSource(
 
                 callback.onResult(result, null, nextPage)
                 state.postValue(State.DONE)
+            } catch (e: TwitterException) {
+                Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
+
+                state.postValue(State.CONNECTION_ERROR)
             } catch (e: Exception) {
+                Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Unknown exception", e)
+
                 state.postValue(State.ERROR)
             }
         }
