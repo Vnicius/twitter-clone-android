@@ -9,11 +9,11 @@ import com.google.android.material.appbar.AppBarLayout
 import androidx.core.view.ViewCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
@@ -23,7 +23,6 @@ import io.github.vnicius.twitterclone.utils.highlightClickable
 import io.github.vnicius.twitterclone.utils.summarizeNumber
 import kotlinx.android.synthetic.main.activity_profile.*
 import twitter4j.Status
-import twitter4j.User
 
 /**
  * Profile Activity View
