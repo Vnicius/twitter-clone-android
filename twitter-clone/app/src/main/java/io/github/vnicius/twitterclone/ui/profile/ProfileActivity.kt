@@ -6,7 +6,6 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import com.google.android.material.appbar.AppBarLayout
-import androidx.core.view.ViewCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import android.view.MenuItem
@@ -17,18 +16,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
-import io.github.vnicius.twitterclone.ui.common.adapters.TweetsAdapter
+import io.github.vnicius.twitterclone.ui.profile.adapters.ProfileTweetsAdapter
 import io.github.vnicius.twitterclone.utils.State
-import io.github.vnicius.twitterclone.utils.highlightClickable
 import io.github.vnicius.twitterclone.utils.summarizeNumber
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.partial_connection_error.*
 import twitter4j.Status
 import twitter4j.User
 
 /**
  * Profile Activity View
  */
-class ProfileActivity : AppCompatActivity() {
+class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var viewModel: ProfileViewModel
     private var currentUserID: Long = -1
@@ -51,7 +50,6 @@ class ProfileActivity : AppCompatActivity() {
         viewModel.buildTweets(currentUserID)
 
         setupTweetsRecyclerView()
-        initUserData()
         initTweetsState()
         initUserState()
 
@@ -60,6 +58,8 @@ class ProfileActivity : AppCompatActivity() {
             ll_profile_toolbar_user_infos.visibility =
                 if (appbar?.totalScrollRange!! + verticalOffset == 0) View.VISIBLE else View.GONE
         })
+
+        btn_connection_error_action.setOnClickListener(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -73,25 +73,20 @@ class ProfileActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_slide_out_right)
     }
 
-    private fun showUser(user: User) {
-        val userLocation = user.location
+    override fun onClick(view: View) {
+        when (view.id) {
+            btn_connection_error_action.id -> {
+                viewModel.getUser(currentUserID)
+                viewModel.getTweetsDataSource()?.invalidate()
+            }
+        }
+    }
+
+    private fun setupToolbarData(user: User) {
         val userBGColor = Color.parseColor("#${user.profileBackgroundColor}")
         val textColor =
             if (user.profileTextColor == user.profileBackgroundColor) "FFFFFF" else user.profileTextColor
         val userTextColor = Color.parseColor("#$textColor")
-
-        // show the user location
-        if (userLocation.isEmpty()) {
-            tv_profile_location.visibility = View.GONE
-        } else {
-            tv_profile_location.setCompoundDrawablesRelativeWithIntrinsicBounds(
-                AppCompatResources.getDrawable(this, R.drawable.ic_location),
-                null,
-                null,
-                null
-            )
-            tv_profile_location.text = userLocation
-        }
 
         // user name in the toolbar
         tv_profile_toolbar_user_name.text = user.name
@@ -101,24 +96,6 @@ class ProfileActivity : AppCompatActivity() {
         tv_profile_toolbar_tweets_number.text = user.statusesCount.summarizeNumber()
         tv_profile_toolbar_tweets_number.setTextColor(userTextColor)
         tv_profile_toolbar_tweet_label.setTextColor(userTextColor)
-
-        // user name in the profile
-        tv_profile_name.text = user.name
-
-        // user screen name
-        tv_profile_username.text = "@${user.screenName}"
-
-        // user bio
-        if (user.description.isEmpty()) {
-            tv_profile_bio.visibility = View.GONE
-        } else {
-            tv_profile_bio.text = user.description.highlightClickable()
-        }
-        // user count of followings
-        tv_profile_following_label.text = user.friendsCount.summarizeNumber()
-
-        // user count of followers
-        tv_profile_followers_label.text = user.followersCount.summarizeNumber()
 
         // toolbar color
         userBGColor.let {
@@ -137,12 +114,6 @@ class ProfileActivity : AppCompatActivity() {
         Picasso.get().load(user.profileBanner600x200URL)
             .fit()
             .into(iv_profile_toolbar_user_header)
-
-        // set the user profile image
-        Picasso.get().load(user.profileImageURLHttps)
-            .placeholder(R.drawable.img_default_avatar)
-            .error(R.drawable.img_default_avatar)
-            .into(iv_profile_avatar)
     }
 
     private fun showError(message: String) {
@@ -159,13 +130,19 @@ class ProfileActivity : AppCompatActivity() {
         inc_profile_tweets_spinner.visibility = View.VISIBLE
     }
 
+    private fun showConnectionError() {
+        hideContent()
+        inc_profile_connection_error.visibility = View.VISIBLE
+    }
+
     private fun hideContent() {
         inc_profile_tweets_spinner.visibility = View.GONE
+        inc_profile_connection_error.visibility = View.GONE
         rv_profile_tweets_list.visibility = View.GONE
     }
 
     private fun setupTweetsRecyclerView() {
-        val tweetsAdapter = TweetsAdapter(object : ItemClickListener<Status> {
+        val profileTweetsAdapter = ProfileTweetsAdapter(null, object : ItemClickListener<Status> {
             override fun onClick(view: View, item: Status) {
                 val intent = Intent(view.context, ProfileActivity::class.java)
                 intent.putExtra(USER_ID, item.user.id)
@@ -181,19 +158,17 @@ class ProfileActivity : AppCompatActivity() {
 
         rv_profile_tweets_list.apply {
             layoutManager = LinearLayoutManager(this.context)
-            adapter = tweetsAdapter
-        }.also {
-            ViewCompat.setNestedScrollingEnabled(it, false)
+            adapter = profileTweetsAdapter
         }
 
-        viewModel.homeTweetsList.observe(this, Observer {
-            tweetsAdapter.submitList(it)
-        })
-    }
-
-    private fun initUserData() {
         viewModel.userData.observe(this, Observer {
-            showUser(it)
+            profileTweetsAdapter.user = it
+            profileTweetsAdapter.notifyDataSetChanged()
+            setupToolbarData(it)
+        })
+
+        viewModel.homeTweetsList.observe(this, Observer {
+            profileTweetsAdapter.submitList(it)
         })
     }
 
@@ -202,6 +177,7 @@ class ProfileActivity : AppCompatActivity() {
             when (it) {
                 State.LOADING -> showLoader()
                 State.DONE -> showTweets()
+                State.CONNECTION_ERROR -> showConnectionError()
             }
         })
     }
@@ -210,6 +186,7 @@ class ProfileActivity : AppCompatActivity() {
         viewModel.stateUserData.observe(this, Observer {
             when (it) {
                 State.ERROR -> showError(getString(R.string.error_message_connection))
+                State.CONNECTION_ERROR -> showConnectionError()
             }
         })
     }
