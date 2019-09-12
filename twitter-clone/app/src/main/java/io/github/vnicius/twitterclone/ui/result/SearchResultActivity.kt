@@ -13,7 +13,7 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
-import io.github.vnicius.twitterclone.ui.common.adapters.TweetsAdapter
+import io.github.vnicius.twitterclone.ui.result.adapters.TweetsAdapter
 import io.github.vnicius.twitterclone.ui.profile.ProfileActivity
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
 import io.github.vnicius.twitterclone.utils.State
@@ -135,7 +135,8 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupTweetsRecyclerView() {
-        tweetsAdapter = TweetsAdapter(object : ItemClickListener<Status> {
+        tweetsAdapter = TweetsAdapter(object :
+            ItemClickListener<Status> {
             override fun onClick(view: View, item: Status) {
                 val intent = Intent(view.context, ProfileActivity::class.java)
                 intent.putExtra(ProfileActivity.USER_ID, item.user.id)
