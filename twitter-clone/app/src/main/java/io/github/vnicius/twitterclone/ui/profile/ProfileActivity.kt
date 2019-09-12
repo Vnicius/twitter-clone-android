@@ -9,10 +9,11 @@ import com.google.android.material.appbar.AppBarLayout
 import androidx.core.view.ViewCompat
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
@@ -27,10 +28,9 @@ import twitter4j.User
 /**
  * Profile Activity View
  */
-class ProfileActivity : AppCompatActivity(), ProfileContract.View {
+class ProfileActivity : AppCompatActivity() {
 
-    private val presenter: ProfileContract.Presenter = ProfilePresenter(this)
-    private lateinit var tweetsAdapter: TweetsAdapter
+    private lateinit var viewModel: ProfileViewModel
     private var currentUserID: Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,11 +46,14 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
 
         currentUserID = intent.getLongExtra(USER_ID, -1)
 
-        presenter.getUser(currentUserID)
-        presenter.buildTweets(currentUserID)
+        viewModel = ViewModelProviders.of(this)[ProfileViewModel::class.java]
+        viewModel.getUser(currentUserID)
+        viewModel.buildTweets(currentUserID)
 
         setupTweetsRecyclerView()
-        initState()
+        initUserData()
+        initTweetsState()
+        initUserState()
 
         // handle the appbar scroll to show some texts
         app_bar_profile.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbar, verticalOffset ->
@@ -65,8 +68,12 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun showUser(user: User) {
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_slide_out_right)
+    }
 
+    private fun showUser(user: User) {
         val userLocation = user.location
         val userBGColor = Color.parseColor("#${user.profileBackgroundColor}")
         val textColor =
@@ -138,28 +145,18 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
             .into(iv_profile_avatar)
     }
 
-    override fun showError(message: String) {
+    private fun showError(message: String) {
         Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
     }
 
-    override fun showTweets() {
+    private fun showTweets() {
         hideContent()
         rv_profile_tweets_list.visibility = View.VISIBLE
     }
 
-    override fun showLoader() {
+    private fun showLoader() {
         hideContent()
         inc_profile_tweets_spinner.visibility = View.VISIBLE
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        presenter.dispose()
-    }
-
-    override fun finish() {
-        super.finish()
-        overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_slide_out_right)
     }
 
     private fun hideContent() {
@@ -168,7 +165,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
     }
 
     private fun setupTweetsRecyclerView() {
-        tweetsAdapter = TweetsAdapter(object : ItemClickListener<Status> {
+        val tweetsAdapter = TweetsAdapter(object : ItemClickListener<Status> {
             override fun onClick(view: View, item: Status) {
                 val intent = Intent(view.context, ProfileActivity::class.java)
                 intent.putExtra(USER_ID, item.user.id)
@@ -189,16 +186,30 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
             ViewCompat.setNestedScrollingEnabled(it, false)
         }
 
-        presenter.getTweetsValue().observe(this, Observer {
+        viewModel.homeTweetsList.observe(this, Observer {
             tweetsAdapter.submitList(it)
         })
     }
 
-    private fun initState() {
-        presenter.getTweetsState().observe(this, Observer {
+    private fun initUserData() {
+        viewModel.userData.observe(this, Observer {
+            showUser(it)
+        })
+    }
+
+    private fun initTweetsState() {
+        viewModel.stateTweets.observe(this, Observer {
             when (it) {
                 State.LOADING -> showLoader()
                 State.DONE -> showTweets()
+            }
+        })
+    }
+
+    private fun initUserState() {
+        viewModel.stateUserData.observe(this, Observer {
+            when (it) {
+                State.ERROR -> showError(getString(R.string.error_message_connection))
             }
         })
     }

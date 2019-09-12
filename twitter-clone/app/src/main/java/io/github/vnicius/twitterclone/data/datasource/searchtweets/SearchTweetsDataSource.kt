@@ -40,9 +40,11 @@ class SearchTweetsDataSource(
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
 
-                state.postValue(State.ERROR)
+                state.postValue(State.CONNECTION_ERROR)
             } catch (e: Exception) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Unknown exception", e)
+
+                state.postValue(State.ERROR)
             }
         }
     }

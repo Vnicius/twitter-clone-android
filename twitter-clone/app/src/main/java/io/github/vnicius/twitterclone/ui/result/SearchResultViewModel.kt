@@ -2,6 +2,7 @@ package io.github.vnicius.twitterclone.ui.result
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import io.github.vnicius.twitterclone.data.datasource.searchtweets.SearchTweetsDataSource
@@ -17,14 +18,16 @@ private const val MAX_ITEMS = 10
 /**
  * SearchResult Presenter
  */
-class SearchResultPresenter : SearchResultContract.Presenter {
+class SearchResultViewModel : ViewModel() {
 
     // repository instance
     private val tweetRepository: TweetRepository = TweetRepositoryRemote()
-    private lateinit var tweetsList: LiveData<PagedList<Status>>
     private lateinit var searchTweetsDataSourceFactory: SearchTweetsDataSourceFactory
+    lateinit var tweetsList: LiveData<PagedList<Status>>
+    lateinit var state: LiveData<State>
 
-    override fun build(query: String) {
+
+    fun build(query: String) {
         searchTweetsDataSourceFactory =
             SearchTweetsDataSourceFactory(query, MAX_ITEMS, tweetRepository)
         val config = PagedList.Config.Builder()
@@ -33,15 +36,12 @@ class SearchResultPresenter : SearchResultContract.Presenter {
             .setEnablePlaceholders(false)
             .build()
         tweetsList = LivePagedListBuilder(searchTweetsDataSourceFactory, config).build()
+        state = Transformations.switchMap(
+            searchTweetsDataSourceFactory.searchTweetsDataSourceLiveData,
+            SearchTweetsDataSource::state
+        )
     }
 
-    override fun getValue() = tweetsList
-
-    override fun getState(): LiveData<State> = Transformations.switchMap(
-        searchTweetsDataSourceFactory.searchTweetsDataSourceLiveData,
-        SearchTweetsDataSource::state
-    )
-
-    override fun getDataSourceValue(): SearchTweetsDataSource? =
+    fun getDataSourceValue(): SearchTweetsDataSource? =
         searchTweetsDataSourceFactory.searchTweetsDataSourceLiveData.value
 }
