@@ -27,13 +27,13 @@ class ProfileViewModel : ViewModel() {
     private lateinit var homeTweetsDataSourceFactory: UserTweetsDataSourceFactory
     lateinit var homeTweetsList: LiveData<PagedList<Status>>
     lateinit var stateTweets: LiveData<State>
-    lateinit var userData: User
+    var userData: MutableLiveData<User> = MutableLiveData()
     var stateUserData: MutableLiveData<State> = MutableLiveData()
 
     fun getUser(userId: Long) {
         viewModelScope.launch {
             try {
-                userData = userRepository.getUserAsync(userId)
+                userData.postValue(userRepository.getUserAsync(userId))
 
                 stateUserData.postValue(State.DONE)
             } catch (e: Exception) {

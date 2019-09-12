@@ -23,6 +23,7 @@ import io.github.vnicius.twitterclone.utils.highlightClickable
 import io.github.vnicius.twitterclone.utils.summarizeNumber
 import kotlinx.android.synthetic.main.activity_profile.*
 import twitter4j.Status
+import twitter4j.User
 
 /**
  * Profile Activity View
@@ -50,6 +51,7 @@ class ProfileActivity : AppCompatActivity() {
         viewModel.buildTweets(currentUserID)
 
         setupTweetsRecyclerView()
+        initUserData()
         initTweetsState()
         initUserState()
 
@@ -71,8 +73,7 @@ class ProfileActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_slide_out_right)
     }
 
-    private fun showUser() {
-        val user = viewModel.userData
+    private fun showUser(user: User) {
         val userLocation = user.location
         val userBGColor = Color.parseColor("#${user.profileBackgroundColor}")
         val textColor =
@@ -190,6 +191,12 @@ class ProfileActivity : AppCompatActivity() {
         })
     }
 
+    private fun initUserData() {
+        viewModel.userData.observe(this, Observer {
+            showUser(it)
+        })
+    }
+
     private fun initTweetsState() {
         viewModel.stateTweets.observe(this, Observer {
             when (it) {
@@ -203,7 +210,6 @@ class ProfileActivity : AppCompatActivity() {
         viewModel.stateUserData.observe(this, Observer {
             when (it) {
                 State.ERROR -> showError(getString(R.string.error_message_connection))
-                State.DONE -> showUser()
             }
         })
     }
