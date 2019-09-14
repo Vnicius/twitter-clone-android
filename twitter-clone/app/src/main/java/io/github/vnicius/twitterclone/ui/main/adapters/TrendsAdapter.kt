@@ -46,7 +46,7 @@ class TrendsAdapter(var trends: Array<Trend>, private val listener: ItemClickLis
 
         if (oldData.isNotEmpty()) {
             for (i in 1 until newData.size) {
-                if (oldData[i].name != newData[i].name) {
+                if (oldData[i].name != newData[i].name || oldData[i].tweetVolume != newData[i].tweetVolume) {
                     notifyItemChanged(i)
                 }
             }
