@@ -37,6 +37,7 @@ class UserTweetsDataSource(
 
                     callback.onResult(it, null, nextPage)
                     state.postValue(State.DONE)
+                    userRepository.local.saveUserTweetsAsync(userId, it)
                 }
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
