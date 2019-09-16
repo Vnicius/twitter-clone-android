@@ -11,6 +11,8 @@ import androidx.appcompat.content.res.AppCompatResources
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
@@ -62,6 +64,10 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener, ItemClickList
         })
 
         btn_connection_error_action.setOnClickListener(this)
+        swipe_profile_refresh.apply {
+            setOnRefreshListener { refresh() }
+            setColorSchemeColors(ContextCompat.getColor(this.context, R.color.blue))
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -78,8 +84,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener, ItemClickList
     override fun onClick(view: View) {
         when (view.id) {
             btn_connection_error_action.id -> {
-                viewModel.getUser(currentUserID)
-                viewModel.getTweetsDataSource()?.invalidate()
+                refresh()
             }
         }
     }
@@ -137,6 +142,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener, ItemClickList
     private fun showTweets() {
         hideContent()
         rv_profile_tweets_list.visibility = View.VISIBLE
+        swipe_profile_refresh.isRefreshing = false
     }
 
     private fun showLoader() {
@@ -222,6 +228,11 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener, ItemClickList
                 State.CONNECTION_ERROR -> showConnectionError()
             }
         })
+    }
+
+    private fun refresh() {
+        viewModel.getUser(currentUserID)
+        viewModel.getTweetsDataSource()?.invalidate()
     }
 
     companion object {

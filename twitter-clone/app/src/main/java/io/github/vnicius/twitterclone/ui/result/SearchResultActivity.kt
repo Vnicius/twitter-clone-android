@@ -10,6 +10,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
@@ -47,6 +48,10 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener, ItemClic
 
         rl_search_field.setOnClickListener(this)
         btn_connection_error_action.setOnClickListener(this)
+        swipe_search_result_tweets.apply {
+            setOnRefreshListener { refresh() }
+            setColorSchemeColors(ContextCompat.getColor(this.context, R.color.blue))
+        }
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -94,7 +99,7 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener, ItemClic
             }
 
             btn_connection_error_action.id -> {
-                viewModel.getDataSourceValue()?.invalidate()
+                refresh()
             }
         }
     }
@@ -131,6 +136,7 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener, ItemClic
     private fun showResult() {
         hideContent()
         rv_search_result_tweets_list.visibility = View.VISIBLE
+        swipe_search_result_tweets.isRefreshing = false
     }
 
     private fun showNoResult() {
@@ -197,5 +203,9 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener, ItemClic
                 State.CONNECTION_ERROR -> showConnectionErrorMessage()
             }
         })
+    }
+
+    private fun refresh() {
+        viewModel.getDataSourceValue()?.invalidate()
     }
 }

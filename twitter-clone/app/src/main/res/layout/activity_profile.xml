@@ -78,55 +78,58 @@
                                 android:text="@string/title_tweets" />
                     </LinearLayout>
 
-
                 </LinearLayout>
 
             </androidx.appcompat.widget.Toolbar>
 
-
         </com.google.android.material.appbar.CollapsingToolbarLayout>
-
 
     </com.google.android.material.appbar.AppBarLayout>
 
-
-    <io.github.vnicius.twitterclone.utils.SmartNestedScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_profile_refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
-            android:fillViewport="true"
+            android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <LinearLayout
+        <io.github.vnicius.twitterclone.utils.SmartNestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:fillViewport="true">
 
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_profile_tweets_list"
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    tools:listitem="@layout/item_tweet" />
+                    android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_profile_local_tweets"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:visibility="gone" />
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_profile_tweets_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        tools:listitem="@layout/item_tweet" />
 
-            <include
-                    android:id="@+id/inc_profile_tweets_spinner"
-                    layout="@layout/partial_spinner"
-                    android:visibility="gone" />
 
-            <include
-                    android:id="@+id/inc_profile_connection_error"
-                    layout="@layout/partial_connection_error"
-                    android:visibility="gone" />
+                <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_profile_local_tweets"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:visibility="gone" />
 
-        </LinearLayout>
+                <include
+                        android:id="@+id/inc_profile_tweets_spinner"
+                        layout="@layout/partial_spinner"
+                        android:visibility="gone" />
 
-    </io.github.vnicius.twitterclone.utils.SmartNestedScrollView>
+                <include
+                        android:id="@+id/inc_profile_connection_error"
+                        layout="@layout/partial_connection_error"
+                        android:visibility="gone" />
+
+            </LinearLayout>
+
+        </io.github.vnicius.twitterclone.utils.SmartNestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
