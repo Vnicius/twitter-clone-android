@@ -39,6 +39,22 @@ class TrendsAdapter(var trends: Array<Trend>, private val listener: ItemClickLis
         viewHolder.bindView(trends[position])
     }
 
+    fun updateData(newData: Array<Trend>) {
+        val oldData = trends.copyOf()
+
+        trends = newData
+
+        if (oldData.isNotEmpty()) {
+            for (i in newData.indices) {
+                if (oldData[i].name != newData[i].name || oldData[i].tweetVolume != newData[i].tweetVolume) {
+                    notifyItemChanged(i)
+                }
+            }
+        } else {
+            notifyDataSetChanged()
+        }
+    }
+
     /**
      * Class to bind the object items with the view items
      * @property itemView view with the elements

@@ -18,5 +18,9 @@ interface TweetRepository {
     suspend fun getTweetsByQueryAsync(
         query: Query,
         pageSize: Int
-    ): QueryResult
+    ): QueryResult?
+
+    suspend fun getTweetsAsync(queryText: String): List<Status>?
+
+    suspend fun saveTweetsAsync(queryText: String, tweets: List<Status>): Boolean
 }

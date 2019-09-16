@@ -100,3 +100,7 @@ fun Long.parseTweetTime(): String {
 
     return if (minutes > 0) "${minutes}m" else "${seconds}s"
 }
+
+fun String.toFileName(): String {
+    return this.toLowerCase().replace(" ", "_")
+}

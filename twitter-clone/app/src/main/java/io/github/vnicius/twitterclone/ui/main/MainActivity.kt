@@ -121,10 +121,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         viewModel.trends.observe(this, Observer { trendsData ->
-            trendsAdapter.apply {
-                trends = trendsData
-                notifyDataSetChanged()
-            }
+            trendsAdapter.updateData(trendsData)
+            tv_main_trend_title.isFocusableInTouchMode = true
         })
     }
 

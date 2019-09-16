@@ -12,5 +12,7 @@ interface TrendRepository {
      * @param [woeid] code of the location
      * @return a [Array] of [Trend]
      */
-    suspend fun getTrendsAsync(woeid: Int): Array<Trend>
+    suspend fun getTrendsAsync(woeid: Int): Array<Trend>?
+
+    suspend fun saveTrendsAsync(woeid: Int, trends: Array<Trend>): Boolean
 }

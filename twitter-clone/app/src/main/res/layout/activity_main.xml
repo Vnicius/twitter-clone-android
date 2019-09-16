@@ -59,6 +59,7 @@
                     android:orientation="vertical">
 
                 <TextView
+                        android:id="@+id/tv_main_trend_title"
                         style="@style/TextAppearance.AppCompat.TextAppearanceNormal"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"

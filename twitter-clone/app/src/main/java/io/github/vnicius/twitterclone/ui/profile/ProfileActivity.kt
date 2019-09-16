@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
+import io.github.vnicius.twitterclone.ui.profile.adapters.LocalProfileAdapter
 import io.github.vnicius.twitterclone.ui.profile.adapters.ProfileTweetsAdapter
 import io.github.vnicius.twitterclone.utils.State
 import io.github.vnicius.twitterclone.utils.summarizeNumber
@@ -27,7 +28,7 @@ import twitter4j.User
 /**
  * Profile Activity View
  */
-class ProfileActivity : AppCompatActivity(), View.OnClickListener {
+class ProfileActivity : AppCompatActivity(), View.OnClickListener, ItemClickListener<Status> {
 
     private lateinit var viewModel: ProfileViewModel
     private var currentUserID: Long = -1
@@ -49,6 +50,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         viewModel.getUser(currentUserID)
         viewModel.buildTweets(currentUserID)
 
+        setupLocalTweetsRecyclerView()
         setupTweetsRecyclerView()
         initTweetsState()
         initUserState()
@@ -80,6 +82,18 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
                 viewModel.getTweetsDataSource()?.invalidate()
             }
         }
+    }
+
+    override fun onClick(view: View, item: Status) {
+        val intent = Intent(view.context, ProfileActivity::class.java)
+        intent.putExtra(USER_ID, item.user.id)
+
+        startActivity(intent)
+
+        overridePendingTransition(
+            R.anim.anim_slide_in_left,
+            R.anim.anim_fade_out
+        )
     }
 
     private fun setupToolbarData(user: User) {
@@ -128,6 +142,10 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     private fun showLoader() {
         hideContent()
         inc_profile_tweets_spinner.visibility = View.VISIBLE
+
+        viewModel.userData.observe(this, Observer {
+            rv_profile_local_tweets.visibility = View.VISIBLE
+        })
     }
 
     private fun showConnectionError() {
@@ -139,22 +157,11 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
         inc_profile_tweets_spinner.visibility = View.GONE
         inc_profile_connection_error.visibility = View.GONE
         rv_profile_tweets_list.visibility = View.GONE
+        rv_profile_local_tweets.visibility = View.GONE
     }
 
     private fun setupTweetsRecyclerView() {
-        val profileTweetsAdapter = ProfileTweetsAdapter(null, object : ItemClickListener<Status> {
-            override fun onClick(view: View, item: Status) {
-                val intent = Intent(view.context, ProfileActivity::class.java)
-                intent.putExtra(USER_ID, item.user.id)
-
-                startActivity(intent)
-
-                overridePendingTransition(
-                    R.anim.anim_slide_in_left,
-                    R.anim.anim_fade_out
-                )
-            }
-        })
+        val profileTweetsAdapter = ProfileTweetsAdapter(null, this)
 
         rv_profile_tweets_list.apply {
             layoutManager = LinearLayoutManager(this.context)
@@ -169,6 +176,32 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
 
         viewModel.homeTweetsList.observe(this, Observer {
             profileTweetsAdapter.submitList(it)
+        })
+    }
+
+    private fun setupLocalTweetsRecyclerView() {
+        val localProfileAdapter = LocalProfileAdapter(null, listOf(), this)
+
+        rv_profile_local_tweets.apply {
+            layoutManager = LinearLayoutManager(this.context)
+            adapter = localProfileAdapter
+        }
+
+        viewModel.userData.observe(this, Observer {
+            localProfileAdapter.apply {
+                user = it
+                notifyDataSetChanged()
+            }
+            setupToolbarData(it)
+        })
+
+        viewModel.localHomeTweetsList.observe(this, Observer { localTweets ->
+            localTweets?.let {
+                localProfileAdapter.apply {
+                    tweets = it
+                    notifyDataSetChanged()
+                }
+            }
         })
     }
 

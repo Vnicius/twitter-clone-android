@@ -15,6 +15,7 @@ import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
 import io.github.vnicius.twitterclone.ui.result.adapters.TweetsAdapter
 import io.github.vnicius.twitterclone.ui.profile.ProfileActivity
+import io.github.vnicius.twitterclone.ui.result.adapters.LocalTweetsAdapter
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
 import io.github.vnicius.twitterclone.utils.State
 import kotlinx.android.synthetic.main.activity_search_result.*
@@ -25,7 +26,7 @@ import twitter4j.Status
 /**
  * SearchResult Activity View
  */
-class SearchResultActivity : AppCompatActivity(), View.OnClickListener {
+class SearchResultActivity : AppCompatActivity(), View.OnClickListener, ItemClickListener<Status> {
 
     private lateinit var viewModel: SearchResultViewModel
     private lateinit var query: String
@@ -64,6 +65,7 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener {
                 query = it
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_fade_out)
             }
+            setupLocalTweetsRecyclerView()
             initState()
             setupTweetsRecyclerView()
         }
@@ -97,6 +99,18 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    override fun onClick(view: View, item: Status) {
+        val intent = Intent(view.context, ProfileActivity::class.java)
+        intent.putExtra(ProfileActivity.USER_ID, item.user.id)
+
+        startActivity(intent)
+
+        overridePendingTransition(
+            R.anim.anim_slide_in_left,
+            R.anim.anim_fade_out
+        )
+    }
+
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_slide_out_right)
@@ -104,7 +118,14 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun showLoader() {
         hideContent()
-        inc_search_result_spinner.visibility = View.VISIBLE
+
+        viewModel.localTweetsList.observe(this, Observer {
+            if (it.isNullOrEmpty()) {
+                inc_search_result_spinner.visibility = View.VISIBLE
+            } else {
+                rv_search_result_local_tweets.visibility = View.VISIBLE
+            }
+        })
     }
 
     private fun showResult() {
@@ -131,24 +152,12 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener {
         inc_search_result_connection_error.visibility = View.GONE
         inc_search_result_spinner.visibility = View.GONE
         rv_search_result_tweets_list.visibility = View.GONE
+        rv_search_result_local_tweets.visibility = View.GONE
         tv_search_result_no_result_message.visibility = View.GONE
     }
 
     private fun setupTweetsRecyclerView() {
-        tweetsAdapter = TweetsAdapter(object :
-            ItemClickListener<Status> {
-            override fun onClick(view: View, item: Status) {
-                val intent = Intent(view.context, ProfileActivity::class.java)
-                intent.putExtra(ProfileActivity.USER_ID, item.user.id)
-
-                startActivity(intent)
-
-                overridePendingTransition(
-                    R.anim.anim_slide_in_left,
-                    R.anim.anim_fade_out
-                )
-            }
-        })
+        tweetsAdapter = TweetsAdapter(this)
 
         rv_search_result_tweets_list.apply {
             layoutManager = LinearLayoutManager(this.context)
@@ -157,6 +166,24 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener {
 
         viewModel.tweetsList.observe(this, Observer {
             tweetsAdapter.submitList(it)
+        })
+    }
+
+    private fun setupLocalTweetsRecyclerView() {
+        val localTweetsAdapter = LocalTweetsAdapter(listOf(), this)
+
+        rv_search_result_local_tweets.apply {
+            layoutManager = LinearLayoutManager(this.context)
+            adapter = localTweetsAdapter
+        }
+
+        viewModel.localTweetsList.observe(this, Observer { tweetsList ->
+            tweetsList?.let {
+                localTweetsAdapter.apply {
+                    tweets = tweetsList
+                    notifyDataSetChanged()
+                }
+            }
         })
     }
 

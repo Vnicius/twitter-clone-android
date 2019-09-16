@@ -3,6 +3,7 @@ package io.github.vnicius.twitterclone.data.datasource.searchtweets
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import android.util.Log
+import io.github.vnicius.twitterclone.data.repository.Repository
 import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepository
 import io.github.vnicius.twitterclone.utils.LogTagsUtils
 import io.github.vnicius.twitterclone.utils.State
@@ -14,7 +15,7 @@ import twitter4j.TwitterException
 class SearchTweetsDataSource(
     val queryText: String,
     val pageSize: Int,
-    val tweetsRepository: TweetRepository
+    val tweetsRepository: Repository<TweetRepository>
 ) : PageKeyedDataSource<Query, Status>() {
 
     private val tweetsDataSourceJob = SupervisorJob()
@@ -29,13 +30,18 @@ class SearchTweetsDataSource(
 
         tweetsDataSourceScope.launch {
             try {
-                val result = tweetsRepository.getTweetsByQueryAsync(Query(queryText), pageSize)
-                callback.onResult(result.tweets, null, result.nextQuery())
+                val result =
+                    tweetsRepository.remote.getTweetsByQueryAsync(Query(queryText), pageSize)
 
-                if (result.tweets.isEmpty()) {
-                    state.postValue(State.NO_RESULT)
-                } else {
-                    state.postValue(State.DONE)
+                if (result != null) {
+                    callback.onResult(result.tweets, null, result.nextQuery())
+
+                    if (result.tweets.isEmpty()) {
+                        state.postValue(State.NO_RESULT)
+                    } else {
+                        state.postValue(State.DONE)
+                        tweetsRepository.local.saveTweetsAsync(queryText, result.tweets)
+                    }
                 }
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
@@ -52,8 +58,10 @@ class SearchTweetsDataSource(
     override fun loadAfter(params: LoadParams<Query>, callback: LoadCallback<Query, Status>) {
         tweetsDataSourceScope.launch {
             try {
-                val result = tweetsRepository.getTweetsByQueryAsync(params.key, pageSize)
-                callback.onResult(result.tweets, result.nextQuery())
+                val result = tweetsRepository.remote.getTweetsByQueryAsync(params.key, pageSize)
+                if (result != null) {
+                    callback.onResult(result.tweets, result.nextQuery())
+                }
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
 
