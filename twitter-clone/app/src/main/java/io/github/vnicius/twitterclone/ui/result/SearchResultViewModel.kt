@@ -26,9 +26,9 @@ class SearchResultViewModel(myApp: Application) : AndroidViewModel(myApp) {
     private val tweetRepository: Repository<TweetRepository> =
         RepositoryFactory.createRepository<TweetRepository>()?.create(myApp) as Repository<TweetRepository>
     private lateinit var searchTweetsDataSourceFactory: SearchTweetsDataSourceFactory
+    lateinit var state: LiveData<State>
     lateinit var tweetsList: LiveData<PagedList<Status>>
     var localTweetsList: MutableLiveData<List<Status>?> = MutableLiveData()
-    lateinit var state: LiveData<State>
 
 
     fun build(query: String) {
