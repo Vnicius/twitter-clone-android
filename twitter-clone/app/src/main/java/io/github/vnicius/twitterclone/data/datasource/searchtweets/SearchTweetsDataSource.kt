@@ -32,6 +32,7 @@ class SearchTweetsDataSource(
             try {
                 val result =
                     tweetsRepository.remote.getTweetsByQueryAsync(Query(queryText), pageSize)
+
                 result?.let {
                     callback.onResult(it.tweets, null, it.nextQuery())
 
@@ -39,6 +40,7 @@ class SearchTweetsDataSource(
                         state.postValue(State.NO_RESULT)
                     } else {
                         state.postValue(State.DONE)
+                        tweetsRepository.local.saveTweetsAsync(queryText, it.tweets)
                     }
                 }
             } catch (e: TwitterException) {
