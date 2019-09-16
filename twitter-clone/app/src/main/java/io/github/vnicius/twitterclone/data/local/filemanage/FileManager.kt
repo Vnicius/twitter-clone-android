@@ -4,10 +4,7 @@ import android.app.Application
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.ObjectInputStream
-import java.io.ObjectOutputStream
+import java.io.*
 import java.lang.Exception
 
 class FileManager(val myApp: Application) {
@@ -23,6 +20,8 @@ class FileManager(val myApp: Application) {
             fis.close()
             data
         } catch (e: FileNotFoundException) {
+            null
+        } catch (e: EOFException) {
             null
         }
     }
