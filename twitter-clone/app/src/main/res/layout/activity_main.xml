@@ -41,54 +41,61 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipe_main_trends_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:clipToPadding="false"
-            android:fillViewport="true"
+            android:layout_height="wrap_content"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <FrameLayout
+        <androidx.core.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:clipToPadding="false"
+                android:fillViewport="true">
 
-            <LinearLayout
-                    android:id="@+id/ll_main_trends"
+            <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
-                <TextView
-                        android:id="@+id/tv_main_trend_title"
-                        style="@style/TextAppearance.AppCompat.TextAppearanceNormal"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:padding="@dimen/spacing_normal"
-                        android:text="@string/title_world_wide_trends" />
-
-                <include layout="@layout/partial_line" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_main_trends_list"
+                <LinearLayout
+                        android:id="@+id/ll_main_trends"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        tools:listitem="@layout/item_trend">
+                        android:orientation="vertical">
 
-                </androidx.recyclerview.widget.RecyclerView>
-            </LinearLayout>
+                    <TextView
+                            android:id="@+id/tv_main_trend_title"
+                            style="@style/TextAppearance.AppCompat.TextAppearanceNormal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="@dimen/spacing_normal"
+                            android:text="@string/title_world_wide_trends" />
 
-            <include
-                    android:id="@+id/inc_main_spinner"
-                    layout="@layout/partial_spinner"
-                    android:visibility="gone" />
+                    <include layout="@layout/partial_line" />
 
-            <include
-                    android:id="@+id/inc_main_connection_error"
-                    layout="@layout/partial_connection_error"
-                    android:visibility="gone" />
+                    <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rv_main_trends_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:listitem="@layout/item_trend">
 
-        </FrameLayout>
+                    </androidx.recyclerview.widget.RecyclerView>
 
-    </androidx.core.widget.NestedScrollView>
+                </LinearLayout>
+
+                <include
+                        android:id="@+id/inc_main_spinner"
+                        layout="@layout/partial_spinner"
+                        android:visibility="gone" />
+
+                <include
+                        android:id="@+id/inc_main_connection_error"
+                        layout="@layout/partial_connection_error"
+                        android:visibility="gone" />
+
+            </FrameLayout>
+
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

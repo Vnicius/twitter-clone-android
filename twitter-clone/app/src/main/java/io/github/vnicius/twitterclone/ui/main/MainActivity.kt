@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.security.ProviderInstaller
@@ -50,6 +51,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         rl_search_field.setOnClickListener(this)
         btn_connection_error_action.setOnClickListener(this)
+        swipe_main_trends_list.apply {
+            setOnRefreshListener { refresh() }
+            setColorSchemeColors(ContextCompat.getColor(this.context, R.color.blue))
+        }
     }
 
     override fun onClick(view: View?) {
@@ -61,7 +66,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             btn_connection_error_action.id -> {
-                viewModel.getTrends()
+                refresh()
             }
         }
     }
@@ -80,6 +85,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun showTrends() {
         hideContent()
         ll_main_trends.visibility = View.VISIBLE
+        swipe_main_trends_list.isRefreshing = false
     }
 
     private fun showError(message: String) {
@@ -124,6 +130,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             trendsAdapter.updateData(trendsData)
             tv_main_trend_title.isFocusableInTouchMode = true
         })
+    }
+
+    private fun refresh() {
+        viewModel.getTrends()
     }
 
     private fun initState() {
