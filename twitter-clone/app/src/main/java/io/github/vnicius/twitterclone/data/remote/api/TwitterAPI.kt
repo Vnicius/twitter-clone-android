@@ -30,9 +30,9 @@ class TwitterAPI : APIInterface {
         userId: Long,
         pageSize: Int,
         page: Int
-    ): ResponseList<Status> =
+    ): List<Status> =
         withContext(Dispatchers.IO) {
-            twitterInstance.getUserTimeline(userId, Paging(page, pageSize))
+            twitterInstance.getUserTimeline(userId, Paging(page, pageSize)).toList()
         }
 
     /**

@@ -2,13 +2,14 @@ package io.github.vnicius.twitterclone.data.datasource.usertweets
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
+import io.github.vnicius.twitterclone.data.repository.Repository
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
 import twitter4j.Status
 
 class UserTweetsDataSourceFactory(
     private val userId: Long,
     private val pageSize: Int,
-    private val userRepository: UserRepository
+    private val userRepository: Repository<UserRepository>
 ) : DataSource.Factory<Int, Status>() {
 
     val userTweetsDataSourceLiveData = MutableLiveData<UserTweetsDataSource>()

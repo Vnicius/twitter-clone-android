@@ -1,11 +1,14 @@
 package io.github.vnicius.twitterclone.ui.profile
 
+import android.app.Application
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import android.util.Log
 import androidx.lifecycle.*
 import io.github.vnicius.twitterclone.data.datasource.usertweets.UserTweetsDataSource
 import io.github.vnicius.twitterclone.data.datasource.usertweets.UserTweetsDataSourceFactory
+import io.github.vnicius.twitterclone.data.repository.Repository
+import io.github.vnicius.twitterclone.data.repository.RepositoryFactory
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
 import io.github.vnicius.twitterclone.data.repository.user.UserRepositoryRemote
 import io.github.vnicius.twitterclone.utils.LogTagsUtils
@@ -22,9 +25,10 @@ private const val MAX_ITEMS = 10
  * Profile ViewModel
  * @property view instance of the view
  */
-class ProfileViewModel : ViewModel() {
+class ProfileViewModel(val myApp: Application) : AndroidViewModel(myApp) {
 
-    private val userRepository: UserRepository = UserRepositoryRemote()
+    private val userRepository: Repository<UserRepository> =
+        RepositoryFactory.createRepository<UserRepository>()?.create(myApp) as Repository<UserRepository>
     private lateinit var homeTweetsDataSourceFactory: UserTweetsDataSourceFactory
     lateinit var homeTweetsList: LiveData<PagedList<Status>>
     lateinit var stateTweets: LiveData<State>
@@ -34,7 +38,7 @@ class ProfileViewModel : ViewModel() {
     fun getUser(userId: Long) {
         viewModelScope.launch {
             try {
-                userData.postValue(userRepository.getUserAsync(userId))
+                userData.postValue(userRepository.remote.getUserAsync(userId))
 
                 stateUserData.postValue(State.DONE)
             } catch (e: TwitterException) {

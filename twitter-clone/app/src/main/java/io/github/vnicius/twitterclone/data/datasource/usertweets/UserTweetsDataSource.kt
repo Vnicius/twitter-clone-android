@@ -3,6 +3,7 @@ package io.github.vnicius.twitterclone.data.datasource.usertweets
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import io.github.vnicius.twitterclone.data.repository.Repository
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
 import io.github.vnicius.twitterclone.utils.LogTagsUtils
 import io.github.vnicius.twitterclone.utils.State
@@ -14,7 +15,7 @@ import java.lang.Exception
 class UserTweetsDataSource(
     private val userId: Long,
     private val pageSize: Int,
-    private val userRepository: UserRepository
+    private val userRepository: Repository<UserRepository>
 ) : PageKeyedDataSource<Int, Status>() {
 
     private val userTweetsDataSourceJob = SupervisorJob()
@@ -29,11 +30,14 @@ class UserTweetsDataSource(
 
         userTweetsDataSourceScope.launch {
             try {
-                val result = userRepository.getUserTweetsAsync(userId, pageSize, 1)
-                val nextPage: Int? = if (result.isEmpty()) null else 2
+                val result = userRepository.remote.getUserTweetsAsync(userId, pageSize, 1)
 
-                callback.onResult(result, null, nextPage)
-                state.postValue(State.DONE)
+                result?.let {
+                    val nextPage: Int? = if (it.isEmpty()) null else 2
+
+                    callback.onResult(it, null, nextPage)
+                    state.postValue(State.DONE)
+                }
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
 
@@ -49,10 +53,13 @@ class UserTweetsDataSource(
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, Status>) {
         userTweetsDataSourceScope.launch {
             try {
-                val result = userRepository.getUserTweetsAsync(userId, pageSize, params.key)
-                val nextPage: Int? = if (result.isEmpty()) null else params.key + 1
+                val result = userRepository.remote.getUserTweetsAsync(userId, pageSize, params.key)
 
-                callback.onResult(result, nextPage)
+                result?.let {
+                    val nextPage: Int? = if (it.isEmpty()) null else params.key + 1
+
+                    callback.onResult(it, nextPage)
+                }
             } catch (e: Exception) {
                 state.postValue(State.ERROR)
             }
@@ -62,11 +69,15 @@ class UserTweetsDataSource(
     override fun loadBefore(params: LoadParams<Int>, callback: LoadCallback<Int, Status>) {
         userTweetsDataSourceScope.launch {
             try {
-                val result = userRepository.getUserTweetsAsync(userId, pageSize, params.key - 1)
-                val previousPage: Int? =
-                    if (result.isEmpty() || params.key - 2 == -1) null else params.key - 2
+                val result =
+                    userRepository.remote.getUserTweetsAsync(userId, pageSize, params.key - 1)
 
-                callback.onResult(result, previousPage)
+                result?.let {
+                    val previousPage: Int? =
+                        if (it.isEmpty() || params.key - 2 == -1) null else params.key - 2
+
+                    callback.onResult(it, previousPage)
+                }
             } catch (e: Exception) {
                 state.postValue(State.ERROR)
             }
