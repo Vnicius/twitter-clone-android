@@ -33,14 +33,14 @@ class SearchTweetsDataSource(
                 val result =
                     tweetsRepository.remote.getTweetsByQueryAsync(Query(queryText), pageSize)
 
-                result?.let {
-                    callback.onResult(it.tweets, null, it.nextQuery())
+                if (result != null) {
+                    callback.onResult(result.tweets, null, result.nextQuery())
 
-                    if (it.tweets.isEmpty()) {
+                    if (result.tweets.isEmpty()) {
                         state.postValue(State.NO_RESULT)
                     } else {
                         state.postValue(State.DONE)
-                        tweetsRepository.local.saveTweetsAsync(queryText, it.tweets)
+                        tweetsRepository.local.saveTweetsAsync(queryText, result.tweets)
                     }
                 }
             } catch (e: TwitterException) {
@@ -59,8 +59,8 @@ class SearchTweetsDataSource(
         tweetsDataSourceScope.launch {
             try {
                 val result = tweetsRepository.remote.getTweetsByQueryAsync(params.key, pageSize)
-                result?.let {
-                    callback.onResult(it.tweets, it.nextQuery())
+                if (result != null) {
+                    callback.onResult(result.tweets, result.nextQuery())
                 }
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)

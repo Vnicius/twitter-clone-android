@@ -32,12 +32,12 @@ class UserTweetsDataSource(
             try {
                 val result = userRepository.remote.getUserTweetsAsync(userId, pageSize, 1)
 
-                result?.let {
-                    val nextPage: Int? = if (it.isEmpty()) null else 2
+                if (result != null) {
+                    val nextPage: Int? = if (result.isEmpty()) null else 2
 
-                    callback.onResult(it, null, nextPage)
+                    callback.onResult(result, null, nextPage)
                     state.postValue(State.DONE)
-                    userRepository.local.saveUserTweetsAsync(userId, it)
+                    userRepository.local.saveUserTweetsAsync(userId, result)
                 }
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
@@ -56,10 +56,10 @@ class UserTweetsDataSource(
             try {
                 val result = userRepository.remote.getUserTweetsAsync(userId, pageSize, params.key)
 
-                result?.let {
-                    val nextPage: Int? = if (it.isEmpty()) null else params.key + 1
+                if (result != null) {
+                    val nextPage: Int? = if (result.isEmpty()) null else params.key + 1
 
-                    callback.onResult(it, nextPage)
+                    callback.onResult(result, nextPage)
                 }
             } catch (e: Exception) {
                 state.postValue(State.ERROR)
@@ -73,11 +73,11 @@ class UserTweetsDataSource(
                 val result =
                     userRepository.remote.getUserTweetsAsync(userId, pageSize, params.key - 1)
 
-                result?.let {
+                if (result != null) {
                     val previousPage: Int? =
-                        if (it.isEmpty() || params.key - 2 == -1) null else params.key - 2
+                        if (result.isEmpty() || params.key - 2 == -1) null else params.key - 2
 
-                    callback.onResult(it, previousPage)
+                    callback.onResult(result, previousPage)
                 }
             } catch (e: Exception) {
                 state.postValue(State.ERROR)

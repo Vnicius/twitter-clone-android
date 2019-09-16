@@ -28,7 +28,7 @@ import twitter4j.User
 /**
  * Profile Activity View
  */
-class ProfileActivity : AppCompatActivity(), View.OnClickListener {
+class ProfileActivity : AppCompatActivity(), View.OnClickListener, ItemClickListener<Status> {
 
     private lateinit var viewModel: ProfileViewModel
     private var currentUserID: Long = -1
@@ -82,6 +82,18 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
                 viewModel.getTweetsDataSource()?.invalidate()
             }
         }
+    }
+
+    override fun onClick(view: View, item: Status) {
+        val intent = Intent(view.context, ProfileActivity::class.java)
+        intent.putExtra(USER_ID, item.user.id)
+
+        startActivity(intent)
+
+        overridePendingTransition(
+            R.anim.anim_slide_in_left,
+            R.anim.anim_fade_out
+        )
     }
 
     private fun setupToolbarData(user: User) {
@@ -149,19 +161,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupTweetsRecyclerView() {
-        val profileTweetsAdapter = ProfileTweetsAdapter(null, object : ItemClickListener<Status> {
-            override fun onClick(view: View, item: Status) {
-                val intent = Intent(view.context, ProfileActivity::class.java)
-                intent.putExtra(USER_ID, item.user.id)
-
-                startActivity(intent)
-
-                overridePendingTransition(
-                    R.anim.anim_slide_in_left,
-                    R.anim.anim_fade_out
-                )
-            }
-        })
+        val profileTweetsAdapter = ProfileTweetsAdapter(null, this)
 
         rv_profile_tweets_list.apply {
             layoutManager = LinearLayoutManager(this.context)
@@ -180,20 +180,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupLocalTweetsRecyclerView() {
-        val localProfileAdapter =
-            LocalProfileAdapter(null, listOf(), object : ItemClickListener<Status> {
-                override fun onClick(view: View, item: Status) {
-                    val intent = Intent(view.context, ProfileActivity::class.java)
-                    intent.putExtra(USER_ID, item.user.id)
-
-                    startActivity(intent)
-
-                    overridePendingTransition(
-                        R.anim.anim_slide_in_left,
-                        R.anim.anim_fade_out
-                    )
-                }
-            })
+        val localProfileAdapter = LocalProfileAdapter(null, listOf(), this)
 
         rv_profile_local_tweets.apply {
             layoutManager = LinearLayoutManager(this.context)

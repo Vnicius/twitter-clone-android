@@ -26,7 +26,7 @@ import twitter4j.Status
 /**
  * SearchResult Activity View
  */
-class SearchResultActivity : AppCompatActivity(), View.OnClickListener {
+class SearchResultActivity : AppCompatActivity(), View.OnClickListener, ItemClickListener<Status> {
 
     private lateinit var viewModel: SearchResultViewModel
     private lateinit var query: String
@@ -99,6 +99,18 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    override fun onClick(view: View, item: Status) {
+        val intent = Intent(view.context, ProfileActivity::class.java)
+        intent.putExtra(ProfileActivity.USER_ID, item.user.id)
+
+        startActivity(intent)
+
+        overridePendingTransition(
+            R.anim.anim_slide_in_left,
+            R.anim.anim_fade_out
+        )
+    }
+
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.anim_fade_in, R.anim.anim_slide_out_right)
@@ -145,20 +157,7 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupTweetsRecyclerView() {
-        tweetsAdapter = TweetsAdapter(object :
-            ItemClickListener<Status> {
-            override fun onClick(view: View, item: Status) {
-                val intent = Intent(view.context, ProfileActivity::class.java)
-                intent.putExtra(ProfileActivity.USER_ID, item.user.id)
-
-                startActivity(intent)
-
-                overridePendingTransition(
-                    R.anim.anim_slide_in_left,
-                    R.anim.anim_fade_out
-                )
-            }
-        })
+        tweetsAdapter = TweetsAdapter(this)
 
         rv_search_result_tweets_list.apply {
             layoutManager = LinearLayoutManager(this.context)
@@ -171,20 +170,7 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupLocalTweetsRecyclerView() {
-        val localTweetsAdapter = LocalTweetsAdapter(listOf(), object :
-            ItemClickListener<Status> {
-            override fun onClick(view: View, item: Status) {
-                val intent = Intent(view.context, ProfileActivity::class.java)
-                intent.putExtra(ProfileActivity.USER_ID, item.user.id)
-
-                startActivity(intent)
-
-                overridePendingTransition(
-                    R.anim.anim_slide_in_left,
-                    R.anim.anim_fade_out
-                )
-            }
-        })
+        val localTweetsAdapter = LocalTweetsAdapter(listOf(), this)
 
         rv_search_result_local_tweets.apply {
             layoutManager = LinearLayoutManager(this.context)
