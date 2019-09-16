@@ -41,7 +41,7 @@ class MainViewModel(myApplication: Application) : AndroidViewModel(myApplication
             }
 
             try {
-                trendsData = trendRepository.local.getTrendsAsync(1)
+                trendsData = trendRepository.remote.getTrendsAsync(1)
                 trends.postValue(trendsData)
 
                 trendsData?.let { trendRepository.local.saveTrendsAsync(1, it) }
