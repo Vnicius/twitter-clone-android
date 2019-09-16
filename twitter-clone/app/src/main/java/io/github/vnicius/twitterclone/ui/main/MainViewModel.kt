@@ -6,6 +6,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import io.github.vnicius.twitterclone.data.local.filemanage.TrendFileManager
+import io.github.vnicius.twitterclone.data.repository.Repository
+import io.github.vnicius.twitterclone.data.repository.RepositoryFactory
 import io.github.vnicius.twitterclone.data.repository.trends.TrendRepository
 import io.github.vnicius.twitterclone.data.repository.trends.TrendRepositoryLocal
 import io.github.vnicius.twitterclone.data.repository.trends.TrendRepositoryRemote
@@ -22,8 +24,8 @@ import java.lang.Exception
  */
 class MainViewModel(myApplication: Application) : AndroidViewModel(myApplication) {
 
-    private val trendRepositoryRemote: TrendRepository = TrendRepositoryRemote()
-    private val trendRepositoryLocal: TrendRepository = TrendRepositoryLocal(myApplication)
+    private val trendRepository: Repository<TrendRepository> =
+        RepositoryFactory.createRepository<TrendRepository>()?.create(myApplication) as Repository<TrendRepository>
     var trends: MutableLiveData<Array<Trend>> = MutableLiveData()
     var state: MutableLiveData<State> = MutableLiveData()
 
@@ -31,7 +33,7 @@ class MainViewModel(myApplication: Application) : AndroidViewModel(myApplication
 
         state.postValue(State.LOADING)
         viewModelScope.launch {
-            var trendsData: Array<Trend>? = trendRepositoryLocal.getTrendsAsync(1)
+            var trendsData: Array<Trend>? = trendRepository.local.getTrendsAsync(1)
 
             if (trendsData != null) {
                 trends.postValue(trendsData)
@@ -39,10 +41,10 @@ class MainViewModel(myApplication: Application) : AndroidViewModel(myApplication
             }
 
             try {
-                trendsData = trendRepositoryRemote.getTrendsAsync(1)
+                trendsData = trendRepository.local.getTrendsAsync(1)
                 trends.postValue(trendsData)
 
-                trendsData?.let { trendRepositoryLocal.saveTrendsAsync(1, it) }
+                trendsData?.let { trendRepository.local.saveTrendsAsync(1, it) }
                 state.postValue(State.DONE)
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
