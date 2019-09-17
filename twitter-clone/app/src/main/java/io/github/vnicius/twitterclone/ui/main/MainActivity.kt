@@ -44,10 +44,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
-        viewModel.getTrends()
-
-        setupTrendsRecyclerView()
-        initState()
+        viewModel.getLocalTrends().invokeOnCompletion {
+            setupTrendsRecyclerView()
+            initState()
+            viewModel.getTrends()
+        }
 
         rl_search_field.setOnClickListener(this)
         btn_connection_error_action.setOnClickListener(this)
@@ -122,13 +123,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         })
 
         rv_main_trends_list.apply {
-            layoutManager = LinearLayoutManager(this.context)
+            layoutManager =
+                LinearLayoutManager(this.context).apply { initialPrefetchItemCount = 10 }
             adapter = trendsAdapter
         }
 
-        viewModel.trends.observe(this, Observer { trendsData ->
-            trendsAdapter.updateData(trendsData)
-            tv_main_trend_title.isFocusableInTouchMode = true
+        viewModel.trends?.observe(this, Observer { trendsData ->
+            if (trendsData.isNotEmpty()) {
+                trendsAdapter.updateData(trendsData)
+                tv_main_trend_title.isFocusableInTouchMode = true
+            }
         })
     }
 
