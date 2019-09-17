@@ -5,9 +5,9 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity
-data class Trend(
+data class Trend( 
     @PrimaryKey var id: Int,
     var name: String,
     var query: String,
     var tweetVolume: Int
-) : Serializable
+)

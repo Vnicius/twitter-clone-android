@@ -40,7 +40,9 @@ class MainViewModel(myApplication: Application) : AndroidViewModel(myApplication
             try {
                 val data = trendRepository.remote.getTrendsAsync(1)
 
-                if (data != null) trendRepository.local.saveTrendsAsync(1, data)
+                if (data != null) {
+                    trendRepository.local.saveTrendsAsync(1, data)
+                }
 
                 state.postValue(State.DONE)
             } catch (e: TwitterException) {

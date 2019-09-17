@@ -10,5 +10,5 @@ interface TrendDao {
     fun getAll(): LiveData<List<Trend>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertAll(trend: List<Trend>)
+    suspend fun insertAll(trend: List<Trend>)
 }
