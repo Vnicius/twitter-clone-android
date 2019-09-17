@@ -26,7 +26,7 @@ class ProfileTweetsAdapter(
         if (getItemViewType(index) == 0) {
             user?.let { (vh as ProfileContentViewHolder).bindView(it) }
         } else {
-            getItem(index)?.let { (vh as TweetViewHolder).bindView(it) }
+            getItem(index - 1)?.let { (vh as TweetViewHolder).bindView(it) }
         }
     }
 
