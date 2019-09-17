@@ -4,11 +4,11 @@ import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import io.github.vnicius.twitterclone.data.model.User
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
 import io.github.vnicius.twitterclone.ui.common.viewholder.TweetViewHolder
 import io.github.vnicius.twitterclone.ui.profile.viewholder.ProfileContentViewHolder
 import twitter4j.Status
-import twitter4j.User
 
 class ProfileTweetsAdapter(
     var user: User?,

@@ -7,16 +7,15 @@ import android.util.Log
 import androidx.lifecycle.*
 import io.github.vnicius.twitterclone.data.datasource.usertweets.UserTweetsDataSource
 import io.github.vnicius.twitterclone.data.datasource.usertweets.UserTweetsDataSourceFactory
+import io.github.vnicius.twitterclone.data.model.User
 import io.github.vnicius.twitterclone.data.repository.Repository
 import io.github.vnicius.twitterclone.data.repository.RepositoryFactory
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
-import io.github.vnicius.twitterclone.data.repository.user.UserRepositoryRemote
 import io.github.vnicius.twitterclone.utils.LogTagsUtils
 import io.github.vnicius.twitterclone.utils.State
 import kotlinx.coroutines.*
 import twitter4j.Status
 import twitter4j.TwitterException
-import twitter4j.User
 
 private const val MAX_PAGES = 5
 private const val MAX_ITEMS = 10

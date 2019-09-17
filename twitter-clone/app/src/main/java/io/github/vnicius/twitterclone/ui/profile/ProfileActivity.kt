@@ -12,11 +12,11 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import io.github.vnicius.twitterclone.R
+import io.github.vnicius.twitterclone.data.model.User
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
 import io.github.vnicius.twitterclone.ui.profile.adapters.LocalProfileAdapter
 import io.github.vnicius.twitterclone.ui.profile.adapters.ProfileTweetsAdapter
@@ -25,7 +25,7 @@ import io.github.vnicius.twitterclone.utils.summarizeNumber
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.partial_connection_error.*
 import twitter4j.Status
-import twitter4j.User
+
 
 /**
  * Profile Activity View

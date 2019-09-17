@@ -9,9 +9,9 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import io.github.vnicius.twitterclone.R
+import io.github.vnicius.twitterclone.data.model.User
 import io.github.vnicius.twitterclone.utils.highlightClickable
 import io.github.vnicius.twitterclone.utils.summarizeNumber
-import twitter4j.User
 
 class ProfileContentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 

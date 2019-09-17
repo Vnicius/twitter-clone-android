@@ -1,8 +1,9 @@
 package io.github.vnicius.twitterclone.data.repository.user
 
+import androidx.lifecycle.LiveData
+import io.github.vnicius.twitterclone.data.model.User
 import twitter4j.ResponseList
 import twitter4j.Status
-import twitter4j.User
 
 /**
  * Interface to the repository to [User]
@@ -16,6 +17,8 @@ interface UserRepository {
      */
     suspend fun getUserAsync(userId: Long): User?
 
+    suspend fun getUserLiveDataAsync(userId: Long): LiveData<User>
+
     /**
      * Get the tweets of a specific user
      * @param [userId] the user id
@@ -24,7 +27,7 @@ interface UserRepository {
      */
     suspend fun getUserTweetsAsync(userId: Long, pageSize: Int, page: Int = 1): List<Status>?
 
-    suspend fun saveUserTweetsAsync(userId: Long, tweets: List<Status>): Boolean
+    suspend fun saveUserTweetsAsync(userId: Long, tweets: List<Status>)
 
-    suspend fun saveUserAsync(user: User): Boolean
+    suspend fun saveUserAsync(user: User)
 }
