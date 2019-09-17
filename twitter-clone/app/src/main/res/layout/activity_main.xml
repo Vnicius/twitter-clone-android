@@ -61,7 +61,8 @@
                         android:id="@+id/ll_main_trends"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                     <TextView
                             android:id="@+id/tv_main_trend_title"

@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.security.ProviderInstaller
 import io.github.vnicius.twitterclone.R
+import io.github.vnicius.twitterclone.data.model.Trend
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
 import io.github.vnicius.twitterclone.ui.main.adapters.TrendsAdapter
 import io.github.vnicius.twitterclone.ui.result.SearchResultActivity
@@ -22,7 +23,6 @@ import io.github.vnicius.twitterclone.utils.State
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.partial_connection_error.*
 import kotlinx.android.synthetic.main.partial_search_field.*
-import twitter4j.Trend
 
 /**
  * Main Activity View
@@ -44,10 +44,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
-        viewModel.getTrends()
-
-        setupTrendsRecyclerView()
-        initState()
+        viewModel.getLocalTrends().invokeOnCompletion {
+            setupTrendsRecyclerView()
+            initState()
+            viewModel.getTrends()
+        }
 
         rl_search_field.setOnClickListener(this)
         btn_connection_error_action.setOnClickListener(this)
@@ -104,7 +105,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupTrendsRecyclerView() {
-        val trendsAdapter = TrendsAdapter(arrayOf(), object : ItemClickListener<Trend> {
+        val trendsAdapter = TrendsAdapter(listOf(), object : ItemClickListener<Trend> {
             override fun onClick(view: View, item: Trend) {
                 // make the search with the trend name
                 val intent = Intent(view.context, SearchResultActivity::class.java).apply {
@@ -122,13 +123,16 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         })
 
         rv_main_trends_list.apply {
-            layoutManager = LinearLayoutManager(this.context)
+            layoutManager =
+                LinearLayoutManager(this.context).apply { initialPrefetchItemCount = 10 }
             adapter = trendsAdapter
         }
 
-        viewModel.trends.observe(this, Observer { trendsData ->
-            trendsAdapter.updateData(trendsData)
-            tv_main_trend_title.isFocusableInTouchMode = true
+        viewModel.trends?.observe(this, Observer { trendsData ->
+            if (trendsData.isNotEmpty()) {
+                trendsAdapter.updateData(trendsData)
+                tv_main_trend_title.isFocusableInTouchMode = true
+            }
         })
     }
 
