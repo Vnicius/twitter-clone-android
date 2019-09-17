@@ -7,16 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import io.github.vnicius.twitterclone.R
+import io.github.vnicius.twitterclone.data.model.Trend
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
 import io.github.vnicius.twitterclone.utils.summarizeNumber
-import twitter4j.Trend
 
 /**
  * Adapter to show the trends
  * @property trends a list of Trend objects
  * @property listener listener to handle the click in the item
  */
-class TrendsAdapter(var trends: Array<Trend>, private val listener: ItemClickListener<Trend>) :
+class TrendsAdapter(var trends: List<Trend>, private val listener: ItemClickListener<Trend>) :
     RecyclerView.Adapter<TrendsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
@@ -39,8 +39,8 @@ class TrendsAdapter(var trends: Array<Trend>, private val listener: ItemClickLis
         viewHolder.bindView(trends[position])
     }
 
-    fun updateData(newData: Array<Trend>) {
-        val oldData = trends.copyOf()
+    fun updateData(newData: List<Trend>) {
+        val oldData = trends.toList()
 
         trends = newData
 

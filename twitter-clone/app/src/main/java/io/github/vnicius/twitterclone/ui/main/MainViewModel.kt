@@ -5,16 +5,13 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import io.github.vnicius.twitterclone.data.local.filemanage.TrendFileManager
+import io.github.vnicius.twitterclone.data.model.Trend
 import io.github.vnicius.twitterclone.data.repository.Repository
 import io.github.vnicius.twitterclone.data.repository.RepositoryFactory
 import io.github.vnicius.twitterclone.data.repository.trends.TrendRepository
-import io.github.vnicius.twitterclone.data.repository.trends.TrendRepositoryLocal
-import io.github.vnicius.twitterclone.data.repository.trends.TrendRepositoryRemote
 import io.github.vnicius.twitterclone.utils.LogTagsUtils
 import io.github.vnicius.twitterclone.utils.State
 import kotlinx.coroutines.*
-import twitter4j.Trend
 import twitter4j.TwitterException
 import java.lang.Exception
 
@@ -26,14 +23,14 @@ class MainViewModel(myApplication: Application) : AndroidViewModel(myApplication
 
     private val trendRepository: Repository<TrendRepository> =
         RepositoryFactory.createRepository<TrendRepository>()?.create(myApplication) as Repository<TrendRepository>
-    var trends: MutableLiveData<Array<Trend>> = MutableLiveData()
+    var trends: MutableLiveData<List<Trend>> = MutableLiveData()
     var state: MutableLiveData<State> = MutableLiveData()
 
     fun getTrends() {
 
         state.postValue(State.LOADING)
         viewModelScope.launch {
-            var trendsData: Array<Trend>? = trendRepository.local.getTrendsAsync(1)
+            var trendsData: List<Trend>? = trendRepository.local.getTrendsAsync(1)
 
             if (trendsData != null) {
                 trends.postValue(trendsData)

@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.android.gms.security.ProviderInstaller
 import io.github.vnicius.twitterclone.R
+import io.github.vnicius.twitterclone.data.model.Trend
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
 import io.github.vnicius.twitterclone.ui.main.adapters.TrendsAdapter
 import io.github.vnicius.twitterclone.ui.result.SearchResultActivity
@@ -22,7 +23,6 @@ import io.github.vnicius.twitterclone.utils.State
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.partial_connection_error.*
 import kotlinx.android.synthetic.main.partial_search_field.*
-import twitter4j.Trend
 
 /**
  * Main Activity View
@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setupTrendsRecyclerView() {
-        val trendsAdapter = TrendsAdapter(arrayOf(), object : ItemClickListener<Trend> {
+        val trendsAdapter = TrendsAdapter(listOf(), object : ItemClickListener<Trend> {
             override fun onClick(view: View, item: Trend) {
                 // make the search with the trend name
                 val intent = Intent(view.context, SearchResultActivity::class.java).apply {

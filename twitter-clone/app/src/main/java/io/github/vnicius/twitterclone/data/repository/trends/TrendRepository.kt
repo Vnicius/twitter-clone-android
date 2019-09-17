@@ -1,6 +1,8 @@
 package io.github.vnicius.twitterclone.data.repository.trends
 
-import twitter4j.Trend
+import androidx.lifecycle.LiveData
+import io.github.vnicius.twitterclone.data.model.Trend
+
 
 /**
  * Interface to the repository to [Trend]
@@ -12,7 +14,9 @@ interface TrendRepository {
      * @param [woeid] code of the location
      * @return a [Array] of [Trend]
      */
-    suspend fun getTrendsAsync(woeid: Int): Array<Trend>?
+    suspend fun getTrendsAsync(woeid: Int): List<Trend>?
 
-    suspend fun saveTrendsAsync(woeid: Int, trends: Array<Trend>): Boolean
+    suspend fun getTrendsLiveDataAsync(woeid: Int): LiveData<List<Trend>>
+
+    suspend fun saveTrendsAsync(woeid: Int, trends: List<Trend>)
 }
