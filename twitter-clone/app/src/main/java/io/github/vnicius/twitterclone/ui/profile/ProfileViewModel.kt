@@ -31,24 +31,26 @@ class ProfileViewModel(val myApp: Application) : AndroidViewModel(myApp) {
     private lateinit var homeTweetsDataSourceFactory: UserTweetsDataSourceFactory
     lateinit var homeTweetsList: LiveData<PagedList<Status>>
     lateinit var stateTweets: LiveData<State>
-    var userData: MutableLiveData<User> = MutableLiveData()
+    lateinit var userData: LiveData<User>
     var localHomeTweetsList: MutableLiveData<List<Status>?> = MutableLiveData()
     var stateUserData: MutableLiveData<State> = MutableLiveData()
 
-    fun getUser(userId: Long) {
+    fun getUser(userId: Long): Job {
+        return viewModelScope.launch {
+            userData = userRepository.local.getUserLiveDataAsync(userId)
+        }
+    }
+
+    fun updateUser(userId: Long) {
         viewModelScope.launch {
             try {
-                var user = userRepository.local.getUserAsync(userId)
+                val user = userRepository.remote.getUserAsync(userId)
 
                 if (user != null) {
-                    userData.postValue(user)
+                    userRepository.local.saveUserAsync(user)
                 }
 
-                user = userRepository.remote.getUserAsync(userId)
-                userData.postValue(user)
-
                 stateUserData.postValue(State.DONE)
-                user?.let { userRepository.local.saveUserAsync(it) }
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
 
