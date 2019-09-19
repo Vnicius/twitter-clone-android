@@ -1,9 +1,11 @@
 package io.github.vnicius.twitterclone.data.repository.user
 
 import androidx.lifecycle.LiveData
+import androidx.paging.DataSource
+import io.github.vnicius.twitterclone.data.model.Status
 import io.github.vnicius.twitterclone.data.model.User
+import io.github.vnicius.twitterclone.data.model.UserStatus
 import twitter4j.ResponseList
-import twitter4j.Status
 
 /**
  * Interface to the repository to [User]
@@ -27,7 +29,9 @@ interface UserRepository {
      */
     suspend fun getUserTweetsAsync(userId: Long, pageSize: Int, page: Int = 1): List<Status>?
 
-    suspend fun saveUserTweetsAsync(userId: Long, tweets: List<Status>)
+    fun getUserTweetsPaged(userId: Long): DataSource.Factory<Int, UserStatus>?
+
+    suspend fun saveUserTweetsAsync(tweets: List<Status>)
 
     suspend fun saveUserAsync(user: User)
 }

@@ -6,7 +6,7 @@ import twitter4j.User
 
 @Entity
 data class User(
-    @PrimaryKey var id: Long,
+    @PrimaryKey var userId: Long,
     var name: String,
     var email: String?,
     var screenName: String,
@@ -18,11 +18,11 @@ data class User(
     var profileBackgroundColor: String?,
     var profileTextColor: String,
     var statusesCount: Int,
-    var profileBanner600x200URL: String
+    var profileBanner600x200URL: String?
 ) {
     object ModelMapper {
         fun from(user: User) = User(
-            id = user.id,
+            userId = user.id,
             name = user.name,
             email = user.email,
             screenName = user.screenName,
