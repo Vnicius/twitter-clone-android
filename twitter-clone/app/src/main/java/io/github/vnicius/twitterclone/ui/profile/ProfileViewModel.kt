@@ -5,21 +5,16 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import android.util.Log
 import androidx.lifecycle.*
-import io.github.vnicius.twitterclone.data.datasource.usertweets.UserTweetsDataSource
-import io.github.vnicius.twitterclone.data.datasource.usertweets.UserTweetsDataSourceFactory
+import io.github.vnicius.twitterclone.data.datasource.UserTweetsBoundaryCallback
+import io.github.vnicius.twitterclone.data.model.User
+import io.github.vnicius.twitterclone.data.model.UserStatus
 import io.github.vnicius.twitterclone.data.repository.Repository
 import io.github.vnicius.twitterclone.data.repository.RepositoryFactory
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
-import io.github.vnicius.twitterclone.data.repository.user.UserRepositoryRemote
 import io.github.vnicius.twitterclone.utils.LogTagsUtils
 import io.github.vnicius.twitterclone.utils.State
 import kotlinx.coroutines.*
-import twitter4j.Status
 import twitter4j.TwitterException
-import twitter4j.User
-
-private const val MAX_PAGES = 5
-private const val MAX_ITEMS = 10
 
 /**
  * Profile ViewModel
@@ -29,62 +24,88 @@ class ProfileViewModel(val myApp: Application) : AndroidViewModel(myApp) {
 
     private val userRepository: Repository<UserRepository> =
         RepositoryFactory.createRepository<UserRepository>()?.create(myApp) as Repository<UserRepository>
-    private lateinit var homeTweetsDataSourceFactory: UserTweetsDataSourceFactory
-    lateinit var homeTweetsList: LiveData<PagedList<Status>>
-    lateinit var stateTweets: LiveData<State>
-    var userData: MutableLiveData<User> = MutableLiveData()
-    var localHomeTweetsList: MutableLiveData<List<Status>?> = MutableLiveData()
-    var stateUserData: MutableLiveData<State> = MutableLiveData()
+    lateinit var homeTweetsList: LiveData<PagedList<UserStatus>>
+    lateinit var userData: LiveData<User>
+    var state: MutableLiveData<State> = MutableLiveData()
 
-    fun getUser(userId: Long) {
+    fun getUser(userId: Long): Job {
+        return viewModelScope.launch {
+            userData = userRepository.local.getUserLiveDataAsync(userId)
+        }
+    }
+
+    fun updateUser(userId: Long) {
         viewModelScope.launch {
             try {
-                var user = userRepository.local.getUserAsync(userId)
+                val user = userRepository.remote.getUserAsync(userId)
 
                 if (user != null) {
-                    userData.postValue(user)
+                    userRepository.local.saveUserAsync(user)
                 }
 
-                user = userRepository.remote.getUserAsync(userId)
-                userData.postValue(user)
-
-                stateUserData.postValue(State.DONE)
-                user?.let { userRepository.local.saveUserAsync(it) }
+                state.postValue(State.DONE)
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
 
-                stateUserData.postValue(State.CONNECTION_ERROR)
+                state.postValue(State.CONNECTION_ERROR)
             } catch (e: Exception) {
                 Log.e("debug error", "Unknown exception", e)
 
-                stateUserData.postValue(State.ERROR)
+                state.postValue(State.ERROR)
             }
         }
     }
 
     fun buildTweets(userId: Long) {
-
-        getLocalUserTweets(userId)
-
-        homeTweetsDataSourceFactory = UserTweetsDataSourceFactory(userId, MAX_ITEMS, userRepository)
+        val factory = userRepository.local.getUserTweetsPaged(userId)
         val config = PagedList.Config.Builder()
-            .setPageSize(MAX_PAGES)
-            .setInitialLoadSizeHint(MAX_PAGES * 2)
+            .setPageSize(PAGE_SIZE)
+            .setPrefetchDistance(PAGE_SIZE * 3)
+            .setInitialLoadSizeHint(PAGE_SIZE * 2)
             .setEnablePlaceholders(false)
             .build()
 
-        homeTweetsList = LivePagedListBuilder(homeTweetsDataSourceFactory, config).build()
-        stateTweets = Transformations.switchMap(
-            homeTweetsDataSourceFactory.userTweetsDataSourceLiveData,
-            UserTweetsDataSource::state
-        )
+
+        homeTweetsList = factory?.let {
+            LivePagedListBuilder<Int, UserStatus>(
+                it,
+                config
+            ).setBoundaryCallback(
+                UserTweetsBoundaryCallback(
+                    userId,
+                    NETWORK_PAGE_SIZE,
+                    viewModelScope,
+                    userRepository
+                )
+            ).build()
+        } as LiveData<PagedList<UserStatus>>
+        homeTweetsList
     }
 
-    fun getTweetsDataSource() = homeTweetsDataSourceFactory.userTweetsDataSourceLiveData.value
-
-    private fun getLocalUserTweets(userId: Long) {
+    fun updateTweets(userId: Long) {
         viewModelScope.launch {
-            localHomeTweetsList.postValue(userRepository.local.getUserTweetsAsync(userId, 10, 1))
+            try {
+                val tweets = userRepository.remote.getUserTweetsAsync(userId, NETWORK_PAGE_SIZE, 1)
+
+                if (tweets != null) {
+                    userRepository.local.saveUserTweetsAsync(tweets)
+                }
+
+                state.postValue(State.DONE)
+            } catch (e: TwitterException) {
+                Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
+
+                state.postValue(State.CONNECTION_ERROR)
+            } catch (e: Exception) {
+                Log.e("debug error", "Unknown exception", e)
+
+                state.postValue(State.ERROR)
+            }
         }
+    }
+
+    companion object {
+        const val PAGE_SIZE = 10
+        const val NETWORK_PAGE_SIZE = 30
     }
 }

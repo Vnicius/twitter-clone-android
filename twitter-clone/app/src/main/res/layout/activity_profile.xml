@@ -110,13 +110,6 @@
                         android:visibility="gone"
                         tools:listitem="@layout/item_tweet" />
 
-
-                <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rv_profile_local_tweets"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:visibility="gone" />
-
                 <include
                         android:id="@+id/inc_profile_tweets_spinner"
                         layout="@layout/partial_spinner"

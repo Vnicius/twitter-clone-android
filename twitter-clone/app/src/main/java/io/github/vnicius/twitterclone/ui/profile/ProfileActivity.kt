@@ -12,26 +12,26 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import io.github.vnicius.twitterclone.R
+import io.github.vnicius.twitterclone.data.model.User
+import io.github.vnicius.twitterclone.data.model.UserStatus
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
-import io.github.vnicius.twitterclone.ui.profile.adapters.LocalProfileAdapter
 import io.github.vnicius.twitterclone.ui.profile.adapters.ProfileTweetsAdapter
 import io.github.vnicius.twitterclone.utils.State
 import io.github.vnicius.twitterclone.utils.summarizeNumber
 import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.partial_connection_error.*
-import twitter4j.Status
-import twitter4j.User
+
 
 /**
  * Profile Activity View
  */
-class ProfileActivity : AppCompatActivity(), View.OnClickListener, ItemClickListener<Status> {
+class ProfileActivity : AppCompatActivity(), View.OnClickListener, ItemClickListener<UserStatus> {
 
+    private lateinit var profileTweetsAdapter: ProfileTweetsAdapter
     private lateinit var viewModel: ProfileViewModel
     private var currentUserID: Long = -1
 
@@ -48,14 +48,16 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener, ItemClickList
 
         currentUserID = intent.getLongExtra(USER_ID, -1)
 
+        setupTweetsRecyclerView()
+
         viewModel = ViewModelProviders.of(this)[ProfileViewModel::class.java]
-        viewModel.getUser(currentUserID)
+        viewModel.getUser(currentUserID).invokeOnCompletion {
+            initObservers()
+            viewModel.updateUser(currentUserID)
+        }
         viewModel.buildTweets(currentUserID)
 
-        setupLocalTweetsRecyclerView()
-        setupTweetsRecyclerView()
-        initTweetsState()
-        initUserState()
+        initState()
 
         // handle the appbar scroll to show some texts
         app_bar_profile.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appbar, verticalOffset ->
@@ -89,9 +91,9 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener, ItemClickList
         }
     }
 
-    override fun onClick(view: View, item: Status) {
+    override fun onClick(view: View, item: UserStatus) {
         val intent = Intent(view.context, ProfileActivity::class.java)
-        intent.putExtra(USER_ID, item.user.id)
+        intent.putExtra(USER_ID, item.status.userOwnerId)
 
         startActivity(intent)
 
@@ -146,12 +148,7 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener, ItemClickList
     }
 
     private fun showLoader() {
-        hideContent()
-        inc_profile_tweets_spinner.visibility = View.VISIBLE
-
-        viewModel.userData.observe(this, Observer {
-            rv_profile_local_tweets.visibility = View.VISIBLE
-        })
+        swipe_profile_refresh.isRefreshing = true
     }
 
     private fun showConnectionError() {
@@ -163,56 +160,19 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener, ItemClickList
         inc_profile_tweets_spinner.visibility = View.GONE
         inc_profile_connection_error.visibility = View.GONE
         rv_profile_tweets_list.visibility = View.GONE
-        rv_profile_local_tweets.visibility = View.GONE
     }
 
     private fun setupTweetsRecyclerView() {
-        val profileTweetsAdapter = ProfileTweetsAdapter(null, this)
+        profileTweetsAdapter = ProfileTweetsAdapter(null, this)
 
         rv_profile_tweets_list.apply {
             layoutManager = LinearLayoutManager(this.context)
             adapter = profileTweetsAdapter
         }
-
-        viewModel.userData.observe(this, Observer {
-            profileTweetsAdapter.user = it
-            profileTweetsAdapter.notifyDataSetChanged()
-            setupToolbarData(it)
-        })
-
-        viewModel.homeTweetsList.observe(this, Observer {
-            profileTweetsAdapter.submitList(it)
-        })
     }
 
-    private fun setupLocalTweetsRecyclerView() {
-        val localProfileAdapter = LocalProfileAdapter(null, listOf(), this)
-
-        rv_profile_local_tweets.apply {
-            layoutManager = LinearLayoutManager(this.context)
-            adapter = localProfileAdapter
-        }
-
-        viewModel.userData.observe(this, Observer {
-            localProfileAdapter.apply {
-                user = it
-                notifyDataSetChanged()
-            }
-            setupToolbarData(it)
-        })
-
-        viewModel.localHomeTweetsList.observe(this, Observer { localTweets ->
-            localTweets?.let {
-                localProfileAdapter.apply {
-                    tweets = it
-                    notifyDataSetChanged()
-                }
-            }
-        })
-    }
-
-    private fun initTweetsState() {
-        viewModel.stateTweets.observe(this, Observer {
+    private fun initState() {
+        viewModel.state.observe(this, Observer {
             when (it) {
                 State.LOADING -> showLoader()
                 State.DONE -> showTweets()
@@ -221,18 +181,26 @@ class ProfileActivity : AppCompatActivity(), View.OnClickListener, ItemClickList
         })
     }
 
-    private fun initUserState() {
-        viewModel.stateUserData.observe(this, Observer {
-            when (it) {
-                State.ERROR -> showError(getString(R.string.error_message_connection))
-                State.CONNECTION_ERROR -> showConnectionError()
+    private fun initObservers() {
+        viewModel.userData.observe(this, Observer {
+            if (it != null) {
+                profileTweetsAdapter.user = it
+                profileTweetsAdapter.notifyItemChanged(0)
+                setupToolbarData(it)
+                showTweets()
+            }
+        })
+
+        viewModel.homeTweetsList.observe(this, Observer {
+            if (it.isNotEmpty()) {
+                profileTweetsAdapter.submitList(it)
             }
         })
     }
 
     private fun refresh() {
-        viewModel.getUser(currentUserID)
-        viewModel.getTweetsDataSource()?.invalidate()
+        viewModel.updateUser(currentUserID)
+        viewModel.updateTweets(currentUserID)
     }
 
     companion object {
