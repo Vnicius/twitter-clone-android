@@ -16,9 +16,6 @@ import io.github.vnicius.twitterclone.utils.State
 import kotlinx.coroutines.*
 import twitter4j.TwitterException
 
-private const val MAX_PAGES = 10
-private const val MAX_ITEMS = 10
-
 /**
  * Profile ViewModel
  * @property view instance of the view
@@ -62,9 +59,9 @@ class ProfileViewModel(val myApp: Application) : AndroidViewModel(myApp) {
     fun buildTweets(userId: Long) {
         val factory = userRepository.local.getUserTweetsPaged(userId)
         val config = PagedList.Config.Builder()
-            .setPageSize(MAX_PAGES)
-            .setPrefetchDistance(MAX_PAGES * 3)
-            .setInitialLoadSizeHint(MAX_PAGES * 2)
+            .setPageSize(PAGE_SIZE)
+            .setPrefetchDistance(PAGE_SIZE * 3)
+            .setInitialLoadSizeHint(PAGE_SIZE * 2)
             .setEnablePlaceholders(false)
             .build()
 
@@ -76,7 +73,7 @@ class ProfileViewModel(val myApp: Application) : AndroidViewModel(myApp) {
             ).setBoundaryCallback(
                 UserTweetsBoundaryCallback(
                     userId,
-                    MAX_PAGES,
+                    NETWORK_PAGE_SIZE,
                     viewModelScope,
                     userRepository
                 )
@@ -88,7 +85,7 @@ class ProfileViewModel(val myApp: Application) : AndroidViewModel(myApp) {
     fun updateTweets(userId: Long) {
         viewModelScope.launch {
             try {
-                val tweets = userRepository.remote.getUserTweetsAsync(userId, MAX_PAGES, 1)
+                val tweets = userRepository.remote.getUserTweetsAsync(userId, NETWORK_PAGE_SIZE, 1)
 
                 if (tweets != null) {
                     userRepository.local.saveUserTweetsAsync(tweets)
@@ -105,5 +102,10 @@ class ProfileViewModel(val myApp: Application) : AndroidViewModel(myApp) {
                 state.postValue(State.ERROR)
             }
         }
+    }
+
+    companion object {
+        const val PAGE_SIZE = 10
+        const val NETWORK_PAGE_SIZE = 30
     }
 }
