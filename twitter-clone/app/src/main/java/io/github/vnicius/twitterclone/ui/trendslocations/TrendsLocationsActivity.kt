@@ -2,7 +2,8 @@ package io.github.vnicius.twitterclone.ui.trendslocations
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.Observer
@@ -35,6 +36,26 @@ class TrendsLocationsActivity : AppCompatActivity() {
 
         setupLocationsRecyclerView()
         initObservers()
+
+        ed_trends_locations_search.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (s.isNullOrBlank() and (viewModel.locationsList.value != null)) {
+                    updateLocationsList(viewModel.locationsList.value)
+                } else {
+                    var searchRegex = ".*${s.toString()}.*".toRegex(RegexOption.IGNORE_CASE)
+                    updateLocationsList(viewModel.locationsList.value?.filter {
+                        searchRegex.matches(it.name)
+                    })
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -64,8 +85,14 @@ class TrendsLocationsActivity : AppCompatActivity() {
 
     private fun initObservers() {
         viewModel.locationsList.observe(this, Observer {
-            locationsAdapter.locations = it.sortedBy { location -> location.name }
-            locationsAdapter.notifyDataSetChanged()
+            updateLocationsList(it)
         })
+    }
+
+    private fun updateLocationsList(locations: List<Location>?) {
+        locations?.let {
+            locationsAdapter.locations = locations.sortedBy { location -> location.name }
+            locationsAdapter.notifyDataSetChanged()
+        }
     }
 }
