@@ -3,7 +3,7 @@ package io.github.vnicius.twitterclone.data.datasource.searchtweets
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import android.util.Log
-import io.github.vnicius.twitterclone.data.repository.Repository
+import io.github.vnicius.twitterclone.data.repository.RepositoryFactory
 import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepository
 import io.github.vnicius.twitterclone.utils.LogTagsUtils
 import io.github.vnicius.twitterclone.utils.State
@@ -15,7 +15,7 @@ import twitter4j.TwitterException
 class SearchTweetsDataSource(
     val queryText: String,
     val pageSize: Int,
-    val tweetsRepository: Repository<TweetRepository>
+    val tweetsRepository: RepositoryFactory<TweetRepository>
 ) : PageKeyedDataSource<Query, Status>() {
 
     private val tweetsDataSourceJob = SupervisorJob()
@@ -31,7 +31,7 @@ class SearchTweetsDataSource(
         tweetsDataSourceScope.launch {
             try {
                 val result =
-                    tweetsRepository.remote.getTweetsByQueryAsync(Query(queryText), pageSize)
+                    tweetsRepository.getRemote().getTweetsByQueryAsync(Query(queryText), pageSize)
 
                 if (result != null) {
                     callback.onResult(result.tweets, null, result.nextQuery())
@@ -40,7 +40,7 @@ class SearchTweetsDataSource(
                         state.postValue(State.NO_RESULT)
                     } else {
                         state.postValue(State.DONE)
-                        tweetsRepository.local.saveTweetsAsync(queryText, result.tweets)
+                        tweetsRepository.getLocal().saveTweetsAsync(queryText, result.tweets)
                     }
                 }
             } catch (e: TwitterException) {
@@ -58,7 +58,8 @@ class SearchTweetsDataSource(
     override fun loadAfter(params: LoadParams<Query>, callback: LoadCallback<Query, Status>) {
         tweetsDataSourceScope.launch {
             try {
-                val result = tweetsRepository.remote.getTweetsByQueryAsync(params.key, pageSize)
+                val result =
+                    tweetsRepository.getRemote().getTweetsByQueryAsync(params.key, pageSize)
                 if (result != null) {
                     callback.onResult(result.tweets, result.nextQuery())
                 }

@@ -8,7 +8,6 @@ import androidx.lifecycle.*
 import io.github.vnicius.twitterclone.data.datasource.UserTweetsBoundaryCallback
 import io.github.vnicius.twitterclone.data.model.User
 import io.github.vnicius.twitterclone.data.model.UserStatus
-import io.github.vnicius.twitterclone.data.repository.Repository
 import io.github.vnicius.twitterclone.data.repository.RepositoryFactory
 import io.github.vnicius.twitterclone.data.repository.user.UserRepository
 import io.github.vnicius.twitterclone.utils.LogTagsUtils
@@ -22,28 +21,32 @@ import twitter4j.TwitterException
  */
 class ProfileViewModel(val myApp: Application) : AndroidViewModel(myApp) {
 
-    private val userRepository: Repository<UserRepository> =
-        RepositoryFactory.createRepository<UserRepository>()?.create(myApp) as Repository<UserRepository>
+    private val userRepository: RepositoryFactory<UserRepository>? =
+        RepositoryFactory.createRepository<UserRepository>(myApp) as RepositoryFactory<UserRepository>?
     lateinit var homeTweetsList: LiveData<PagedList<UserStatus>>
     lateinit var userData: LiveData<User>
     var state: MutableLiveData<State> = MutableLiveData()
 
     fun getUser(userId: Long): Job {
         return viewModelScope.launch {
-            userData = userRepository.local.getUserLiveDataAsync(userId)
+            if (userRepository != null) {
+                userData = userRepository.getLocal().getUserLiveDataAsync(userId)
+            }
         }
     }
 
     fun updateUser(userId: Long) {
         viewModelScope.launch {
             try {
-                val user = userRepository.remote.getUserAsync(userId)
+                if (userRepository != null) {
+                    val user = userRepository.getRemote().getUserAsync(userId)
 
-                if (user != null) {
-                    userRepository.local.saveUserAsync(user)
+                    if (user != null) {
+                        userRepository.getLocal().saveUserAsync(user)
+                    }
+
+                    state.postValue(State.DONE)
                 }
-
-                state.postValue(State.DONE)
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
 
@@ -57,41 +60,46 @@ class ProfileViewModel(val myApp: Application) : AndroidViewModel(myApp) {
     }
 
     fun buildTweets(userId: Long) {
-        val factory = userRepository.local.getUserTweetsPaged(userId)
-        val config = PagedList.Config.Builder()
-            .setPageSize(PAGE_SIZE)
-            .setPrefetchDistance(PAGE_SIZE * 3)
-            .setInitialLoadSizeHint(PAGE_SIZE * 2)
-            .setEnablePlaceholders(false)
-            .build()
+        if (userRepository != null) {
+            val factory = userRepository.getLocal().getUserTweetsPaged(userId)
+            val config = PagedList.Config.Builder()
+                .setPageSize(PAGE_SIZE)
+                .setPrefetchDistance(PAGE_SIZE * 3)
+                .setInitialLoadSizeHint(PAGE_SIZE * 2)
+                .setEnablePlaceholders(false)
+                .build()
 
 
-        homeTweetsList = factory?.let {
-            LivePagedListBuilder<Int, UserStatus>(
-                it,
-                config
-            ).setBoundaryCallback(
-                UserTweetsBoundaryCallback(
-                    userId,
-                    NETWORK_PAGE_SIZE,
-                    viewModelScope,
-                    userRepository
-                )
-            ).build()
-        } as LiveData<PagedList<UserStatus>>
-        homeTweetsList
+            homeTweetsList = factory?.let {
+                LivePagedListBuilder<Int, UserStatus>(
+                    it,
+                    config
+                ).setBoundaryCallback(
+                    UserTweetsBoundaryCallback(
+                        userId,
+                        NETWORK_PAGE_SIZE,
+                        viewModelScope,
+                        userRepository
+                    )
+                ).build()
+            } as LiveData<PagedList<UserStatus>>
+            homeTweetsList
+        }
     }
 
     fun updateTweets(userId: Long) {
         viewModelScope.launch {
             try {
-                val tweets = userRepository.remote.getUserTweetsAsync(userId, NETWORK_PAGE_SIZE, 1)
+                if (userRepository != null) {
+                    val tweets =
+                        userRepository.getRemote().getUserTweetsAsync(userId, NETWORK_PAGE_SIZE, 1)
 
-                if (tweets != null) {
-                    userRepository.local.saveUserTweetsAsync(tweets)
+                    if (tweets != null) {
+                        userRepository.getLocal().saveUserTweetsAsync(tweets)
+                    }
+
+                    state.postValue(State.DONE)
                 }
-
-                state.postValue(State.DONE)
             } catch (e: TwitterException) {
                 Log.e(LogTagsUtils.DEBUG_EXCEPTION, "Twitter connection exception", e)
 
