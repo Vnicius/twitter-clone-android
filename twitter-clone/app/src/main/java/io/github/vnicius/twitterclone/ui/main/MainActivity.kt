@@ -21,6 +21,7 @@ import io.github.vnicius.twitterclone.ui.main.adapters.TrendsAdapter
 import io.github.vnicius.twitterclone.ui.result.SearchResultActivity
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
 import io.github.vnicius.twitterclone.ui.trendsinfo.TrendsInfoActivity
+import io.github.vnicius.twitterclone.utils.SharedPreferencesKeys
 import io.github.vnicius.twitterclone.utils.State
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.partial_connection_error.*
@@ -52,6 +53,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             viewModel.getTrends()
         }
 
+        updateLocationName()
+        initPreferencesObserver()
         rl_search_field.setOnClickListener(this)
         btn_connection_error_action.setOnClickListener(this)
         swipe_main_trends_list.apply {
@@ -171,5 +174,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 State.CONNECTION_ERROR -> showConnectionErrorMessage()
             }
         })
+    }
+
+    private fun initPreferencesObserver() {
+        viewModel.sharedPreferences.registerOnSharedPreferenceChangeListener { _, key ->
+            when (key) {
+                SharedPreferencesKeys.LOCATION_NAME -> {
+                    updateLocationName()
+                    refresh()
+                }
+                SharedPreferencesKeys.WOEID -> {
+                    viewModel.updateLocation()
+                }
+            }
+        }
+    }
+
+    private fun updateLocationName() {
+        tv_main_trend_title.text =
+            getString(R.string.title_trends_location, viewModel.getLocationName())
     }
 }

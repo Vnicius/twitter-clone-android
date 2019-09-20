@@ -3,7 +3,7 @@
 
     <!-- region Titles -->
     <string name="title_trending">Trending</string>
-    <string name="title_world_wide_trends">Worldwide Trends</string>
+    <string name="title_trends_location">%1$s Trends</string>
     <string name="title_follow">Follow</string>
     <string name="title_following">Following</string>
     <string name="title_followers">Followers</string>
