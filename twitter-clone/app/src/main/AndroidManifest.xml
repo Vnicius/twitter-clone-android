@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="io.github.vnicius.twitterclone">
+        package="io.github.vnicius.twitterclone">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
             android:allowBackup="true"
@@ -10,47 +10,48 @@
             android:label="@string/app_name"
             android:roundIcon="@mipmap/ic_launcher"
             android:supportsRtl="true"
-            android:theme="@style/AppTheme"
-    >
-
-        <activity android:name=".ui.result.SearchResultActivity"
-                  android:screenOrientation="portrait"
-                  android:launchMode="singleTop"
-        >
+            android:theme="@style/AppTheme">
+        <activity
+                android:name=".ui.trendsinfo.TrendsInfoActivity"
+                android:screenOrientation="portrait"></activity>
+        <activity
+                android:name=".ui.result.SearchResultActivity"
+                android:launchMode="singleTop"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
 
-            <meta-data android:name="android.app.searchable"
+            <meta-data
+                    android:name="android.app.searchable"
                     android:resource="@xml/appwidget_searchable" />
-
         </activity>
-        <activity android:name=".ui.searchable.SearchableActivity"
-                  android:theme="@style/AppTheme.NoAnimTheme"
-                android:screenOrientation="portrait"
+        <activity
+                android:name=".ui.searchable.SearchableActivity"
                 android:noHistory="true"
-        >
-            <meta-data android:name="android.app.default_searchable"
-                       android:value=".ui.searchable.SearchableActivity" />
+                android:screenOrientation="portrait"
+                android:theme="@style/AppTheme.NoAnimTheme">
+            <meta-data
+                    android:name="android.app.default_searchable"
+                    android:value=".ui.searchable.SearchableActivity" />
         </activity>
         <activity
                 android:name=".ui.profile.ProfileActivity"
                 android:label="@string/title_activity_profile"
-                android:theme="@style/AppTheme.NoActionBar"
                 android:screenOrientation="portrait"
-        >
-        </activity>
-        <activity android:name=".ui.main.MainActivity"
-                android:screenOrientation="portrait"
-        >
+                android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+                android:name=".ui.main.MainActivity"
+                android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <meta-data android:name="android.app.default_searchable"
-                       android:value=".ui.searchable.SearchableActivity" />
+            <meta-data
+                    android:name="android.app.default_searchable"
+                    android:value=".ui.searchable.SearchableActivity" />
         </activity>
     </application>
 

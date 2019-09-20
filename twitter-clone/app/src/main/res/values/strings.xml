@@ -9,6 +9,7 @@
     <string name="title_followers">Followers</string>
     <string name="title_tweets">Tweets</string>
     <string name="title_activity_profile">ProfileActivity</string>
+    <string name="title_trends_infos">Trends</string>
     <!--  endregion  -->
 
     <!-- region Menu items labels -->
@@ -23,6 +24,7 @@
     <string name="label_item_block">Block</string>
     <string name="label_item_report">Report</string>
     <string name="label_item_settings">Settings</string>
+    <string name="label_trends_location">Trends location</string>
     <!--  endregion  -->
 
     <!-- region Buttons labels -->
@@ -47,6 +49,7 @@
     <string name="description_favourite_ic">Favourite icon</string>
     <string name="description_share_ic">Share icon</string>
     <string name="description_location_pin_ic">Location pin icon</string>
+    <string name="description_trends_location">You can see what\'s trending in a specific location by selecting which one shows up in your Trending tab.</string>
     <!--  endregion  -->
 
 </resources>
