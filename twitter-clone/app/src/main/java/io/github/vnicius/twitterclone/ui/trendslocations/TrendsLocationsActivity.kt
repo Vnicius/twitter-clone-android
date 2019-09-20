@@ -91,8 +91,22 @@ class TrendsLocationsActivity : AppCompatActivity() {
 
     private fun updateLocationsList(locations: List<Location>?) {
         locations?.let {
-            locationsAdapter.locations = locations.sortedBy { location -> location.name }
+            locationsAdapter.locations = parseList(locations)
             locationsAdapter.notifyDataSetChanged()
         }
+    }
+
+    private fun parseList(locations: List<Location>): List<Location> {
+        val mutList = locations.toMutableList().apply {
+            sortBy { location -> location.name }
+        }
+        val worldWideItem: Location? = locations.findLast { l -> l.woeid == 1 }
+
+        if (worldWideItem != null) {
+            mutList.remove(worldWideItem)
+            mutList.add(0, worldWideItem)
+        }
+
+        return mutList.toList()
     }
 }
