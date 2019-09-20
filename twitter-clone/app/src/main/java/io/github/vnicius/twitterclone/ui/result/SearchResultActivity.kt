@@ -70,7 +70,6 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener, ItemClic
                 query = it
                 overridePendingTransition(R.anim.anim_slide_in_left, R.anim.anim_fade_out)
             }
-            setupLocalTweetsRecyclerView()
             initState()
             setupTweetsRecyclerView()
         }
@@ -123,14 +122,7 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener, ItemClic
 
     private fun showLoader() {
         hideContent()
-
-        viewModel.localTweetsList.observe(this, Observer {
-            if (it.isNullOrEmpty()) {
-                inc_search_result_spinner.visibility = View.VISIBLE
-            } else {
-                rv_search_result_local_tweets.visibility = View.VISIBLE
-            }
-        })
+        inc_search_result_spinner.visibility = View.VISIBLE
     }
 
     private fun showResult() {
@@ -158,7 +150,6 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener, ItemClic
         inc_search_result_connection_error.visibility = View.GONE
         inc_search_result_spinner.visibility = View.GONE
         rv_search_result_tweets_list.visibility = View.GONE
-        rv_search_result_local_tweets.visibility = View.GONE
         tv_search_result_no_result_message.visibility = View.GONE
     }
 
@@ -172,24 +163,6 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener, ItemClic
 
         viewModel.tweetsList.observe(this, Observer {
             tweetsAdapter.submitList(it)
-        })
-    }
-
-    private fun setupLocalTweetsRecyclerView() {
-        val localTweetsAdapter = LocalTweetsAdapter(listOf(), this)
-
-        rv_search_result_local_tweets.apply {
-            layoutManager = LinearLayoutManager(this.context)
-            adapter = localTweetsAdapter
-        }
-
-        viewModel.localTweetsList.observe(this, Observer { tweetsList ->
-            tweetsList?.let {
-                localTweetsAdapter.apply {
-                    tweets = tweetsList
-                    notifyDataSetChanged()
-                }
-            }
         })
     }
 

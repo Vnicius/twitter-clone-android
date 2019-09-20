@@ -31,12 +31,6 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_search_result_local_tweets"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone" />
-
     <TextView
             android:id="@+id/tv_search_result_no_result_message"
             style="@style/TextAppearance.AppCompat.TextAppearanceNormal.Secondary"
