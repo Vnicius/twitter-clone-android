@@ -34,7 +34,6 @@ import kotlinx.android.synthetic.main.partial_search_field.*
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,24 +55,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         updateLocationName()
-        initPreferencesListener()
         rl_search_field.setOnClickListener(this)
         btn_connection_error_action.setOnClickListener(this)
         swipe_main_trends_list.apply {
             setOnRefreshListener { refresh() }
             setColorSchemeColors(ContextCompat.getColor(this.context, R.color.blue))
         }
-        viewModel.sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
     }
 
     override fun onResume() {
         super.onResume()
-        viewModel.sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
-    }
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
+        val oldWoeid = viewModel.locationWoeid
+        viewModel.updateLocation()
+
+        if (oldWoeid != viewModel.locationWoeid) {
+            updateLocationName()
+            refresh()
+        }
     }
 
     override fun onClick(view: View?) {
@@ -187,20 +186,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 State.CONNECTION_ERROR -> showConnectionErrorMessage()
             }
         })
-    }
-
-    private fun initPreferencesListener() {
-        listener = SharedPreferences.OnSharedPreferenceChangeListener() { _, key ->
-            when (key) {
-                SharedPreferencesKeys.LOCATION_NAME -> {
-                    updateLocationName()
-                    refresh()
-                }
-                SharedPreferencesKeys.WOEID -> {
-                    viewModel.updateLocation()
-                }
-            }
-        }
     }
 
     private fun updateLocationName() {

@@ -15,7 +15,6 @@ import kotlinx.android.synthetic.main.activity_trends_info.*
 class TrendsInfoActivity : AppCompatActivity() {
 
     private lateinit var viewModel: TrendsInfoViewModel
-    private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +30,6 @@ class TrendsInfoActivity : AppCompatActivity() {
         viewModel = ViewModelProviders.of(this)[TrendsInfoViewModel::class.java]
 
         setLocationName()
-        initObserver()
 
         ll_trends_info_trend_location.setOnClickListener {
             startActivity(Intent(this, TrendsLocationsActivity::class.java))
@@ -41,7 +39,6 @@ class TrendsInfoActivity : AppCompatActivity() {
                 R.anim.anim_fade_out
             )
         }
-        viewModel.sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -52,12 +49,7 @@ class TrendsInfoActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
+        setLocationName()
     }
 
     override fun finish() {
@@ -67,13 +59,5 @@ class TrendsInfoActivity : AppCompatActivity() {
 
     private fun setLocationName() {
         tv_trend_info_location_name.text = viewModel.getLocationName() ?: ""
-    }
-
-    private fun initObserver() {
-        listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-            when (key) {
-                SharedPreferencesKeys.LOCATION_NAME -> setLocationName()
-            }
-        }
     }
 }
