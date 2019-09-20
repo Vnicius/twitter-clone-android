@@ -2,6 +2,7 @@ package io.github.vnicius.twitterclone.ui.main
 
 import android.app.SearchManager
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -33,6 +34,7 @@ import kotlinx.android.synthetic.main.partial_search_field.*
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var viewModel: MainViewModel
+    private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,13 +56,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
 
         updateLocationName()
-        initPreferencesObserver()
+        initPreferencesListener()
         rl_search_field.setOnClickListener(this)
         btn_connection_error_action.setOnClickListener(this)
         swipe_main_trends_list.apply {
             setOnRefreshListener { refresh() }
             setColorSchemeColors(ContextCompat.getColor(this.context, R.color.blue))
         }
+        viewModel.sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
     }
 
     override fun onClick(view: View?) {
@@ -176,8 +189,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-    private fun initPreferencesObserver() {
-        viewModel.sharedPreferences.registerOnSharedPreferenceChangeListener { _, key ->
+    private fun initPreferencesListener() {
+        listener = SharedPreferences.OnSharedPreferenceChangeListener() { _, key ->
             when (key) {
                 SharedPreferencesKeys.LOCATION_NAME -> {
                     updateLocationName()

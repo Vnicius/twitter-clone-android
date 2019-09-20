@@ -1,5 +1,6 @@
 package io.github.vnicius.twitterclone.ui.trendsinfo
 
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.preference.PreferenceManager
@@ -12,6 +13,7 @@ import kotlinx.android.synthetic.main.activity_trends_info.*
 class TrendsInfoActivity : AppCompatActivity() {
 
     private lateinit var viewModel: TrendsInfoViewModel
+    private lateinit var listener: SharedPreferences.OnSharedPreferenceChangeListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,18 +27,30 @@ class TrendsInfoActivity : AppCompatActivity() {
         }
 
         viewModel = ViewModelProviders.of(this)[TrendsInfoViewModel::class.java]
+
         setLocationName()
         initObserver()
 
         ll_trends_info_trend_location.setOnClickListener {
 
         }
+        viewModel.sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == android.R.id.home) onBackPressed()
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
     }
 
     override fun finish() {
@@ -49,7 +63,7 @@ class TrendsInfoActivity : AppCompatActivity() {
     }
 
     private fun initObserver() {
-        viewModel.sharedPreferences.registerOnSharedPreferenceChangeListener { _, key ->
+        listener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             when (key) {
                 SharedPreferencesKeys.LOCATION_NAME -> setLocationName()
             }
