@@ -37,4 +37,6 @@ interface APIInterface {
      * @return a [ResponseList] of [Status]
      */
     suspend fun getUserTweetsAsync(userId: Long, pageSize: Int, page: Int = 1): List<Status>
+
+    suspend fun getLocations(): List<Location>
 }
