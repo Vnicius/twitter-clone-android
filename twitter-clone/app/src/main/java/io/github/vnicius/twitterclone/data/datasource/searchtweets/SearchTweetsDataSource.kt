@@ -40,7 +40,6 @@ class SearchTweetsDataSource(
                         state.postValue(State.NO_RESULT)
                     } else {
                         state.postValue(State.DONE)
-                        tweetsRepository.getLocal().saveTweetsAsync(queryText, result.tweets)
                     }
                 }
             } catch (e: TwitterException) {

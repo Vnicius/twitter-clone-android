@@ -12,8 +12,6 @@ import io.github.vnicius.twitterclone.utils.State
 import kotlinx.coroutines.launch
 import twitter4j.Status
 
-private const val MAX_PAGES = 5
-private const val MAX_ITEMS = 10
 
 /**
  * SearchResult Presenter
@@ -26,18 +24,14 @@ class SearchResultViewModel(myApp: Application) : AndroidViewModel(myApp) {
     private lateinit var searchTweetsDataSourceFactory: SearchTweetsDataSourceFactory
     lateinit var state: LiveData<State>
     lateinit var tweetsList: LiveData<PagedList<Status>>
-    var localTweetsList: MutableLiveData<List<Status>?> = MutableLiveData()
-
 
     fun build(query: String) {
-        fetchLocalTweets(query)
-
         if (tweetRepository != null) {
             searchTweetsDataSourceFactory =
-                SearchTweetsDataSourceFactory(query, MAX_ITEMS, tweetRepository)
+                SearchTweetsDataSourceFactory(query, PAGE_SIZE, tweetRepository)
             val config = PagedList.Config.Builder()
-                .setPageSize(MAX_PAGES)
-                .setInitialLoadSizeHint(MAX_PAGES * 2)
+                .setPageSize(PAGE_SIZE)
+                .setInitialLoadSizeHint(PAGE_SIZE * 2)
                 .setEnablePlaceholders(false)
                 .build()
             tweetsList = LivePagedListBuilder(searchTweetsDataSourceFactory, config).build()
@@ -51,11 +45,7 @@ class SearchResultViewModel(myApp: Application) : AndroidViewModel(myApp) {
     fun getDataSourceValue(): SearchTweetsDataSource? =
         searchTweetsDataSourceFactory.searchTweetsDataSourceLiveData.value
 
-    private fun fetchLocalTweets(query: String) {
-        viewModelScope.launch {
-            if (tweetRepository != null) {
-                localTweetsList.postValue(tweetRepository.getLocal().getTweetsAsync(query))
-            }
-        }
+    companion object {
+        const val PAGE_SIZE = 20
     }
 }
