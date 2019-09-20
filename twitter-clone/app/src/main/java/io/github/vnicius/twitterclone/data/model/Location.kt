@@ -5,7 +5,7 @@ import twitter4j.Location
 data class Location(
     val woeid: Int,
     val countryName: String,
-    val countryCode: String,
+    val countryCode: String?,
     val placeName: String,
     val placeCode: Int,
     val name: String,

@@ -1,5 +1,6 @@
 package io.github.vnicius.twitterclone.ui.trendsinfo
 
+import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.preference.PreferenceManager
 import android.view.MenuItem
 import androidx.lifecycle.ViewModelProviders
 import io.github.vnicius.twitterclone.R
+import io.github.vnicius.twitterclone.ui.trendslocations.TrendsLocationsActivity
 import io.github.vnicius.twitterclone.utils.SharedPreferencesKeys
 import kotlinx.android.synthetic.main.activity_trends_info.*
 
@@ -32,7 +34,12 @@ class TrendsInfoActivity : AppCompatActivity() {
         initObserver()
 
         ll_trends_info_trend_location.setOnClickListener {
+            startActivity(Intent(this, TrendsLocationsActivity::class.java))
 
+            overridePendingTransition(
+                R.anim.anim_slide_in_left,
+                R.anim.anim_fade_out
+            )
         }
         viewModel.sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
     }

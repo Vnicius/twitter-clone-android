@@ -10,6 +10,7 @@
     <string name="title_tweets">Tweets</string>
     <string name="title_activity_profile">ProfileActivity</string>
     <string name="title_trends_infos">Trends</string>
+    <string name="title_trends_locations_screen">Trends locations</string>
     <!--  endregion  -->
 
     <!-- region Menu items labels -->
@@ -40,6 +41,7 @@
 
     <!-- region Hint texts -->
     <string name="hint_search">Search Twitter</string>
+    <string name="hint_search_locations">Search locations</string>
     <!--  endregion  -->
 
     <!-- region Images descriptions  -->

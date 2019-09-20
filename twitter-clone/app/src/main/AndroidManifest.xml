@@ -12,8 +12,11 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".ui.trendsinfo.TrendsInfoActivity"
+                android:name=".ui.trendslocations.TrendsLocationsActivity"
                 android:screenOrientation="portrait"></activity>
+        <activity
+                android:name=".ui.trendsinfo.TrendsInfoActivity"
+                android:screenOrientation="portrait" />
         <activity
                 android:name=".ui.result.SearchResultActivity"
                 android:launchMode="singleTop"
@@ -39,7 +42,7 @@
                 android:name=".ui.profile.ProfileActivity"
                 android:label="@string/title_activity_profile"
                 android:screenOrientation="portrait"
-                android:theme="@style/AppTheme.NoActionBar"></activity>
+                android:theme="@style/AppTheme.NoActionBar" />
         <activity
                 android:name=".ui.main.MainActivity"
                 android:screenOrientation="portrait">
