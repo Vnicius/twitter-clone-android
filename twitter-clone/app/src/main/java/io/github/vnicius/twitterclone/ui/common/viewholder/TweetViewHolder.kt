@@ -14,14 +14,15 @@ import androidx.core.text.HtmlCompat
 import com.airbnb.lottie.LottieAnimationView
 import com.squareup.picasso.Picasso
 import io.github.vnicius.twitterclone.R
+import io.github.vnicius.twitterclone.data.model.MediaEntity
+import io.github.vnicius.twitterclone.data.model.Status
+import io.github.vnicius.twitterclone.data.model.UserStatus
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
 import io.github.vnicius.twitterclone.utils.highlightClickable
 import io.github.vnicius.twitterclone.utils.parseTweetTime
 import io.github.vnicius.twitterclone.utils.summarizeCountNumber
-import twitter4j.MediaEntity
-import twitter4j.Status
 
-class TweetViewHolder(itemView: View, private val listener: ItemClickListener<Status>) :
+class TweetViewHolder(itemView: View, private val listener: ItemClickListener<UserStatus>) :
     androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
 
     private val activeRetweetColor =
@@ -59,9 +60,9 @@ class TweetViewHolder(itemView: View, private val listener: ItemClickListener<St
     /**
      * Bind the item with the view
      */
-    fun bindView(item: Status) {
+    fun bindView(item: UserStatus) {
 
-        var text = item.text
+        var text = item.status.text
 
         itemView.setOnClickListener {
             listener.onClick(it, item)
@@ -73,11 +74,11 @@ class TweetViewHolder(itemView: View, private val listener: ItemClickListener<St
             HtmlCompat.FROM_HTML_MODE_COMPACT
         )
 
-        if (item.mediaEntities.isNotEmpty()) {
-            showImageViews(item.mediaEntities.size)
-            showImages(item)
+        if (item.status.mediaEntities.isNotEmpty()) {
+            showImageViews(item.status.mediaEntities.size)
+            showImages(item.status)
 
-            text = text.replace(item.mediaEntities[0].url, "")
+            text = text.replace(item.status.mediaEntities[0].url, "")
         } else {
             clImages.visibility = View.GONE
         }
@@ -89,14 +90,14 @@ class TweetViewHolder(itemView: View, private val listener: ItemClickListener<St
             tvText.text = text.highlightClickable()
         }
 
-        tvFavCount.text = item.favoriteCount.summarizeCountNumber()
-        tvRetweetCount.text = item.retweetCount.summarizeCountNumber()
-        tvTweetTime.text = "• ${item.createdAt.time.parseTweetTime()}"
+        tvFavCount.text = item.status.favoriteCount.summarizeCountNumber()
+        tvRetweetCount.text = item.status.retweetCount.summarizeCountNumber()
+        tvTweetTime.text = "• ${item.status.createdAt.parseTweetTime()}"
 
-        llFav.setOnClickListener { view -> onFavClick(view, item) }
+        llFav.setOnClickListener { view -> onFavClick(view, item.status) }
         setFavInactive(itemView)
 
-        llRetweet.setOnClickListener { view -> onRetweetClick(view, item) }
+        llRetweet.setOnClickListener { view -> onRetweetClick(view, item.status) }
         setRetweetInactive(itemView)
 
         Picasso.get().load(item.user.profileImageURLHttps)
@@ -278,7 +279,7 @@ class TweetViewHolder(itemView: View, private val listener: ItemClickListener<St
         }
     }
 
-    private fun getImages(medias: Array<MediaEntity>) {
+    private fun getImages(medias: List<MediaEntity>) {
         medias.forEachIndexed { index, media ->
             Picasso.get().load(media.mediaURLHttps)
                 .fit()
@@ -288,7 +289,7 @@ class TweetViewHolder(itemView: View, private val listener: ItemClickListener<St
     }
 
     companion object {
-        fun create(parent: ViewGroup, listener: ItemClickListener<Status>): TweetViewHolder {
+        fun create(parent: ViewGroup, listener: ItemClickListener<UserStatus>): TweetViewHolder {
             val view =
                 LayoutInflater.from(parent.context).inflate(R.layout.item_tweet, parent, false)
             return TweetViewHolder(view, listener)
