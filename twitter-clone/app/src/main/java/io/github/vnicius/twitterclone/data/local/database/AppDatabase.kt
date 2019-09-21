@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import io.github.vnicius.twitterclone.data.local.dao.StatusDao
 import io.github.vnicius.twitterclone.data.local.dao.TrendDao
 import io.github.vnicius.twitterclone.data.local.dao.UserDao
@@ -11,8 +12,10 @@ import io.github.vnicius.twitterclone.data.local.dao.UserStatusDao
 import io.github.vnicius.twitterclone.data.model.Status
 import io.github.vnicius.twitterclone.data.model.Trend
 import io.github.vnicius.twitterclone.data.model.User
+import io.github.vnicius.twitterclone.utils.GsonTypeConverter
 
 @Database(entities = [Trend::class, User::class, Status::class], version = 1, exportSchema = false)
+@TypeConverters(GsonTypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun trendDao(): TrendDao
     abstract fun userDao(): UserDao
