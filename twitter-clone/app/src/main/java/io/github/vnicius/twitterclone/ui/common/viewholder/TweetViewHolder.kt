@@ -1,5 +1,8 @@
 package io.github.vnicius.twitterclone.ui.common.viewholder
 
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +16,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.text.HtmlCompat
 import com.airbnb.lottie.LottieAnimationView
 import com.squareup.picasso.Picasso
+import com.squareup.picasso.Target
 import io.github.vnicius.twitterclone.R
 import io.github.vnicius.twitterclone.data.model.MediaEntity
 import io.github.vnicius.twitterclone.data.model.Status
@@ -21,6 +25,7 @@ import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
 import io.github.vnicius.twitterclone.utils.highlightClickable
 import io.github.vnicius.twitterclone.utils.parseTweetTime
 import io.github.vnicius.twitterclone.utils.summarizeCountNumber
+import java.lang.Exception
 
 class TweetViewHolder(itemView: View, private val listener: ItemClickListener<UserStatus>) :
     androidx.recyclerview.widget.RecyclerView.ViewHolder(itemView) {
@@ -55,6 +60,21 @@ class TweetViewHolder(itemView: View, private val listener: ItemClickListener<Us
         itemView.findViewById(R.id.cv_tweet_body_2),
         itemView.findViewById(R.id.cv_tweet_body_3)
     )
+    private val ivTargets = ivTweetBodyImages.map { imageView ->
+        object : Target {
+            override fun onPrepareLoad(placeHolderDrawable: Drawable?) {
+                imageView.setImageBitmap(null)
+            }
+
+            override fun onBitmapFailed(e: Exception?, errorDrawable: Drawable?) {
+            }
+
+            override fun onBitmapLoaded(bitmap: Bitmap?, from: Picasso.LoadedFrom?) {
+                imageView.setImageBitmap(bitmap)
+            }
+
+        }
+    }
     private val clImages = itemView.findViewById<ConstraintLayout>(R.id.cl_tweet_images)
 
     /**
@@ -77,6 +97,7 @@ class TweetViewHolder(itemView: View, private val listener: ItemClickListener<Us
         if (item.status.mediaEntities.isNotEmpty()) {
             showImageViews(item.status.mediaEntities.size)
             showImages(item.status)
+            getImages(item.status.mediaEntities)
 
             text = text.replace(item.status.mediaEntities[0].url, "")
         } else {
@@ -194,8 +215,6 @@ class TweetViewHolder(itemView: View, private val listener: ItemClickListener<Us
         val defaultSpace = itemView.resources.getDimensionPixelSize(R.dimen.spacing_tiny)
         constraintSet.clone(clImages)
 
-        clImages.visibility = View.VISIBLE
-
         fun fullHeight(position: Int) {
             constraintSet.apply {
                 connect(
@@ -270,7 +289,7 @@ class TweetViewHolder(itemView: View, private val listener: ItemClickListener<Us
         }
 
         constraintSet.applyTo(clImages)
-        getImages(item.mediaEntities)
+        clImages.visibility = View.VISIBLE
     }
 
     private fun showImageViews(size: Int) {
@@ -282,9 +301,7 @@ class TweetViewHolder(itemView: View, private val listener: ItemClickListener<Us
     private fun getImages(medias: List<MediaEntity>) {
         medias.forEachIndexed { index, media ->
             Picasso.get().load(media.mediaURLHttps)
-                .fit()
-                .centerCrop()
-                .into(ivTweetBodyImages[index])
+                .into(ivTargets[index])
         }
     }
 

@@ -108,7 +108,9 @@
                     <ImageView
                             android:id="@+id/iv_tweet_body_0"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -127,7 +129,9 @@
                     <ImageView
                             android:id="@+id/iv_tweet_body_1"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -147,7 +151,9 @@
                     <ImageView
                             android:id="@+id/iv_tweet_body_2"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop" />
 
                 </androidx.cardview.widget.CardView>
 
@@ -165,7 +171,9 @@
                     <ImageView
                             android:id="@+id/iv_tweet_body_3"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop" />
 
                 </androidx.cardview.widget.CardView>
 
