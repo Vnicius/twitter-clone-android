@@ -82,6 +82,7 @@ class TrendsAdapter(var trends: List<Trend>, private val listener: ItemClickList
 
             // check if the trend has the any volume of Tweets
             if (trend.tweetVolume != -1) {
+                tvTweetsCount.visibility = View.VISIBLE
                 tvTweetsCount.text = "${trend.tweetVolume.summarizeNumber()} Tweets"
             } else {
                 tvTweetsCount.visibility = View.GONE

@@ -6,6 +6,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import io.github.vnicius.twitterclone.data.datasource.searchtweets.SearchTweetsDataSource
 import io.github.vnicius.twitterclone.data.datasource.searchtweets.SearchTweetsDataSourceFactory
+import io.github.vnicius.twitterclone.data.model.UserStatus
 import io.github.vnicius.twitterclone.data.repository.RepositoryFactory
 import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepository
 import io.github.vnicius.twitterclone.utils.State
@@ -23,7 +24,7 @@ class SearchResultViewModel(myApp: Application) : AndroidViewModel(myApp) {
         RepositoryFactory.createRepository<TweetRepository>(myApp) as RepositoryFactory<TweetRepository>?
     private lateinit var searchTweetsDataSourceFactory: SearchTweetsDataSourceFactory
     lateinit var state: LiveData<State>
-    lateinit var tweetsList: LiveData<PagedList<Status>>
+    lateinit var tweetsList: LiveData<PagedList<UserStatus>>
 
     fun build(query: String) {
         if (tweetRepository != null) {

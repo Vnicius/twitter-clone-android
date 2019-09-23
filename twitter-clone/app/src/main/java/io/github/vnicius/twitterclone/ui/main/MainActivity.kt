@@ -2,11 +2,13 @@ package io.github.vnicius.twitterclone.ui.main
 
 import android.app.SearchManager
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -19,6 +21,8 @@ import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
 import io.github.vnicius.twitterclone.ui.main.adapters.TrendsAdapter
 import io.github.vnicius.twitterclone.ui.result.SearchResultActivity
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
+import io.github.vnicius.twitterclone.ui.trendsinfo.TrendsInfoActivity
+import io.github.vnicius.twitterclone.utils.SharedPreferencesKeys
 import io.github.vnicius.twitterclone.utils.State
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.partial_connection_error.*
@@ -50,11 +54,24 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             viewModel.getTrends()
         }
 
+        updateLocationName()
         rl_search_field.setOnClickListener(this)
         btn_connection_error_action.setOnClickListener(this)
         swipe_main_trends_list.apply {
             setOnRefreshListener { refresh() }
             setColorSchemeColors(ContextCompat.getColor(this.context, R.color.blue))
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        val oldWoeid = viewModel.locationWoeid
+        viewModel.updateLocation()
+
+        if (oldWoeid != viewModel.locationWoeid) {
+            updateLocationName()
+            refresh()
         }
     }
 
@@ -76,6 +93,26 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         menuInflater.inflate(R.menu.menu_main, menu)
 
         return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_settings -> {
+                startActivity(
+                    Intent(
+                        this,
+                        TrendsInfoActivity::class.java
+                    )
+                )
+
+                overridePendingTransition(
+                    R.anim.anim_slide_in_left,
+                    R.anim.anim_fade_out
+                )
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     private fun showLoader() {
@@ -149,5 +186,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 State.CONNECTION_ERROR -> showConnectionErrorMessage()
             }
         })
+    }
+
+    private fun updateLocationName() {
+        tv_main_trend_title.text =
+            getString(R.string.title_trends_location, viewModel.getLocationName())
     }
 }

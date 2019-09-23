@@ -1,6 +1,5 @@
 package io.github.vnicius.twitterclone.ui.profile.adapters
 
-import android.util.Log
 import android.view.ViewGroup
 import androidx.paging.AsyncPagedListDiffer
 import androidx.paging.PagedList
@@ -9,8 +8,8 @@ import androidx.recyclerview.widget.*
 import io.github.vnicius.twitterclone.data.model.User
 import io.github.vnicius.twitterclone.data.model.UserStatus
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
+import io.github.vnicius.twitterclone.ui.common.viewholder.TweetViewHolder
 import io.github.vnicius.twitterclone.ui.profile.viewholder.ProfileContentViewHolder
-import io.github.vnicius.twitterclone.ui.profile.viewholder.TweetViewHolder
 
 class ProfileTweetsAdapter(
     var user: User?,
