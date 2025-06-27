@@ -13,10 +13,10 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProviders
 import io.github.vnicius.twitterclone.R
+import io.github.vnicius.twitterclone.data.model.UserStatus
 import io.github.vnicius.twitterclone.ui.common.adapters.ItemClickListener
 import io.github.vnicius.twitterclone.ui.result.adapters.TweetsAdapter
 import io.github.vnicius.twitterclone.ui.profile.ProfileActivity
-import io.github.vnicius.twitterclone.ui.result.adapters.LocalTweetsAdapter
 import io.github.vnicius.twitterclone.ui.searchable.SearchableActivity
 import io.github.vnicius.twitterclone.utils.State
 import kotlinx.android.synthetic.main.activity_search_result.*
@@ -27,7 +27,8 @@ import twitter4j.Status
 /**
  * SearchResult Activity View
  */
-class SearchResultActivity : AppCompatActivity(), View.OnClickListener, ItemClickListener<Status> {
+class SearchResultActivity : AppCompatActivity(), View.OnClickListener,
+    ItemClickListener<UserStatus> {
 
     private lateinit var viewModel: SearchResultViewModel
     private lateinit var query: String
@@ -103,9 +104,9 @@ class SearchResultActivity : AppCompatActivity(), View.OnClickListener, ItemClic
         }
     }
 
-    override fun onClick(view: View, item: Status) {
+    override fun onClick(view: View, item: UserStatus) {
         val intent = Intent(view.context, ProfileActivity::class.java)
-        intent.putExtra(ProfileActivity.USER_ID, item.user.id)
+        intent.putExtra(ProfileActivity.USER_ID, item.user.userId)
 
         startActivity(intent)
 

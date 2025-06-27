@@ -69,8 +69,7 @@
                             style="@style/TextAppearance.AppCompat.TextAppearanceNormal"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:padding="@dimen/spacing_normal"
-                            android:text="@string/title_world_wide_trends" />
+                            android:padding="@dimen/spacing_normal" />
 
                     <include layout="@layout/partial_line" />
 

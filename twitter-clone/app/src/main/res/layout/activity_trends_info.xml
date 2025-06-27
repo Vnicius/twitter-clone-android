@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_default"
+        tools:context="io.github.vnicius.twitterclone.ui.trendsinfo.TrendsInfoActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/al_trends_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_default"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_trends_info"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/AppTheme.ToolbarColoredBackArrow">
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+            android:id="@+id/ll_trends_info_trend_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_normal"
+            app:layout_constraintTop_toBottomOf="@id/al_trends_info">
+
+        <TextView
+                style="@style/TextAppearance.AppCompat.TextAppearanceNormal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_trends_location" />
+
+        <TextView
+                android:id="@+id/tv_trend_info_location_name"
+                style="@style/TextAppearance.AppCompat.TextAppearanceSmall.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Brazil" />
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:orientation="vertical"
+            android:padding="@dimen/spacing_normal"
+            app:layout_constraintTop_toBottomOf="@id/ll_trends_info_trend_location">
+
+        <TextView
+                style="@style/TextAppearance.AppCompat.TextAppearanceSmall.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/description_trends_location" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

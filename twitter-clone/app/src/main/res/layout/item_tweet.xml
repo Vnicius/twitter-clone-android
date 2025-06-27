@@ -58,8 +58,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:contentDescription="@string/description_more_options_btn"
-                        app:srcCompat="@drawable/ic_keyboard_arrow_down"
-                        android:tint="@color/gray_dark" />
+                        android:tint="@color/gray_dark"
+                        app:srcCompat="@drawable/ic_keyboard_arrow_down" />
 
             </RelativeLayout>
 
@@ -70,12 +70,118 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/spacing_large"
+                    android:layout_marginBottom="@dimen/spacing_small"
                     tools:text="Tweet text" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/cl_tweet_images"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp">
+
+                <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_percent="0.5" />
+
+                <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.5" />
+
+                <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_tweet_body_0"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="@dimen/spacing_tiny"
+                        android:layout_marginBottom="@dimen/spacing_tiny"
+                        app:cardBackgroundColor="@color/gray_extra_light"
+                        app:cardCornerRadius="10dp"
+                        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                            android:id="@+id/iv_tweet_body_0"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_tweet_body_1"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginBottom="@dimen/spacing_tiny"
+                        app:cardBackgroundColor="@color/gray_extra_light"
+                        app:cardCornerRadius="10dp"
+                        app:layout_constraintBottom_toTopOf="@+id/guideline_horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/guideline_vertical"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                            android:id="@+id/iv_tweet_body_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_tweet_body_2"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/spacing_tiny"
+                        android:layout_marginEnd="@dimen/spacing_tiny"
+                        app:cardBackgroundColor="@color/gray_extra_light"
+                        app:cardCornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/guideline_vertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cv_tweet_body_0">
+
+                    <ImageView
+                            android:id="@+id/iv_tweet_body_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop" />
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                        android:id="@+id/cv_tweet_body_3"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:cardBackgroundColor="@color/gray_extra_light"
+                        app:cardCornerRadius="10dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/guideline_vertical"
+                        app:layout_constraintTop_toBottomOf="@+id/guideline_horizontal">
+
+                    <ImageView
+                            android:id="@+id/iv_tweet_body_3"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:adjustViewBounds="true"
+                            android:scaleType="centerCrop" />
+
+                </androidx.cardview.widget.CardView>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/icon_normal"
-
                     android:layout_marginTop="@dimen/spacing_normal"
                     android:stretchColumns="*">
 
@@ -95,8 +201,8 @@
                                 android:layout_height="@dimen/icon_normal"
                                 android:layout_gravity="center_horizontal"
                                 android:contentDescription="@string/description_comment_ic"
-                                app:srcCompat="@drawable/ic_reply"
-                                android:tint="@color/gray_dark" />
+                                android:tint="@color/gray_dark"
+                                app:srcCompat="@drawable/ic_reply" />
 
                         <TextView
                                 android:id="@+id/tv_tweet_comments_count"
@@ -121,8 +227,8 @@
                                 android:layout_height="@dimen/icon_normal"
                                 android:layout_gravity="center_horizontal"
                                 android:contentDescription="@string/description_retweet_ic"
-                                app:srcCompat="@drawable/ic_retweet"
-                                android:tint="@color/gray_dark" />
+                                android:tint="@color/gray_dark"
+                                app:srcCompat="@drawable/ic_retweet" />
 
                         <TextView
                                 android:id="@+id/tv_tweet_retweets_count"
@@ -147,8 +253,8 @@
                                 android:layout_height="@dimen/icon_normal"
                                 android:layout_gravity="center_horizontal"
                                 android:contentDescription="@string/description_favourite_ic"
-                                app:srcCompat="@drawable/ic_fav"
-                                android:tint="@color/gray_dark" />
+                                android:tint="@color/gray_dark"
+                                app:srcCompat="@drawable/ic_fav" />
 
                         <com.airbnb.lottie.LottieAnimationView
                                 android:id="@+id/iv_tweet_fav_ic_animation"
@@ -182,8 +288,8 @@
                                 android:layout_height="@dimen/icon_normal"
                                 android:layout_gravity="center_horizontal"
                                 android:contentDescription="@string/description_share_ic"
-                                app:srcCompat="@drawable/ic_share"
-                                android:tint="@color/gray_dark" />
+                                android:tint="@color/gray_dark"
+                                app:srcCompat="@drawable/ic_share" />
                     </LinearLayout>
                 </TableRow>
             </TableLayout>

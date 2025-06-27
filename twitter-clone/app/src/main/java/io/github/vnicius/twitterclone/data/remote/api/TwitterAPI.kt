@@ -35,6 +35,10 @@ class TwitterAPI : APIInterface {
             twitterInstance.getUserTimeline(userId, Paging(page, pageSize)).toList()
         }
 
+    override suspend fun getLocations(): List<Location> = withContext(Dispatchers.IO) {
+        twitterInstance.availableTrends
+    }
+
     /**
      * Create the configuration of the Twitter4j
      */

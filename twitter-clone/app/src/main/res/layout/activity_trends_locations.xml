@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_default"
+        tools:context="io.github.vnicius.twitterclone.ui.trendslocations.TrendsLocationsActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/al_trends_locations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bg_default"
+            app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar_trends_locations"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/AppTheme.ToolbarColoredBackArrow">
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <EditText
+            android:id="@+id/ed_trends_locations_search"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="@string/hint_search_locations"
+            android:lines="1"
+            android:padding="@dimen/spacing_normal"
+            android:textColorHint="@color/gray_light"
+            app:layout_constraintTop_toBottomOf="@+id/al_trends_locations"
+            tools:text="Brazil">
+
+    </EditText>
+
+    <FrameLayout
+            android:id="@+id/fl_trends_locations_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/ed_trends_locations_search">
+
+        <include layout="@layout/partial_line" />
+    </FrameLayout>
+
+    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/fl_trends_locations_line">
+
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_trends_locations_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:listitem="@layout/item_location"
+                tools:itemCount="20">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

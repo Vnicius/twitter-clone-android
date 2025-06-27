@@ -1,6 +1,8 @@
 package io.github.vnicius.twitterclone.data.repository
 
 import android.app.Application
+import io.github.vnicius.twitterclone.data.repository.location.LocationRepositoryFactory
+import io.github.vnicius.twitterclone.data.repository.location.LocationRepostiory
 import io.github.vnicius.twitterclone.data.repository.trends.TrendRepository
 import io.github.vnicius.twitterclone.data.repository.trends.TrendRepositoryFactory
 import io.github.vnicius.twitterclone.data.repository.tweet.TweetRepository
@@ -18,6 +20,7 @@ abstract class RepositoryFactory<T> {
                 TweetRepository::class -> TweetRepositoryFactory.create(myApp)
                 TrendRepository::class -> TrendRepositoryFactory.create(myApp)
                 UserRepository::class -> UserRepositoryFactory.create(myApp)
+                LocationRepostiory::class -> LocationRepositoryFactory.create()
                 else -> null
             }
         }
